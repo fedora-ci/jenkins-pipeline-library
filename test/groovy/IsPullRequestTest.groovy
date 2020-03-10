@@ -10,7 +10,7 @@ class IsPullRequestTest extends BasePipelineTest {
     @Before
     void setUp() {
         super.setUp()
-        binding.setVariable('env', ['CHANGE_ID': 'yes-there-are-some-changes'])
+        binding.setVariable('env', ['CHANGE_ID': '1'])
         isPullRequestStep = helper.loadScript('vars/isPullRequest.groovy', binding)
     }
 
