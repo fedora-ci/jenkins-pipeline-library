@@ -1,0 +1,37 @@
+{
+    "contact": {
+      "name": "",
+      "team": "",
+      "url": "",
+      "docs": "",
+      "irc": "#fedora-ci",
+      "email": "fedora-ci@fedoraproject.org"
+    },
+    "run": {
+      "url": "",
+      "log": "",
+      "log_raw": "",
+      "log_stream": ""
+    },
+    "artifact": {
+      "type": "koji-build",
+      "id": "",
+      "issuer": "",
+      "component": "",
+      "nvr": "",
+      "scratch": false
+    },
+    "pipeline": {
+      "id": "",
+      "name": ""
+    },
+    "test": {
+      "type": "",
+      "category": "",
+      "namespace": "",
+      "lifetime": 15,
+      "progress": 10
+    },
+    "generated_at": "",
+    "version": ""
+}
