@@ -1,0 +1,54 @@
+{
+  "contact": {
+    "name": "",
+    "team": "",
+    "url": "",
+    "docs": "",
+    "irc": "#fedora-ci",
+    "email": "fedora-ci@fedoraproject.org"
+  },
+  "run": {
+    "url": "",
+    "log": "",
+    "log_raw": "",
+    "log_stream": "",
+    "debug": "",
+    "rebuild": ""
+  },
+  "artifact": {
+    "type": "koji-build",
+    "id": "",
+    "issuer": "",
+    "component": "",
+    "nvr": "",
+    "scratch": true,
+    "dependencies": [],
+    "baseline": "",
+    "source": ""
+  },
+  "pipeline": {
+    "id": "",
+    "name": ""
+  },
+  "test": {
+    "category": "",
+    "label": [],
+    "namespace": "",
+    "note": "",
+    "result": "",
+    "type": "",
+    "xunit": ""
+  },
+  "system":
+     [{
+        "os": "",
+        "provider": "",
+        "architecture": "",
+        "label": ""
+     }],
+  "notification": {
+     "recipients": [ "", "" ]
+  },
+  "generated_at": "",
+  "version": ""
+}

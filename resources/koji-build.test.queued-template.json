@@ -28,10 +28,8 @@
     "test": {
       "category": "",
       "namespace": "",
-      "type": "",
-      "lifetime": 15,
-      "progress": 10
+      "type": ""
     },
     "generated_at": "",
     "version": ""
-}
+  }
