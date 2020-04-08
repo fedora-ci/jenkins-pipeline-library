@@ -1,3 +1,5 @@
+package org.fedoraproject.jenkins.messages
+
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 

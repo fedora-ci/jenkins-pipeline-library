@@ -5,7 +5,7 @@ import groovy.json.JsonSlurper
 
 import org.fedoraproject.jenkins.koji.Koji
 import org.fedoraproject.jenkins.Utils
-import org.fedoraproject.jenkins.message.MessageBuilder
+import org.fedoraproject.jenkins.messages.MessageBuilder
 
 
 def call(Map params = [:]) {
@@ -68,9 +68,9 @@ def call(Map params = [:]) {
             }
         }
         String id = sendResult.getMessageId()
-        String msg = sendResult.getMessageContent()
+        String msgContent = sendResult.getMessageContent()
 
-        print("INFO: Sent message ${id}: ${msg}")
+        print("INFO: Sent message ${id}: ${msgContent}")
         return
     } else {
         // dry run, just print the message
