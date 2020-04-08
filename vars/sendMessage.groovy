@@ -67,13 +67,13 @@ def call(Map params = [:]) {
                 error e.getMessage()
             }
         }
-        String id = sendResult.getMessageId()
-        String msgContent = sendResult.getMessageContent()
+        String resultMsgId = sendResult.getMessageId()
+        String resultMsgContent = sendResult.getMessageContent()
 
-        print("INFO: Sent message ${id}: ${msgContent}")
+        print("INFO: Sent message ${msgId}: ${msgContent}")
         return
     } else {
         // dry run, just print the message
-        print("INFO: Skipping sending following message as this is a dry: ${msgTemplate.toString()}")
+        print("INFO: Skipping sending following message as this is a dry: ${msg.toString()}")
     }
 }
