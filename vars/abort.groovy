@@ -7,9 +7,9 @@
  * Abort current build. This step sets build result to "ABORTED" (gray icon in Jenkins),
  * and immediately stops execution of the pipeline.
  *
- * @param 
+ * @param message
  */
-def call(Map params = [:]) {
+def call(String message) {
     currentBuild.result = 'ABORTED'
-    error(params[msg])
+    error(message)
 }
