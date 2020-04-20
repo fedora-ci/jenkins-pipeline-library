@@ -201,7 +201,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata) 
         // artifact section
         def koji = new Koji()
         def taskInfo = koji.getTaskInfo(taskId.toInteger())
-        msgTemplate['artifact']['id'] = taskInfo.idreason
+        msgTemplate['artifact']['id'] = taskInfo.id
         msgTemplate['artifact']['issuer'] = taskInfo.ownerName
         msgTemplate['artifact']['component'] = taskInfo.name
         msgTemplate['artifact']['nvr'] = taskInfo.nvr
