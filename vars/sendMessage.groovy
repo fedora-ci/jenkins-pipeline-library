@@ -25,22 +25,22 @@ def call(Map params = [:]) {
 
     if (messageType == 'queued') {
         msgTopic = 'org.centos.prod.ci.koji-build.test.queued'
-        msg = MessageBuilder.buildMessageQueued(artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'running') {
         msgTopic = 'org.centos.prod.ci.koji-build.test.running'
-        msg = MessageBuilder.buildMessageRunning(artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'complete') {
         msgTopic = 'org.centos.prod.ci.koji-build.test.complete'
-        msg = MessageBuilder.buildMessageComplete(artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'error') {
         msgTopic = 'org.centos.prod.ci.koji-build.test.error'
-        msg = MessageBuilder.buildMessageError(artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata)
     }
 
     def msgProps = ''
