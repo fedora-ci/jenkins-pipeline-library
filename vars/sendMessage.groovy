@@ -10,8 +10,6 @@ import org.fedoraproject.jenkins.messages.MessageBuilder
 
 def call(Map params = [:]) {
 
-    def msgVersion = '0.2.1'
-
     def messageType = params.get('type')
     def artifactId = params.get('artifactId')
     def pipelineMetadata = params.get('pipelineMetadata')

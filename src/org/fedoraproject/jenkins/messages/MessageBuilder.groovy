@@ -7,6 +7,10 @@ import org.fedoraproject.jenkins.koji.Koji
 import org.fedoraproject.jenkins.Utils
 
 
+def getMessageVersion() {
+    return '0.2.1'
+}
+
 def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata) {
 
     def msgTemplate
@@ -49,7 +53,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
 
         // misc
         msgTemplate['generated_at'] = Utils.getTimestamp()
-        msgTemplate['version'] = msgVersion
+        msgTemplate['version'] = getMessageVersion()
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -100,7 +104,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 
         // misc
         msgTemplate['generated_at'] = Utils.getTimestamp()
-        msgTemplate['version'] = msgVersion
+        msgTemplate['version'] = getMessageVersion()
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -165,7 +169,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
         // misc
         msgTemplate['generated_at'] = Utils.getTimestamp()
-        msgTemplate['version'] = msgVersion
+        msgTemplate['version'] = getMessageVersion()
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -223,7 +227,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata) 
 
         // misc
         msgTemplate['generated_at'] = Utils.getTimestamp()
-        msgTemplate['version'] = msgVersion
+        msgTemplate['version'] = getMessageVersion()
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
