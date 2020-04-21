@@ -80,6 +80,6 @@ def call(Map params = [:]) {
         return sendResult
     } else {
         // dry run, just print the message
-        print("INFO: Skipping sending following message as this is a dry: ${msg.toString()}")
+        print("INFO: Skipping sending following message as this is a dry run: ${msg.toString()}")
     }
 }
