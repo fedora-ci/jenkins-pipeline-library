@@ -21,22 +21,22 @@ def call(Map params = [:]) {
     def msg
 
     if (messageType == 'queued') {
-        msgTopic = 'org.centos.prod.ci.koji-build.test.queued'
+        msgTopic = 'org.fedoraproject.prod.ci.koji-build.test.queued'
         msg = new MessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'running') {
-        msgTopic = 'org.centos.prod.ci.koji-build.test.running'
+        msgTopic = 'org.fedoraproject.prod.ci.koji-build.test.running'
         msg = new MessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'complete') {
-        msgTopic = 'org.centos.prod.ci.koji-build.test.complete'
+        msgTopic = 'org.fedoraproject.prod.ci.koji-build.test.complete'
         msg = new MessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'error') {
-        msgTopic = 'org.centos.prod.ci.koji-build.test.error'
+        msgTopic = 'org.fedoraproject.prod.ci.koji-build.test.error'
         msg = new MessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata)
     }
 
