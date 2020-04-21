@@ -1,7 +1,6 @@
 #!/usr/bin/groovy
 
 import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 
 import org.fedoraproject.jenkins.koji.Koji
 import org.fedoraproject.jenkins.Utils
@@ -50,17 +49,20 @@ def call(Map params = [:]) {
                 // 1 minute should be more than enough time to send the message
                 timeout(1) {
                     // Send message and return SendResult
-                    sendResult = sendCIMessage messageContent: msgContent,
+                    sendResult = sendCIMessage(
+                        messageContent: msgContent,
                         messageProperties: msgProps,
                         messageType: "Custom",
-                        overrides: [topic: msgTopic],
+                        overrides: [
+                            topic: msgTopic
+                        ],
                         failOnError: true,
                         providerName: env.MSG_PROVIDER
-                    return sendResult
+                    )
                 }
             } catch(e) {
                 echo "FAIL: Could not send message to ${env.MSG_PROVIDER} on topic ${msgTopic}"
-                echo e.getMessage()
+                echo "${e}"
                 sleep 30
                 error e.getMessage()
             }
@@ -69,7 +71,7 @@ def call(Map params = [:]) {
         String resultMsgContent = sendResult.getMessageContent()
 
         print("INFO: Sent message ${msgId}: ${msgContent}")
-        return
+        return sendResult
     } else {
         // dry run, just print the message
         print("INFO: Skipping sending following message as this is a dry: ${msg.toString()}")
