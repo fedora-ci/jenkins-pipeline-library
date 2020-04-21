@@ -1,7 +1,7 @@
 package org.fedoraproject.jenkins.messages
 
 import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 
 import org.fedoraproject.jenkins.koji.Koji
 import org.fedoraproject.jenkins.Utils
@@ -17,7 +17,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
 
     if (artifactType == 'koji-build') {
         def msgTemplateString = libraryResource 'koji-build.test.queued-template.json'
-        msgTemplate = new groovy.json.JsonSlurper().parseText(msgTemplateString)
+        msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
 
         // contact section
         msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
@@ -68,7 +68,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 
     if (artifactType == 'koji-build') {
         def msgTemplateString = libraryResource 'koji-build.test.running-template.json'
-        msgTemplate = new groovy.json.JsonSlurper().parseText(msgTemplateString)
+        msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
 
         // contact section
         msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
@@ -119,7 +119,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     if (artifactType == 'koji-build') {
         def msgTemplateString = libraryResource 'koji-build.test.complete-template.json'
-        msgTemplate = new groovy.json.JsonSlurper().parseText(msgTemplateString)
+        msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
 
         // contact section
         msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
@@ -184,7 +184,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata) 
 
     if (artifactType == 'koji-build') {
         def msgTemplateString = libraryResource 'koji-build.test.error-template.json'
-        msgTemplate = new groovy.json.JsonSlurper().parseText(msgTemplateString)
+        msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
 
         // contact section
         msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
