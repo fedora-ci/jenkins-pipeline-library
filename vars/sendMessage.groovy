@@ -43,6 +43,11 @@ def call(Map params = [:]) {
     def msgProps = ''
     def msgContent = JsonOutput.toJson(msg)
 
+    if (!env.MSG_PROVIDER) {
+        print("FAIL: Missing configuration for message provider - unable to send following message: ${msg.toString()}")
+        return
+    }
+
     if (!dryRun) {
         retry(10) {
             try {
