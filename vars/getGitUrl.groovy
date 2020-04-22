@@ -3,10 +3,6 @@
 
 /**
  * getGitUrl() step.
- *
- * Get Git URL, and handle pull requests.
- *
- * @return Git URL.
  */
 def call(Map params = [:]) {
 

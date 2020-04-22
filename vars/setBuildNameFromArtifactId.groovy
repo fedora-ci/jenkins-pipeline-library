@@ -4,10 +4,6 @@ import org.fedoraproject.jenkins.koji.Koji
 
 /**
  * setBuildNameFromArtifactId() step.
- *
- * Set name of the build in Jenkins.
- *
- * @return Nothing
  */
 def call(Map params = [:]) {
     def artifactId = params.get('artifactId')

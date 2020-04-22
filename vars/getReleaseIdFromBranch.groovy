@@ -3,13 +3,6 @@
 
 /**
  * getReleaseIdFromBranch() step.
- *
- * Get release id (f31, rawhide) from current branch.
- * 
- * For pull requests, this step looks at the target branch
- * and uses it instead of the current branch.
- *
- * @return release id
  */
 def call(Map params = [:]) {
 

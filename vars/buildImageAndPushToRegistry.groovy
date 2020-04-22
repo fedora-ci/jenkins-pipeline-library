@@ -3,32 +3,6 @@
 
 /**
  * buildImageAndPushToRegistry() step.
- *
- * The long name says it all — this pipeline step builds a container image
- * from the given Git repository and pushes it to a registry.
- *
- * @param imageName Name of the resulting image, e.g.: "quay.io/fedoraci/rpmdeplint".
- * @param imageTag Tag for the image, e.g.: "latest", or "d57f6a4".
- * @param pushSecret Name of the OpenShift secret that will be used to push the image to the registry (this is NOT a Jenkins secret).
- * @param gitUrl URL pointing to a Git repository, e.g.: "https://github.com/fedora-ci/rpmdeplint-image.git".
- * @param gitRef Git reference, e.g.: "master", or "ca8eca526ababc4ffae29dfac8e6d222687e368b"; default is "master".
- * @param noCache Flag whether caching should be enabled during the build; default is true.
- * @param forcePull Flag whether builder should force-pull base image before the build; default is true.
- * @param dockerfilePath Path to the Dockerfile in the repository; default is "Dockerfile".
- * @param openshiftProject Name of the OpenShift project where to build the image.
- * @param buildName Arbitrary name that will be used as a name for the OpenShift build config.
- *
- * Example usage:
- *
- * buildImageAndPushToRegistry(
- *    imageName: 'quay.io/fedoraci/rpmdeplint',
- *    imageTag: 'd57f6a4',
- *    pushSecret: 'quay',
- *    gitUrl: 'https://github.com/fedora-ci/rpmdeplint-image.git',
- *    gitRef: 'master',
- *    buildName: 'rpmdeplint-image',
- *    openshiftProject: 'fedora-ci'
- * )
  */
 def call(Map params = [:]) {
     // TODO:
