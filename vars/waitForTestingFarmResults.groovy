@@ -13,7 +13,13 @@ def call(Map params = [:]) {
     def timeout = params.get('timeout')
 
     // FIXME: use the real Testing Farm URL, once it is available
-    def apiUrl = params.get('apiUrl') ?: 'https://localhost:8080/api/v1/requests'
+    def apiUrl = params.get('apiUrl') ?: env.FEDORA_CI_TESTING_FARM_API_URL
+
+    if (!apiUrl) {
+        error('FAIL: Testing Farm API URL is not configured')
+    }
+
+    apiUrl = apiUrl + '/v0.1/requests'
 
     def wait = true
     def response
