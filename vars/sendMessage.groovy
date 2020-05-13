@@ -14,6 +14,7 @@ def call(Map params = [:]) {
     def pipelineMetadata = params.get('pipelineMetadata')
     def dryRun = params.get('dryRun')
     def topic = params.get('topic')
+    def messageProvider = params.get('messageProvider') ?: env.FEDORA_CI_MESSAGE_PROVIDER
 
     def artifactType = artifactId.split(':')[0]
     def taskId = artifactId.split(':')[1]
@@ -45,8 +46,8 @@ def call(Map params = [:]) {
 
     if (!dryRun) {
 
-        if (!env.MSG_PROVIDER) {
-            print("FAIL: Missing configuration for message provider - unable to send following message: ${msg.toString()}")
+        if (!messageProvider) {
+            print("FAIL: Missing configuration for the message provider - unable to send following message: ${msg.toString()}")
             return
         }
 
@@ -63,11 +64,11 @@ def call(Map params = [:]) {
                             topic: topic
                         ],
                         failOnError: true,
-                        providerName: env.MSG_PROVIDER
+                        providerName: messageProvider
                     )
                 }
             } catch(e) {
-                echo "FAIL: Could not send message to ${env.MSG_PROVIDER} on topic ${topic}"
+                echo "FAIL: Could not send message to ${messageProvider} on topic ${topic}"
                 echo "${e}"
                 sleep 30
                 error e.getMessage()
