@@ -30,7 +30,11 @@ def call(Map params = [:]) {
 
     while (wait) {
         retry(5) {
-            response = httpGet(apiUrl, null, payload)
+            try {
+                response = httpGet(apiUrl, null, payload)
+            } catch(e) {
+                error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
+            }
         }
         state = response.get('state')
         if (state in ['complete', 'error']) {

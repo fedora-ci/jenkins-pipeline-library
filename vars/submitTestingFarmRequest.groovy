@@ -19,7 +19,11 @@ def call(Map params = [:]) {
     apiUrl = apiUrl + '/v0.1/requests'
 
     retry(5) {
-        return httpPost(apiUrl, null, payload)
+        try {
+            return httpPost(apiUrl, null, payload)
+        } catch(e) {
+            error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
+        }
     }
 }
 
