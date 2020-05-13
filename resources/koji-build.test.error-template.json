@@ -26,7 +26,8 @@
   },
   "pipeline": {
     "id": "",
-    "name": ""
+    "name": "",
+    "build": ""
   },
   "test": {
     "category": "",
