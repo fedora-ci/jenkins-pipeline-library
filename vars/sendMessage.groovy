@@ -77,7 +77,7 @@ def call(Map params = [:]) {
         String resultMsgId = sendResult.getMessageId()
         String resultMsgContent = sendResult.getMessageContent()
 
-        print("INFO: Sent message ${msgId}: ${msgContent}")
+        print("INFO: Sent message ${resultMsgId}: ${msgContent}")
         return sendResult
     } else {
         // dry run, just print the message
