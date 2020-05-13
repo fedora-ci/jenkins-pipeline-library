@@ -167,6 +167,8 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
         msgTemplate['test']['result'] = result
         msgTemplate['test']['xunit'] = '' // TODO: how do we get this from TF?
 
+        msgTemplate['system'] = []  // do we need this?
+
         // misc
         msgTemplate['generated_at'] = Utils.getTimestamp()
         msgTemplate['version'] = getMessageVersion()
