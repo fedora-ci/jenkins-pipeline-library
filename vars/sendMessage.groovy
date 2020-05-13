@@ -13,30 +13,30 @@ def call(Map params = [:]) {
     def artifactId = params.get('artifactId')
     def pipelineMetadata = params.get('pipelineMetadata')
     def dryRun = params.get('dryRun')
+    def topic = params.get('topic')
 
     def artifactType = artifactId.split(':')[0]
     def taskId = artifactId.split(':')[1]
 
-    def msgTopic
     def msg
 
     if (messageType == 'queued') {
-        msgTopic = 'org.fedoraproject.prod.ci.koji-build.test.queued'
+        topic = topic ?: 'org.centos.prod.ci.koji-build.test.queued'
         msg = new MessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'running') {
-        msgTopic = 'org.fedoraproject.prod.ci.koji-build.test.running'
+        topic = topic ?: 'org.centos.prod.ci.koji-build.test.running'
         msg = new MessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'complete') {
-        msgTopic = 'org.fedoraproject.prod.ci.koji-build.test.complete'
+        topic = topic ?: 'org.centos.prod.ci.koji-build.test.complete'
         msg = new MessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'error') {
-        msgTopic = 'org.fedoraproject.prod.ci.koji-build.test.error'
+        topic = topic ?: 'org.centos.prod.ci.koji-build.test.error'
         msg = new MessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata)
     }
 
@@ -60,14 +60,14 @@ def call(Map params = [:]) {
                         messageProperties: msgProps,
                         messageType: "Custom",
                         overrides: [
-                            topic: msgTopic
+                            topic: topic
                         ],
                         failOnError: true,
                         providerName: env.MSG_PROVIDER
                     )
                 }
             } catch(e) {
-                echo "FAIL: Could not send message to ${env.MSG_PROVIDER} on topic ${msgTopic}"
+                echo "FAIL: Could not send message to ${env.MSG_PROVIDER} on topic ${topic}"
                 echo "${e}"
                 sleep 30
                 error e.getMessage()
