@@ -54,6 +54,40 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
         // misc
         msgTemplate['generated_at'] = Utils.getTimestamp()
         msgTemplate['version'] = getMessageVersion()
+    else if (artifactType == 'productmd-compose') {
+        def msgTemplateString = libraryResource 'productmd-compose.test.queued-template.json'
+        msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
+
+        // contact section
+        msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
+        msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
+        msgTemplate['contact']['url'] = pipelineMetadata['docs']
+        msgTemplate['contact']['docs'] = pipelineMetadata['docs']
+        msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
+        msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
+
+        // run section
+        msgTemplate['run']['url'] = "${env.BUILD_URL}"
+        msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+        msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+        msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
+
+        // artifact section
+        msgTemplate['artifact']['id'] = taskId
+        msgTemplate['artifact']['compose_type'] = 'testing' // override if needed
+
+        // pipeline section
+        msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
+        msgTemplate['pipeline']['id'] = pipelineMetadata['pipelineName']
+
+        // test section
+        msgTemplate['test']['type'] = pipelineMetadata['testType']
+        msgTemplate['test']['category'] = pipelineMetadata['testCategory']
+        msgTemplate['test']['namespace'] = 'fedora-ci.productmd-compose'
+
+        // misc
+        msgTemplate['generated_at'] = Utils.getTimestamp()
+        msgTemplate['version'] = getMessageVersion()
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -101,6 +135,49 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
         msgTemplate['test']['type'] = pipelineMetadata['testType']
         msgTemplate['test']['category'] = pipelineMetadata['testCategory']
         msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
+
+        // misc
+        msgTemplate['generated_at'] = Utils.getTimestamp()
+        msgTemplate['version'] = getMessageVersion()
+    } else if (artifactType == 'productmd-compose') {
+        def msgTemplateString = libraryResource 'productmd-compose.test.running-template.json'
+        msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
+
+        // contact section
+        msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
+        msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
+        msgTemplate['contact']['url'] = pipelineMetadata['docs']
+        msgTemplate['contact']['docs'] = pipelineMetadata['docs']
+        msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
+        msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
+
+        // run section
+        msgTemplate['run']['url'] = "${env.BUILD_URL}"
+        msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+        msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+        msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
+
+        // artifact section
+        msgTemplate['artifact']['id'] = taskId
+        msgTemplate['artifact']['compose_type'] = 'testing' // override if needed
+
+        // pipeline section
+        msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
+        msgTemplate['pipeline']['id'] = pipelineMetadata['pipelineName']
+
+        // test section
+        def result = 'needs_inspection'
+        if (currentBuild.result == 'SUCCESS') {
+            result = 'passed'
+        } else if (currentBuild.result == 'UNSTABLE') {
+            result = 'needs_inspection'
+        }
+
+        msgTemplate['test']['type'] = pipelineMetadata['testType']
+        msgTemplate['test']['category'] = pipelineMetadata['testCategory']
+        msgTemplate['test']['namespace'] = 'fedora-ci.productmd-compose'
+        msgTemplate['test']['result'] = result
+        msgTemplate['system'] = []  // do we need this?
 
         // misc
         msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -172,6 +249,49 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
         // misc
         msgTemplate['generated_at'] = Utils.getTimestamp()
         msgTemplate['version'] = getMessageVersion()
+    } else if (artifactType == 'productmd-compose') {
+        def msgTemplateString = libraryResource 'productmd-compose.test.complete-template.json'
+        msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
+
+        // contact section
+        msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
+        msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
+        msgTemplate['contact']['url'] = pipelineMetadata['docs']
+        msgTemplate['contact']['docs'] = pipelineMetadata['docs']
+        msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
+        msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
+
+        // run section
+        msgTemplate['run']['url'] = "${env.BUILD_URL}"
+        msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+        msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+        msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
+
+        // artifact section
+        msgTemplate['artifact']['id'] = taskId
+        msgTemplate['artifact']['compose_type'] = 'testing' // override if needed
+
+        // pipeline section
+        msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
+        msgTemplate['pipeline']['id'] = pipelineMetadata['pipelineName']
+
+        // test section
+        def result = 'needs_inspection'
+        if (currentBuild.result == 'SUCCESS') {
+            result = 'passed'
+        } else if (currentBuild.result == 'UNSTABLE') {
+            result = 'needs_inspection'
+        }
+
+        msgTemplate['test']['type'] = pipelineMetadata['testType']
+        msgTemplate['test']['category'] = pipelineMetadata['testCategory']
+        msgTemplate['test']['namespace'] = 'fedora-ci.productmd-compose'
+        msgTemplate['test']['result'] = result
+        msgTemplate['system'] = []  // do we need this?
+
+        // misc
+        msgTemplate['generated_at'] = Utils.getTimestamp()
+        msgTemplate['version'] = getMessageVersion()
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -223,7 +343,45 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
         msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
         msgTemplate['test']['result'] = 'failed'
 
+        // error section
+        msgTemplate['error']['reason'] = 'Infrastructure Failure'
+        msgTemplate['error']['url'] = "${env.BUILD_URL}console"
+
+        // misc
+        msgTemplate['generated_at'] = Utils.getTimestamp()
+        msgTemplate['version'] = getMessageVersion()
+    } else if (artifactType == 'productmd-compose') {
+        def msgTemplateString = libraryResource 'productmd-compose.test.error-template.json'
+        msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
+
+        // contact section
+        msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
+        msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
+        msgTemplate['contact']['url'] = pipelineMetadata['docs']
+        msgTemplate['contact']['docs'] = pipelineMetadata['docs']
+        msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
+        msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
+
+        // run section
+        msgTemplate['run']['url'] = "${env.BUILD_URL}"
+        msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+        msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+        msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
+
+        // artifact section
+        msgTemplate['artifact']['id'] = taskId
+        msgTemplate['artifact']['compose_type'] = 'testing' // override if needed
+
+        // pipeline section
+        msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
+        msgTemplate['pipeline']['id'] = pipelineMetadata['pipelineName']
+
         // test section
+        msgTemplate['test']['type'] = pipelineMetadata['testType']
+        msgTemplate['test']['category'] = pipelineMetadata['testCategory']
+        msgTemplate['test']['namespace'] = 'fedora-ci.productmd-compose'
+
+        // error section
         msgTemplate['error']['reason'] = 'Infrastructure Failure'
         msgTemplate['error']['url'] = "${env.BUILD_URL}console"
 

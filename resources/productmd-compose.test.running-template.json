@@ -1,0 +1,32 @@
+{
+    "contact": {
+      "url": "",
+      "docs": "",
+      "team": "",
+      "email": "",
+      "name": ""
+    },
+    "run": {
+      "url": "",
+      "log": "",
+      "log_raw": "",
+      "log_stream": ""
+    },
+    "artifact": {
+      "type": "productmd-compose",
+      "id": "",
+      "compose_type": ""
+    },
+    "pipeline": {
+      "id": "",
+      "name": ""
+    },
+    "test": {
+      "type": "",
+      "category": "",
+      "namespace": "",
+      "lifetime": 1
+    },
+    "generated_at": "",
+    "version": ""
+}
