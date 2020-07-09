@@ -16,7 +16,7 @@ def call(Map params = [:]) {
 
     if (branchName == 'master') {
         // 'master' means rawhide in Fedora world
-        branchName = 'rawhide'
+        branchName = env.FEDORA_CI_RAWHIDE_RELEASE_ID
     }
 
     return branchName
