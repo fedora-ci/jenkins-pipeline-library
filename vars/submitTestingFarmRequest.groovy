@@ -12,6 +12,8 @@ def call(Map params = [:]) {
 
     def apiUrl = params.get('apiUrl') ?: env.FEDORA_CI_TESTING_FARM_API_URL
 
+    def headers = ['Content-Type': 'application/json']
+
     if (!apiUrl) {
         error('FAIL: Testing Farm API URL is not configured')
     }
