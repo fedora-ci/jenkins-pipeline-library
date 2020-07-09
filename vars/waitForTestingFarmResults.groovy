@@ -19,7 +19,7 @@ def call(Map params = [:]) {
         error('FAIL: Testing Farm API URL is not configured')
     }
 
-    apiUrl = apiUrl + '/v0.1/requests'
+    apiUrl = apiUrl + '/v0.1/requests/' + "${requestId}"
 
     def wait = true
     def response
@@ -31,7 +31,7 @@ def call(Map params = [:]) {
     while (wait) {
         retry(5) {
             try {
-                response = httpGet(apiUrl, null, payload)
+                response = httpGet(apiUrl)
             } catch(e) {
                 error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
             }
@@ -41,36 +41,24 @@ def call(Map params = [:]) {
             return response
         }
 
-        timeNow = new Date()
-        TimeDuration duration = TimeCategory.minus(timeNow, timeStart)
-        if (duration.getMinutes() >= timeout) {
-            error("Timeout reached and there are still no test results")
-        }
+        checkTimeout(timeStart, timeout)
+
         sleep(time: 20, unit: "SECONDS")
     }
 }
 
-
 @NonCPS
-def httpGet(url, headers, payload) {
-    url = new URL(url)
-    def connection = url.openConnection()
-
-    if (headers) {
-        headers.each { key, value ->
-            connection.setRequestProperty(key, value)
-        }
+def checkTimeout(timeStart, timeout) {
+    timeNow = new Date()
+    TimeDuration duration = TimeCategory.minus(timeNow, timeStart)
+    if (duration.getMinutes() >= timeout) {
+        error("Timeout reached and there are still no test results")
     }
+}
 
-    connection.setRequestMethod("GET")
 
-    def response = null
-    try {
-        connection.connect()
-        response = new JsonSlurperClassic().parse(new InputStreamReader(connection.getInputStream(), "UTF-8"))
-    } finally {
-        connection.disconnect()
-    }
-
-    return response
+def httpGet(url) {
+    def response = httpRequest consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', httpMode: 'GET', url: "${url}", validResponseCodes: '200'
+    def contentJson = new JsonSlurperClassic().parseText(response.content)
+    return contentJson
 }

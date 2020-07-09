@@ -12,8 +12,6 @@ def call(Map params = [:]) {
 
     def apiUrl = params.get('apiUrl') ?: env.FEDORA_CI_TESTING_FARM_API_URL
 
-    def headers = ['Content-Type': 'application/json']
-
     if (!apiUrl) {
         error('FAIL: Testing Farm API URL is not configured')
     }
@@ -22,7 +20,7 @@ def call(Map params = [:]) {
 
     retry(5) {
         try {
-            return httpPost(apiUrl, null, payload)
+            return httpPost(apiUrl, payload)
         } catch(e) {
             error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
         }
@@ -30,28 +28,8 @@ def call(Map params = [:]) {
 }
 
 
-@NonCPS
-def httpPost(url, headers, payload) {
-    url = new URL(url)
-    def connection = url.openConnection()
-
-    if (headers) {
-        headers.each { key, value ->
-            connection.setRequestProperty(key, value)
-        }
-    }
-
-    connection.setRequestMethod("POST")
-    connection.setDoOutput(true)
-    connection.getOutputStream().write(payload.getBytes("UTF-8"))
-
-    def response = null
-    try {
-        connection.connect()
-        response = new JsonSlurperClassic().parse(new InputStreamReader(connection.getInputStream(), "UTF-8"))
-    } finally {
-        connection.disconnect()
-    }
-
-    return response
+def httpPost(url, payload) {
+    def response = httpRequest consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: "${payload}", url: "${url}", validResponseCodes: '200'
+    def contentJson = new JsonSlurperClassic().parseText(response.content)
+    return contentJson
 }

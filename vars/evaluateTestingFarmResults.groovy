@@ -12,7 +12,7 @@ def call(result) {
         }
     }
 
-    catchFailure {
+    catchError(buildResult: 'UNSTABLE') {
         if (result['state'] == 'failed') {
             error
         }
