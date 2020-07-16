@@ -113,7 +113,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 }
 
 
-def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata) {
+def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, Map testingFarmResult) {
 
     def msgTemplate
 
@@ -165,7 +165,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
         msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
         msgTemplate['test']['note'] = ''
         msgTemplate['test']['result'] = result
-        msgTemplate['test']['xunit'] = '' // TODO: how do we get this from TF?
+        msgTemplate['test']['xunit'] = testingFarmResult?.get('result').get('xunit') ?: ''
 
         msgTemplate['system'] = []  // do we need this?
 
@@ -180,7 +180,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 }
 
 
-def buildMessageError(String artifactType, String taskId, Map pipelineMetadata) {
+def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, Map testingFarmResult) {
 
     def msgTemplate
 

@@ -15,6 +15,7 @@ def call(Map params = [:]) {
     def dryRun = params.get('dryRun')
     def topic = params.get('topic')
     def messageProvider = params.get('messageProvider') ?: env.FEDORA_CI_MESSAGE_PROVIDER
+    def testingFarmResult = params.get('testingFarmResult')
 
     def artifactType = artifactId.split(':')[0]
     def taskId = artifactId.split(':')[1]
@@ -33,12 +34,12 @@ def call(Map params = [:]) {
 
     if (messageType == 'complete') {
         topic = topic ?: 'org.centos.prod.ci.koji-build.test.complete'
-        msg = new MessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, testingFarmResult)
     }
 
     if (messageType == 'error') {
         topic = topic ?: 'org.centos.prod.ci.koji-build.test.error'
-        msg = new MessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, testingFarmResult)
     }
 
     def msgProps = ''
