@@ -165,7 +165,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
         msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
         msgTemplate['test']['note'] = ''
         msgTemplate['test']['result'] = result
-        msgTemplate['test']['xunit'] = testingFarmResult?.get('result').get('xunit') ?: ''
+        msgTemplate['test']['xunit'] = testingFarmResult?.get('result', [:]).get('xunit') ?: ''
 
         msgTemplate['system'] = []  // do we need this?
 
