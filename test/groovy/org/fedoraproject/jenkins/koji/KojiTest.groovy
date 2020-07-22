@@ -3,6 +3,7 @@ package org.fedoraproject.jenkins.koji
 import com.lesfurets.jenkins.unit.BasePipelineTest
 import org.junit.Test
 import static org.junit.Assert.*
+import static groovy.test.GroovyAssert.*
 
 import org.fedoraproject.jenkins.koji.Koji
 
@@ -51,5 +52,15 @@ class KojiTest extends BasePipelineTest {
         assertEquals 'python-requests-2.23.0-1.fc33', taskInfo.nvr
         assertEquals 'bowlofeggs', taskInfo.ownerName
         assertEquals 'git+https://src.fedoraproject.org/rpms/python-requests.git#f9d62a3fa1306bd3744f29b4a4136adfc3de6603', taskInfo.source.raw
+    }
+
+    @Test
+    void getNonExistentTaskInfoTest() {
+        Koji koji = new Koji()
+
+        // the taskId doesn't exist
+        shouldFail(IllegalArgumentException) {
+            koji.getTaskInfo(99999999)
+        }
     }
 }

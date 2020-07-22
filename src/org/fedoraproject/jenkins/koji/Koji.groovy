@@ -73,7 +73,11 @@ class Koji {
      */
     BuildInfo getBuildInfo(Integer buildId) {
 
-        Map<String, Object> result = (Map<String, Object>) this.call('getBuild' , buildId)
+        Map<String, Object> result = (Map<String, Object>) this.call('getBuild' , buildId) ?: [:]
+
+        if (!result.get('id')) {
+            throw new IllegalArgumentException("No such build id:  ${buildId}")
+        }
 
         BuildInfo build = new BuildInfo()
 
@@ -104,7 +108,11 @@ class Koji {
      */
     TaskInfo getTaskInfo(Integer taskId) {
 
-        Map<String, Object> result = (Map<String, Object>) this.call('getTaskInfo', taskId, ['request': 1, '__starstar': 1])
+        Map<String, Object> result = (Map<String, Object>) this.call('getTaskInfo', taskId, ['request': 1, '__starstar': 1]) ?: [:]
+
+        if (!result.get('id')) {
+            throw new IllegalArgumentException("No such task id:  ${taskId}")
+        }
 
         Build build = this.listBuilds(taskId)[0]
 
