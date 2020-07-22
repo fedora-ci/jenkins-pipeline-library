@@ -21,6 +21,7 @@ The snippet above assumes that you decided to use the name `fedora-pipeline-libr
 This is a list of all steps implemented in the library. Click on a particular step to find out more about it.
 
 * [abort()](./docs/steps/abort.md)
+* [buildId2taskId()](./docs/steps/buildId2taskId.md)
 * [buildImageAndPushToRegistry()](./docs/steps/buildImageAndPushToRegistry.md)
 * [getGitUrl()](./docs/steps/getGitUrl.md)
 * [getReleaseIdFromBranch()](./docs/steps/getReleaseIdFromBranch.md)
