@@ -18,9 +18,9 @@ def call(Map params = [:]) {
 
     def response = httpRequest consoleLogResponseBody: false, httpMode: 'GET', url: "${stiUrl}", validResponseCodes: '200,404'
     if (response.status == 200) {
-        return True
+        return true
     } else if (response.status == 404) {
-        return False
+        return false
     } else {
         error("HTTP GET on ${stiUrl} returned an unexpected return code: ${response.status}")
     }

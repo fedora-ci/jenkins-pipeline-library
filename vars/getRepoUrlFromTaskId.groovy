@@ -11,7 +11,7 @@ def call(taskId) {
     def buildInfo = koji.getTaskInfo(taskId.toInteger())
     def url = buildInfo.source.url
 
-    def prefix = ~/^git+/
+    def prefix = ~/^git\+/
     def suffix = ~/.git$/
 
     url -= prefix
