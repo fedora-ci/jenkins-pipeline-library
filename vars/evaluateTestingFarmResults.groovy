@@ -8,13 +8,13 @@ def call(result) {
 
     catchError {
         if (!result || result['state'] == 'error') {
-            error
+            error('There was an infrastructure failure.')
         }
     }
 
     catchError(buildResult: 'UNSTABLE') {
         if (result['state'] == 'failed') {
-            error
+            error('There are test failures.')
         }
     }
 }
