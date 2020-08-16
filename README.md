@@ -29,6 +29,7 @@ This is a list of all steps implemented in the library. Click on a particular st
 * [isPullRequest()](./docs/steps/isPullRequest.md)
 * [sendMessage()](./docs/steps/sendMessage.md)
 * [setBuildNameFromArtifactId()](./docs/steps/setBuildNameFromArtifactId.md)
+* [setJobDescriptionFromMetadata()](./docs/steps/setJobDescriptionFromMetadata.md)
 
 ## Limitations
 
