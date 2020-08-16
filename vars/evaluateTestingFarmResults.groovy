@@ -13,7 +13,7 @@ def call(result) {
     }
 
     catchError(buildResult: 'UNSTABLE') {
-        if (result['state'] == 'failed') {
+        if (result['state'] == 'complete' && result['result']['overall'] == 'failed') {
             error('There are test failures.')
         }
     }
