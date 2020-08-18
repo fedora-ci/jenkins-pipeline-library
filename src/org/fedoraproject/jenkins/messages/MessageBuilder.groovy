@@ -129,14 +129,6 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
         msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
         msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
 
-        // run section
-        msgTemplate['run']['url'] = "${env.BUILD_URL}"
-        msgTemplate['run']['log'] = "${env.BUILD_URL}console"
-        msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
-        msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
-        msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
-        msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
-
         // artifact section
         def koji = new Koji()
         def taskInfo = koji.getTaskInfo(taskId.toInteger())
@@ -166,6 +158,18 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
         msgTemplate['test']['note'] = ''
         msgTemplate['test']['result'] = result
         msgTemplate['test']['xunit'] = testingFarmResult?.get('result', [:]).get('xunit') ?: ''
+
+        // run section
+        if (msgTemplate['test']['xunit']) {
+            msgTemplate['run']['url'] = "${env.BUILD_URL}testReport/(root)/tests/"
+        } else {
+            msgTemplate['run']['url'] = "${env.BUILD_URL}"
+        }
+        msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+        msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+        msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
+        msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
+        msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
 
         msgTemplate['system'] = []  // do we need this?
 
