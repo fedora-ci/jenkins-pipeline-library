@@ -7,7 +7,7 @@
 def call(result) {
 
     catchError {
-        if (!result || result['state'] == 'error') {
+        if (!result || result['state'] == 'error' || result['result']['overall'] == 'error') {
             error('There was an infrastructure failure.')
         }
     }
