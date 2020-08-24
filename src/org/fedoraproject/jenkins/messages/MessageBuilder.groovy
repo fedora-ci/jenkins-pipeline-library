@@ -113,7 +113,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 }
 
 
-def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, Map testingFarmResult) {
+def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit) {
 
     def msgTemplate
 
@@ -157,7 +157,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
         msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
         msgTemplate['test']['note'] = ''
         msgTemplate['test']['result'] = result
-        msgTemplate['test']['xunit'] = testingFarmResult?.get('result', [:]).get('xunit') ?: ''
+        msgTemplate['test']['xunit'] = xunit
 
         // run section
         if (msgTemplate['test']['xunit']) {
@@ -184,7 +184,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 }
 
 
-def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, Map testingFarmResult) {
+def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, String xunit) {
 
     def msgTemplate
 
