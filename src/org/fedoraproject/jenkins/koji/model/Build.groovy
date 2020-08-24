@@ -6,7 +6,7 @@ import org.fedoraproject.jenkins.koji.model.BuildSource
 /*
  * Representation of a build in Koji
  */
-class Build {
+class Build implements Serializable {
 
     String packageName
     String extra

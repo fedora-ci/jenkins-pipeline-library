@@ -1,7 +1,7 @@
 package org.fedoraproject.jenkins.koji.model
 
 
-class BuildSource {
+class BuildSource implements Serializable {
 
     String url = ''
     String commitId = ''

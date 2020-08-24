@@ -1,7 +1,7 @@
 package org.fedoraproject.jenkins.koji.model
 
 
-class Task {
+class Task implements Serializable {
 
     def request
 

@@ -16,7 +16,7 @@ import de.timroes.axmlrpc.XMLRPCClient
 /*
  * A collection of helper methods around Koji XML-RPC.
  */
-class Koji {
+class Koji implements Serializable {
 
     URL url
 

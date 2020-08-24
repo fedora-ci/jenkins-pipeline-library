@@ -3,7 +3,7 @@ package org.fedoraproject.jenkins.koji;
 import org.fedoraproject.jenkins.koji.model.BuildSource
 
 
-class BuildInfo {
+class BuildInfo implements Serializable {
 
     String packageName
     String extra

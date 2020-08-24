@@ -3,7 +3,7 @@ package org.fedoraproject.jenkins.koji;
 import org.fedoraproject.jenkins.koji.model.BuildSource
 
 
-class TaskInfo {
+class TaskInfo implements Serializable {
 
     Integer id
     String method
