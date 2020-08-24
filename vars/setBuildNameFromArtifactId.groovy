@@ -9,6 +9,11 @@ def call(Map params = [:]) {
     def artifactId = params.get('artifactId')
     def displayName
 
+    if (!artifactId) {
+        currentBuild.displayName = '[pipeline update]'
+        return
+    }
+
     try {
         def artifactType = artifactId.split(':')[0]
         def taskId = artifactId.split(':')[1]
