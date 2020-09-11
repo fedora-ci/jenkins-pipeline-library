@@ -6,6 +6,7 @@ import groovy.json.JsonSlurperClassic
 import org.fedoraproject.jenkins.koji.Koji
 import org.fedoraproject.jenkins.Utils
 import org.fedoraproject.jenkins.messages.RpmBuildMessageBuilder
+import org.fedoraproject.jenkins.messages.PullRequestMessageBuilder
 
 
 def getMessageVersion() {
@@ -18,6 +19,8 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
 
     if (artifactType == 'koji-build') {
         msg = new RpmBuildMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
+    } else if (artifactType == 'fedora-dist-git') {
+        msg = new PullRequestMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -33,6 +36,8 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 
     if (artifactType == 'koji-build') {
         msg = new RpmBuildMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
+    } else if (artifactType == 'fedora-dist-git') {
+        msg = new PullRequestMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -48,6 +53,8 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     if (artifactType == 'koji-build') {
         msg = new RpmBuildMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
+    } else if (artifactType == 'fedora-dist-git') {
+        msg = new PullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -63,6 +70,8 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
 
     if (artifactType == 'koji-build') {
         msg = new RpmBuildMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
+    } else if (artifactType == 'fedora-dist-git') {
+        msg = new PullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }

@@ -1,0 +1,39 @@
+{
+    "contact": {
+        "name": "",
+        "url": "",
+        "docs": "",
+        "team": "",
+        "irc": "#fedora-ci",
+        "email": "ci@lists.fedoraproject.org"
+    },
+    "run": {
+        "url": "",
+        "rebuild": "",
+        "log": ""
+    },
+    "artifact": {
+        "type": "fedora-dist-git",
+        "repository": "",
+        "pr_id": 0,
+        "comment_id": 0,
+        "commit_hash": "",
+        "issuer": "",
+        "id": ""
+    },
+    "pipeline": {
+        "stage": {
+            "name": ""
+        },
+        "build": "",
+        "name": "",
+        "id": ""
+    },
+    "test": {
+        "category": "",
+        "type": "",
+        "namespace": ""
+    },
+    "generated_at": "",
+    "version": "0.2.1"
+}
