@@ -1,6 +1,8 @@
 #!/usr/bin/groovy
 
 import org.fedoraproject.jenkins.koji.Koji
+import org.fedoraproject.jenkins.pagure.Pagure
+
 
 /**
  * setBuildNameFromArtifactId() step.
@@ -25,6 +27,14 @@ def call(Map params = [:]) {
             if (taskInfo.scratch) {
                 displayName = "[scratch] ${displayName}"
             }
+        } else if (artifactType == 'fedora-dist-git') {
+            // handle pull-requests
+            def pagure = new Pagure()
+            def pullRequestInfo = pagure.getPullRequestInfo(taskId)
+            def fullname = pullRequestInfo.get('project', [:])?.get('fullname') ?: 'unknown'
+            def pullRequestId = pullRequestInfo.get('id', 0)
+            def shortCommit = pagure.splitPullRequestId(taskId)[1][0..6]
+            displayName = "[${artifactType}] ${fullname}#${pullRequestId}@${shortCommit}"
         } else {
             displayName = "UNKNOWN ARTIFACT TYPE: '${artifactType}'"
         }
