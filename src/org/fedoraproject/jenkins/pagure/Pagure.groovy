@@ -8,23 +8,25 @@ import groovy.json.JsonSlurperClassic
  */
 class Pagure implements Serializable {
 
+    String url
     String apiUrl
 
     Pagure() {
-        this(System.getenv('FEDORA_CI_PAGURE_DIST_GIT_API_URL') ?: 'https://src.fedoraproject.org/api/0')
+        this(System.getenv('FEDORA_CI_PAGURE_DIST_GIT_URL') ?: 'https://src.fedoraproject.org')
     }
 
     /*
      * Constructor.
      *
-     * @param url Pagure API URL
+     * @param url Pagure URL
      */
-    Pagure(String apiUrl) {
-        this.apiUrl = apiUrl
+    Pagure(String url) {
+        this.url = url
+        this.apiUrl = url + '/api/0'
     }
 
     def getPullRequestInfo(String pullRequestId) {
-        def uid = splitPullRequestId(pullRequestId)[0]
+        def uid = splitPullRequestId(pullRequestId)['uid']
 
         def url = this.apiUrl + '/pull-requests/' + uid
 
@@ -37,15 +39,15 @@ class Pagure implements Serializable {
      * Split given Pull Request Id into individual components — uid, commit id, comment id
      *
      * @param pullRequestId Pull Request Id
-     * @return an array with 3 elements: uid, commit id, comment id
+     * @return a map with results
      */
     def splitPullRequestId(String pullRequestId) {
         def uidSplit = pullRequestId.split('@')
         def uid = uidSplit[0]
         def commitAndCommentSplit = uidSplit[1].split('#')
-        def commit = commitAndCommentSplit[0]
-        def comment = commitAndCommentSplit[1]
+        def commitId = commitAndCommentSplit[0]
+        def commentId = commitAndCommentSplit[1].toInteger()
 
-        return [uid, commit, comment]
+        return [uid: uid, commitId: commitId, commentId: commentId]
     }
 }
