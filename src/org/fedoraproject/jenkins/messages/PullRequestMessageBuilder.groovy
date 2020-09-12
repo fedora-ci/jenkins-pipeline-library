@@ -33,13 +33,13 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     def pullRequestInfo = pagure.getPullRequestInfo(taskId)
     def uidCommitAndComment = pagure.splitPullRequestId(taskId)
 
-    msgTemplate['artifact']['type'] = 'fedora-dist-git'
+    msgTemplate['artifact']['type'] = 'pull-request'
     msgTemplate['artifact']['repository'] = "${pagure.url}/${pullRequestInfo.get('project', [:])?.get('fullname')}"
-    msgTemplate['artifact']['pr_id'] = pullRequestInfo.get('id')
+    msgTemplate['artifact']['id'] = pullRequestInfo.get('id')
     msgTemplate['artifact']['comment_id'] = uidCommitAndComment.get('commentId')
     msgTemplate['artifact']['commit_hash'] = uidCommitAndComment.get('commitId')
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
-    msgTemplate['artifact']['id'] = pullRequestInfo.get('uid')
+    msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
@@ -83,13 +83,13 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     def pullRequestInfo = pagure.getPullRequestInfo(taskId)
     def uidCommitAndComment = pagure.splitPullRequestId(taskId)
 
-    msgTemplate['artifact']['type'] = 'fedora-dist-git'
+    msgTemplate['artifact']['type'] = 'pull-request'
     msgTemplate['artifact']['repository'] = "${pagure.url}/${pullRequestInfo.get('project', [:])?.get('fullname')}"
-    msgTemplate['artifact']['pr_id'] = pullRequestInfo.get('id')
+    msgTemplate['artifact']['id'] = pullRequestInfo.get('id')
     msgTemplate['artifact']['comment_id'] = uidCommitAndComment.get('commentId')
     msgTemplate['artifact']['commit_hash'] = uidCommitAndComment.get('commitId')
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
-    msgTemplate['artifact']['id'] = pullRequestInfo.get('uid')
+    msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
@@ -127,13 +127,13 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     def pullRequestInfo = pagure.getPullRequestInfo(taskId)
     def uidCommitAndComment = pagure.splitPullRequestId(taskId)
 
-    msgTemplate['artifact']['type'] = 'fedora-dist-git'
+    msgTemplate['artifact']['type'] = 'pull-request'
     msgTemplate['artifact']['repository'] = "${pagure.url}/${pullRequestInfo.get('project', [:])?.get('fullname')}"
-    msgTemplate['artifact']['pr_id'] = pullRequestInfo.get('id')
+    msgTemplate['artifact']['id'] = pullRequestInfo.get('id')
     msgTemplate['artifact']['comment_id'] = uidCommitAndComment.get('commentId')
     msgTemplate['artifact']['commit_hash'] = uidCommitAndComment.get('commitId')
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
-    msgTemplate['artifact']['id'] = pullRequestInfo.get('uid')
+    msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
@@ -203,13 +203,13 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     def pullRequestInfo = pagure.getPullRequestInfo(taskId)
     def uidCommitAndComment = pagure.splitPullRequestId(taskId)
 
-    msgTemplate['artifact']['type'] = 'fedora-dist-git'
+    msgTemplate['artifact']['type'] = 'pull-request'
     msgTemplate['artifact']['repository'] = "${pagure.url}/${pullRequestInfo.get('project', [:])?.get('fullname')}"
-    msgTemplate['artifact']['pr_id'] = pullRequestInfo.get('id')
+    msgTemplate['artifact']['id'] = pullRequestInfo.get('id')
     msgTemplate['artifact']['comment_id'] = uidCommitAndComment.get('commentId')
     msgTemplate['artifact']['commit_hash'] = uidCommitAndComment.get('commitId')
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
-    msgTemplate['artifact']['id'] = pullRequestInfo.get('uid')
+    msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()

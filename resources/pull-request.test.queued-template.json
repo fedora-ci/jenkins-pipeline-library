@@ -15,11 +15,11 @@
     "artifact": {
         "type": "fedora-dist-git",
         "repository": "",
-        "pr_id": 0,
+        "id": 0,
         "comment_id": 0,
         "commit_hash": "",
         "issuer": "",
-        "id": ""
+        "uid": ""
     },
     "pipeline": {
         "stage": {
