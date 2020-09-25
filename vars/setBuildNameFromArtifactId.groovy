@@ -2,6 +2,7 @@
 
 import org.fedoraproject.jenkins.koji.Koji
 import org.fedoraproject.jenkins.pagure.Pagure
+import org.fedoraproject.jenkins.Utils
 
 
 /**
@@ -17,6 +18,11 @@ def call(Map params = [:]) {
     }
 
     try {
+
+        if (Utils.isCompositeArtifact(artifactId)) {
+            artifactId = Utils.getTargetArtifactId(artifactId)
+        }
+
         def artifactType = artifactId.split(':')[0]
         def taskId = artifactId.split(':')[1]
 

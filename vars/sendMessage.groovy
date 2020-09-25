@@ -17,6 +17,10 @@ def call(Map params = [:]) {
     def messageProvider = params.get('messageProvider') ?: env.FEDORA_CI_MESSAGE_PROVIDER
     def xunit = params.get('xunit') ?: ''
 
+    if (Utils.isCompositeArtifact(artifactId)) {
+        artifactId = Utils.getTargetArtifactId(artifactId)
+    }
+
     def artifactType = artifactId.split(':')[0]
     def taskId = artifactId.split(':')[1]
 

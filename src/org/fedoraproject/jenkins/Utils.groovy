@@ -26,6 +26,28 @@ class Utils {
     }
 
     /*
+     * Checks if given artifact is a composite artifact or not.
+     *
+     * @return true if given artifact is a composite artifact, false otherwise.
+     */
+    static String isCompositeArtifact(def artifactId) {
+        if (artifactId && artifactId[0] == '(' && artifactId.contains(')->')) {
+            return true
+        }
+
+        return false
+    }
+
+    /*
+     * Extract and return the target artifact Id.
+     *
+     * @return target artifact Id
+     */
+    static String getTargetArtifactId(def artifactId) {
+        return artifactId.split('->')[1]
+    }
+
+    /*
      * Returns RPM filename extracted from the provided BuildSource
      *
      * Note this is not 100% reliable as some guessing is involved.
