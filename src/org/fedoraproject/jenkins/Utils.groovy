@@ -1,6 +1,8 @@
 package org.fedoraproject.jenkins
 
 import java.time.Instant
+import java.security.MessageDigest
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter
 
 import org.fedoraproject.jenkins.koji.model.BuildSource
 
@@ -45,6 +47,59 @@ class Utils {
      */
     static String getTargetArtifactId(def artifactId) {
         return artifactId.split('->')[1]
+    }
+
+    static String string2sha256(def input) {
+        def digest = MessageDigest.getInstance("SHA-256")
+        def hash = digest.digest(input.getBytes())
+        return new HexBinaryAdapter().marshal(hash).toLowerCase()
+    }
+
+    static String getReleaseIdFromBranch(def env) {
+        def branchName = env.BRANCH_NAME
+
+        // pull request
+        if (env.CHANGE_ID) {
+            // If this is a pull request, we take the target branch
+            branchName = env.CHANGE_TARGET
+        }
+
+        if (branchName == 'master') {
+            // 'master' means rawhide in Fedora world
+            branchName = env.FEDORA_CI_RAWHIDE_RELEASE_ID
+        }
+
+        return branchName
+    }
+
+    static String getIdFromArtifactId(Map params = [:]) {
+        def artifactId = params.get('artifactId', '')
+        def additionalArtifactIds = params.get('additionalArtifactIds', '')
+        def separator = params.get('separator', ',')
+        def asArray = params.get('asArray', false)
+
+        if (isCompositeArtifact(artifactId)) {
+            artifactId = artifactId.split('->')[0] - '(' - ')'
+        }
+
+        def resultIds = []
+
+        if (artifactId) {
+            artifactId.split(',').each { a ->
+                resultIds.add("${a}".split(':')[1])
+            }
+        }
+
+        if (additionalArtifactIds) {
+            additionalArtifactIds.split(',').each { a ->
+                resultIds.add("${a}".split(':')[1])
+            }
+        }
+
+        if (!asArray) {
+            resultIds = resultIds.join(separator)
+        }
+        return resultIds
     }
 
     /*

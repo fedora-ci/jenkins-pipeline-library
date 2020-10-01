@@ -1,0 +1,40 @@
+{
+    "pipeline": {
+        "id": "",
+        "name": ""
+    }, 
+    "run": {
+        "url": "",
+        "id": 0,
+        "log": ""
+    },
+    "system": [],
+    "artifact": {
+        "release": {
+            "version": "",
+            "name": ""
+        },
+        "alias": "",
+        "type": "",
+        "builds": [],
+        "id": ""
+    },
+    "contact": {
+        "name": "",
+        "url": "",
+        "docs": "",
+        "team": "",
+        "irc": "",
+        "email": ""
+    },
+    "error": {
+        "reason": ""
+    },
+    "test": {
+        "category": "",
+        "type": "",
+        "namespace": ""
+    },
+    "version": "",
+    "generated_at": ""
+}

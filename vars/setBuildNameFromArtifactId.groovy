@@ -33,6 +33,8 @@ def call(Map params = [:]) {
             if (taskInfo.scratch) {
                 displayName = "[scratch] ${displayName}"
             }
+        } else if (artifactType == 'fedora-update') {
+            displayName = "[${artifactType}] ${taskId}"
         } else if (artifactType == 'fedora-dist-git') {
             // handle pull-requests
             def pagure = new Pagure()

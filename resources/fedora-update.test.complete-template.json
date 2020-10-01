@@ -1,0 +1,39 @@
+{
+    "pipeline": {
+        "id": "",
+        "name": ""
+    },
+    "run": {
+        "url": "",
+        "id": 0,
+        "log": ""
+    },
+    "system": [
+    ],
+    "artifact": {
+        "release": {
+            "version": "",
+            "name": ""
+        },
+        "type": "fedora-update",
+        "alias": "",
+        "id": "",
+        "builds": []
+    },
+    "contact": {
+        "name": "",
+        "url": "",
+        "docs": "",
+        "team": "",
+        "irc": "",
+        "email": ""
+    },
+    "test": {
+        "category": "",
+        "type": "",
+        "namespace": "",
+        "result": ""
+    },
+    "version": "",
+    "generated_at": ""
+}

@@ -17,37 +17,43 @@ def call(Map params = [:]) {
     def messageProvider = params.get('messageProvider') ?: env.FEDORA_CI_MESSAGE_PROVIDER
     def xunit = params.get('xunit') ?: ''
 
+    def targetArtifactId = artifactId
     if (Utils.isCompositeArtifact(artifactId)) {
-        artifactId = Utils.getTargetArtifactId(artifactId)
+        targetArtifactId = Utils.getTargetArtifactId(artifactId)
     }
 
-    def artifactType = artifactId.split(':')[0]
-    def taskId = artifactId.split(':')[1]
+    def artifactType = targetArtifactId.split(':')[0]
+    def taskId = targetArtifactId.split(':')[1]
 
     def msg
 
     if (messageType == 'queued') {
         topic = topic ?: 'org.centos.prod.ci.koji-build.test.queued'
-        msg = new MessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageQueued(artifactId, artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'running') {
         topic = topic ?: 'org.centos.prod.ci.koji-build.test.running'
-        msg = new MessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageRunning(artifactId, artifactType, taskId, pipelineMetadata)
     }
 
     if (messageType == 'complete') {
         topic = topic ?: 'org.centos.prod.ci.koji-build.test.complete'
-        msg = new MessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit)
     }
 
     if (messageType == 'error') {
         topic = topic ?: 'org.centos.prod.ci.koji-build.test.error'
-        msg = new MessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit)
     }
 
     def msgProps = ''
     def msgContent = JsonOutput.toJson(msg)
+
+    if (!msg) {
+        print("INFO: '${messageType}' message is not defined for the '${artifactType}' artifact type.")
+        return
+    }
 
     if (!dryRun) {
 
