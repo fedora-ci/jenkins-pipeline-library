@@ -66,43 +66,43 @@ def call(Map params = [:]) {
         return
     }
 
-    if (!dryRun) {
-
-        if (!messageProvider) {
-            print("FAIL: Missing configuration for the message provider - unable to send following message: ${msg.toString()}")
-            return
-        }
-
-        retry(10) {
-            try {
-                // 1 minute should be more than enough time to send the message
-                timeout(1) {
-                    // Send message and return SendResult
-                    sendResult = sendCIMessage(
-                        messageContent: msgContent,
-                        messageProperties: msgProps,
-                        messageType: "Custom",
-                        overrides: [
-                            topic: topic
-                        ],
-                        failOnError: true,
-                        providerName: messageProvider
-                    )
-                }
-            } catch(e) {
-                echo "FAIL: Could not send message to ${messageProvider} on topic ${topic}"
-                echo "${e}"
-                sleep 30
-                error e.getMessage()
-            }
-        }
-        String resultMsgId = sendResult.getMessageId()
-        String resultMsgContent = sendResult.getMessageContent()
-
-        print("INFO: Message sent; id = ${resultMsgId}")
-        return sendResult
-    } else {
+    if (dryRun) {
         // dry run, just print the message
-        print("INFO: Skipping sending following message as this is a dry run: ${msg.toString()}")
+        print("INFO: This is a dry run — skipping following \"${messageType}\" message: ${msg.toString()}\ntopic: ${topic}")
+        return
     }
+
+    if (!messageProvider) {
+        print("FAIL: Missing configuration for the message provider - unable to send following message: ${msg.toString()}")
+        return
+    }
+
+    retry(10) {
+        try {
+            // 1 minute should be more than enough time to send the message
+            timeout(1) {
+                // Send message and return SendResult
+                sendResult = sendCIMessage(
+                    messageContent: msgContent,
+                    messageProperties: msgProps,
+                    messageType: "Custom",
+                    overrides: [
+                        topic: topic
+                    ],
+                    failOnError: true,
+                    providerName: messageProvider
+                )
+            }
+        } catch(e) {
+            echo "FAIL: Could not send message to ${messageProvider} on topic ${topic}"
+            echo "${e}"
+            sleep 30
+            error e.getMessage()
+        }
+    }
+    String resultMsgId = sendResult.getMessageId()
+    String resultMsgContent = sendResult.getMessageContent()
+
+    print("INFO: Message sent; id = ${resultMsgId}")
+    return sendResult
 }
