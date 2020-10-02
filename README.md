@@ -33,7 +33,13 @@ This is a list of all steps implemented in the library. Click on a particular st
 
 ## Limitations
 
-Fedora CI is "artifact-centric", i.e. everything more or less evolves around artifacts. This library currently supports only "koji-build" and "fedora-dist-git" artifacts; modules and other artifact types are not supported yet.
+Fedora CI is "artifact-centric", i.e. everything more or less evolves around artifacts. This library currently supports following artifact types:
+
+* koji-build
+* fedora-dist-git
+* fedora-update
+
+Other artifact types are not supported yet.
 
 ## Development
 
