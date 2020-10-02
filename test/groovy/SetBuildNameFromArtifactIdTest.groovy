@@ -39,4 +39,11 @@ class SetBuildNameFromArtifactIdTest extends BasePipelineTest {
         def result = setBuildNameFromArtifactId(artifactId: '(koji-build:46436038,koji-build:46436038)->fedora-update:FEDORA-2020-008cb761a2')
         assertEquals '[fedora-update] FEDORA-2020-008cb761a2', binding.getVariable('currentBuild').displayName.toString()
     }
+
+    @Test
+    void testInvalidCompositeArtifact() {
+        // target artifact type (fedora-update:) is missing
+        def result = setBuildNameFromArtifactId(artifactId: '(koji-build:46436038,koji-build:46436038)->FEDORA-2020-008cb761a2')
+        assertEquals "INVALID ARTIFACT ID: 'FEDORA-2020-008cb761a2'", binding.getVariable('currentBuild').displayName.toString()
+    }
 }
