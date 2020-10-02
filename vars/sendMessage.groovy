@@ -23,6 +23,10 @@ def call(Map params = [:]) {
         targetArtifactId = Utils.getTargetArtifactId(artifactId)
     }
 
+    if (!targetArtifactId.contains(':')) {
+        error("Invalid artifact Id: ${targetArtifactId} — the correct syntax is 'artifactType:id'")
+    }
+
     def artifactType = targetArtifactId.split(':')[0]
     def taskId = targetArtifactId.split(':')[1]
 
