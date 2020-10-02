@@ -32,7 +32,7 @@ class Utils {
      *
      * @return true if given artifact is a composite artifact, false otherwise.
      */
-    static String isCompositeArtifact(def artifactId) {
+    static Boolean isCompositeArtifact(def artifactId) {
         if (artifactId && artifactId[0] == '(' && artifactId.contains(')->')) {
             return true
         }
