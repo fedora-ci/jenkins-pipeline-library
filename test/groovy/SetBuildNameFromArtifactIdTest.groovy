@@ -8,7 +8,7 @@ class SetBuildNameFromArtifactIdTest extends BasePipelineTest {
     @Before
     void init() {
         super.setUp()
-    }  
+    }
 
     def setBuildNameFromArtifactId(params) {
         super.setUp()
@@ -32,5 +32,11 @@ class SetBuildNameFromArtifactIdTest extends BasePipelineTest {
     void testSetBuildNameFromArtifactIdError() {
         def result = setBuildNameFromArtifactId(artifactId: 'koji-build:99999999')
         assertEquals "INVALID ARTIFACT ID: 'koji-build:99999999'", binding.getVariable('currentBuild').displayName.toString()
+    }
+
+    @Test
+    void testCompositeArtifact() {
+        def result = setBuildNameFromArtifactId(artifactId: '(koji-build:46436038,koji-build:46436038)->fedora-update:FEDORA-2020-008cb761a2')
+        assertEquals '[fedora-update] FEDORA-2020-008cb761a2', binding.getVariable('currentBuild').displayName.toString()
     }
 }

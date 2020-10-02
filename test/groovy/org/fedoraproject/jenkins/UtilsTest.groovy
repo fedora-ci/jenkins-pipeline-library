@@ -17,7 +17,7 @@ class UtilsTest extends BasePipelineTest {
         def bs = BuildSource.fromString(source)
 
         def nvr = Utils.getNVRfromSource(bs)
-        assertTrue nvr == 'libsemanage-2.9-2.el8.pr.b89bce79d10f482da1524ea02d3e5dff.c.7591'
+        assertEquals 'libsemanage-2.9-2.el8.pr.b89bce79d10f482da1524ea02d3e5dff.c.7591', nvr
     }
 
     @Test
@@ -25,10 +25,10 @@ class UtilsTest extends BasePipelineTest {
         def filename = 'libsemanage-2.9-2.el8.pr.b89bce79d10f482da1524ea02d3e5dff.c.7591.src.rpm'
 
         def (name, version, release, arch) = Utils.splitRpmFilename(filename)
-        assertEquals name, 'libsemanage'
-        assertEquals version, '2.9'
-        assertEquals release, '2.el8.pr.b89bce79d10f482da1524ea02d3e5dff.c.7591'
-        assertEquals arch, 'src'
+        assertEquals 'libsemanage', name
+        assertEquals '2.9', version
+        assertEquals '2.el8.pr.b89bce79d10f482da1524ea02d3e5dff.c.7591', release
+        assertEquals 'src', arch
     }
 
     @Test
@@ -37,7 +37,7 @@ class UtilsTest extends BasePipelineTest {
         def bs = BuildSource.fromString(source)
 
         def filename = Utils.getRPMfilenameFromSource(bs)
-        assertTrue filename == 'libsemanage-2.9-2.el8.pr.b89bce79d10f482da1524ea02d3e5dff.c.7591.src.rpm'
+        assertEquals 'libsemanage-2.9-2.el8.pr.b89bce79d10f482da1524ea02d3e5dff.c.7591.src.rpm', filename
     }
 
     @Test
@@ -48,5 +48,21 @@ class UtilsTest extends BasePipelineTest {
         shouldFail(IllegalArgumentException) {
             def filename = Utils.getRPMfilenameFromSource(bs)
         }
+    }
+
+    @Test
+    void isCompositeArtifactTest() {
+        def compositeArtifactId = '(koji-build:46436038,koji-build:46436038)->fedora-update:FEDORA-2020-008cb761a2'
+        def notCompositeArtifactId = 'koji-build:46436038'
+
+        assertTrue Utils.isCompositeArtifact(compositeArtifactId)
+        assertFalse Utils.isCompositeArtifact(notCompositeArtifactId)
+    }
+
+    @Test
+    void getTargetArtifactIdTest() {
+        def compositeArtifactId = '(koji-build:46436038,koji-build:46436038)->fedora-update:FEDORA-2020-008cb761a2'
+
+        assertEquals 'fedora-update:FEDORA-2020-008cb761a2', Utils.getTargetArtifactId(compositeArtifactId)
     }
 }
