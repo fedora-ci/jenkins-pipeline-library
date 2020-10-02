@@ -1,0 +1,26 @@
+{
+    "koji-build": {
+        "test": {
+            "queued": "org.centos.prod.ci.koji-build.test.queued",
+            "running": "org.centos.prod.ci.koji-build.test.running",
+            "complete": "org.centos.prod.ci.koji-build.test.complete",
+            "error": "org.centos.prod.ci.koji-build.test.error"
+        }
+    },
+    "fedora-dist-git": {
+        "test": {
+            "queued": "org.centos.prod.ci.dist-git-pr.test.queued",
+            "running": "org.centos.prod.ci.dist-git-pr.test.running",
+            "complete": "org.centos.prod.ci.dist-git-pr.test.complete",
+            "error": "org.centos.prod.ci.dist-git-pr.test.error"
+        }
+    },
+    "fedora-update": {
+        "test": {
+            "queued": "org.centos.prod.ci.fedora-update.test.queued",
+            "running": "org.centos.prod.ci.fedora-update.test.running",
+            "complete": "org.centos.prod.ci.fedora-update.test.complete",
+            "error": "org.centos.prod.ci.fedora-update.test.error"
+        }
+    }
+}
