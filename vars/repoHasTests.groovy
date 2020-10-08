@@ -20,7 +20,7 @@ def call(Map params = [:]) {
         // but "https://<url>/fork/..." (not "forks") when accessing repositories via web browser
         //
         // so we just "fix" the URL here
-        repoUrl = repoUrl.replace("${pagureFedora}/fork/", "${pagureFedora}/forks/")
+        repoUrl = repoUrl.replace("${pagureFedora}/forks/", "${pagureFedora}/fork/")
 
         stiUrl = repoUrl + "/blob/${ref}/f/tests/tests.yml"
         tmtUrl = repoUrl + "/blob/${ref}/f/.fmf/version"
