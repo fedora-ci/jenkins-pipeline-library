@@ -11,8 +11,17 @@ def call(Map params = [:]) {
     def stiUrl
     def tmtUrl
 
+    def pagureFedora = 'src.fedoraproject.org'
+
     // TODO: these templates should probably go to some config file
-    if (repoUrl.contains('src.fedoraproject.org')) {
+    if (repoUrl.contains(pagureFedora)) {
+        // this is ugly:
+        // Pagure uses "https://<url>/forks/<user>/<ns>/<repo>" for cloning repositories,
+        // but "https://<url>/fork/..." (not "forks") when accessing repositories via web browser
+        //
+        // so we just "fix" the URL here
+        repoUrl = repoUrl.replace("${pagureFedora}/fork/", "${pagureFedora}/forks/")
+
         stiUrl = repoUrl + "/blob/${ref}/f/tests/tests.yml"
         tmtUrl = repoUrl + "/blob/${ref}/f/.fmf/version"
     } else {
