@@ -19,12 +19,12 @@ def call(Map params = [:]) {
         error("Unsupported repo URL: ${repoUrl}")
     }
 
-    // check TMT
+    // check FMF
     def response = httpRequest consoleLogResponseBody: false, httpMode: 'GET', url: "${tmtUrl}", validResponseCodes: '200,404'
     if (response.status == 200) {
-        return 'tmt'
+        return 'fmf'
     } else if (response.status == 404) {
-        // No TMT, but let's check STI
+        // No FMF, but let's check STI
     } else {
         error("HTTP GET on ${tmtUrl} returned an unexpected return code: ${response.status}")
     }
