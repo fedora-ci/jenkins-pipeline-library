@@ -9,6 +9,7 @@ def call(Map params = [:]) {
     def repoUrl = params.get('repoUrl')
     def ref = params.get('ref')
 
+    sh('ls -la')
     dir("temp-repoHasTests${env.BUILD_ID}") {
         sh("git clone ${repoUrl} repo")
         checkout([$class: 'GitSCM', branches: [[name: ref ]], userRemoteConfigs: [[url: repoUrl ]]])
@@ -20,7 +21,7 @@ def call(Map params = [:]) {
 
         echo "STI tests in ${repoUrl} (${ref}): ${stdStiFiles} ${nonStdStiFiles}"
         if (stdStiFiles || nonStdStiFiles) {
-            return 'sti'
+            return [type: 'sti', files: stdStiFiles + nonStdStiFiles]
         }
 
         // if STI tests were not found, let's try FMF
@@ -28,10 +29,10 @@ def call(Map params = [:]) {
         echo "FMF tests in ${repoUrl} (${ref}): ${stdFmf}"
 
         if (stdFmf) {
-            return 'fmf'
+            return [type: 'fmf', files: stdFmf]
         }
 
         deleteDir()
-        return
+        return [:]
     }
 }
