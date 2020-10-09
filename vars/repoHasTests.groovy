@@ -10,6 +10,7 @@ def call(Map params = [:]) {
     def ref = params.get('ref')
 
     dir("temp-repoHasTests${env.BUILD_ID}") {
+        sh("git clone ${repoUrl} repo")
         checkout([$class: 'GitSCM', branches: [[name: ref ]], userRemoteConfigs: [[url: repoUrl ]]])
 
         sh('ls -la')
@@ -23,7 +24,7 @@ def call(Map params = [:]) {
         }
 
         // if STI tests were not found, let's try FMF
-        def stdFmf = findFiles glob: 'tests/tests*.yml'
+        def stdFmf = findFiles glob: '.fmf/version'
         echo "FMF tests in ${repoUrl} (${ref}): ${stdFmf}"
 
         if (stdFmf) {
