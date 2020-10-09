@@ -33,9 +33,15 @@ def call(Map params = [:]) {
             try {
                 response = httpGet(apiUrl)
             } catch(e) {
+                // FIXME: this is here for easier debugging in the early stages; let's remove it once
+                // things are more stable
+                echo "Testing Farm Artifacts URL: http://artifacts.dev.testing-farm.io/${requestId}"
                 error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
             }
         }
+        // FIXME: this is here for easier debugging in the early stages; let's remove it once
+        // things are more stable
+        echo "Testing Farm Artifacts URL: http://artifacts.dev.testing-farm.io/${requestId}"
         state = response.get('state')
         if (state in ['complete', 'error']) {
             return response
