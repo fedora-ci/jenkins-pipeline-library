@@ -11,7 +11,6 @@ def call(Map params = [:]) {
 
     sh('ls -la')
     dir("temp-repoHasTests${env.BUILD_ID}") {
-        sh("git clone ${repoUrl} repo")
         checkout([$class: 'GitSCM', branches: [[name: ref ]], userRemoteConfigs: [[url: repoUrl ]]])
 
         sh('ls -la')
