@@ -60,7 +60,7 @@ def buildMessageQueued(String artifactId, Map pipelineMetadata) {
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = 'fedora-ci.fedora-update'
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['contact']['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -135,7 +135,7 @@ def buildMessageComplete(String artifactId, Map pipelineMetadata, String xunit) 
 
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = 'fedora-ci.fedora-update'
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['contact']['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['result'] = result
 
     // run section
@@ -208,7 +208,7 @@ def buildMessageError(String artifactId, Map pipelineMetadata, String xunit) {
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = 'fedora-ci.fedora-update'
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['contact']['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['result'] = 'failed'
 
     // test section
