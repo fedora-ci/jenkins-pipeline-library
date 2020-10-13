@@ -14,7 +14,7 @@
       "log_stream": ""
     },
     "artifact": {
-      "type": "koji-build",
+      "type": "",
       "id": "",
       "issuer": "",
       "component": "",

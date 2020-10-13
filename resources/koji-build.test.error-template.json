@@ -16,7 +16,7 @@
     "rebuild": ""
   },
   "artifact": {
-    "type": "koji-build",
+    "type": "",
     "id": "",
     "issuer": "",
     "component": "",

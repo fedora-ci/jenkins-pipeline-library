@@ -18,7 +18,7 @@ def buildMessageQueued(String artifactId, String artifactType, String taskId, Ma
 
     def msg
 
-    if (artifactType == 'koji-build') {
+    if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
@@ -39,7 +39,7 @@ def buildMessageRunning(String artifactId, String artifactType, String taskId, M
 
     def msg
 
-    if (artifactType == 'koji-build') {
+    if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
@@ -60,7 +60,7 @@ def buildMessageComplete(String artifactId, String artifactType, String taskId, 
 
     def msg
 
-    if (artifactType == 'koji-build') {
+    if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
@@ -81,7 +81,7 @@ def buildMessageError(String artifactId, String artifactType, String taskId, Map
 
     def msg
 
-    if (artifactType == 'koji-build') {
+    if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)

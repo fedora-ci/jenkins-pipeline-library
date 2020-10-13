@@ -26,7 +26,7 @@ def call(Map params = [:]) {
         def artifactType = artifactId.split(':')[0]
         def taskId = artifactId.split(':')[1]
 
-        if (artifactType == 'koji-build') {
+        if (artifactType in ['koji-build', 'brew-build']) {
             def koji = new Koji()
             def taskInfo = koji.getTaskInfo(taskId.toInteger())
             displayName = "[${artifactType}] ${taskInfo.nvr}"

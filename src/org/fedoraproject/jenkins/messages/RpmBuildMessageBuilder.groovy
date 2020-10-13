@@ -36,6 +36,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     msgTemplate['artifact']['component'] = taskInfo.name
     msgTemplate['artifact']['nvr'] = taskInfo.nvr
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
+    msgTemplate['artifact']['type'] = artifactType
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
@@ -44,7 +45,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
+    msgTemplate['test']['namespace'] = "fedora-ci.${artifactType}"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -82,6 +83,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['artifact']['component'] = taskInfo.name
     msgTemplate['artifact']['nvr'] = taskInfo.nvr
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
+    msgTemplate['artifact']['type'] = artifactType
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
@@ -90,7 +92,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
+    msgTemplate['test']['namespace'] = "fedora-ci.${artifactType}"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -124,6 +126,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
     msgTemplate['artifact']['baseline'] = taskInfo.nvr
     msgTemplate['artifact']['source'] = taskInfo.source.raw
+    msgTemplate['artifact']['type'] = artifactType
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
@@ -139,7 +142,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
+    msgTemplate['test']['namespace'] = "fedora-ci.${artifactType}"
     msgTemplate['test']['note'] = ''
     msgTemplate['test']['result'] = result
     msgTemplate['test']['xunit'] = xunit
@@ -196,6 +199,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['artifact']['component'] = taskInfo.name
     msgTemplate['artifact']['nvr'] = taskInfo.nvr
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
+    msgTemplate['artifact']['type'] = artifactType
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
@@ -204,7 +208,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = 'fedora-ci.koji-build'
+    msgTemplate['test']['namespace'] = "fedora-ci.${artifactType}"
     msgTemplate['test']['result'] = 'failed'
 
     // test section
