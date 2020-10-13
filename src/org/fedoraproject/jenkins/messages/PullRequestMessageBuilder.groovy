@@ -137,7 +137,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
-    msgTemplate['pipeline']['id'] = pipelineMetadata['pipelineName']
+    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
 
     // test section
     def result = 'needs_inspection'
@@ -213,7 +213,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
-    msgTemplate['pipeline']['id'] = pipelineMetadata['pipelineName']
+    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
