@@ -18,10 +18,13 @@ def call(Map params = [:]) {
 
     apiUrl = apiUrl + '/v0.1/requests'
 
-    retry(5) {
+    retry(30) {
         try {
             return httpPost(apiUrl, payload)
         } catch(e) {
+            echo "ERROR: Oops, something went wrong. We were unable to call ${apiUrl} — let's wait 120 seconds and then try again: ${e.getMessage()}"
+            sleep(time: 120, unit: "SECONDS")
+
             error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
         }
     }

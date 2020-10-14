@@ -29,13 +29,16 @@ def call(Map params = [:]) {
     def timeNow
 
     while (wait) {
-        retry(5) {
+        retry(30) {
             try {
                 response = httpGet(apiUrl)
             } catch(e) {
                 // FIXME: this is here for easier debugging in the early stages; let's remove it once
                 // things are more stable
                 echo "Testing Farm Artifacts URL: http://artifacts.dev.testing-farm.io/${requestId}"
+
+                echo "ERROR: Oops, something went wrong. We were unable to call ${apiUrl} — let's wait 120 seconds and then try again: ${e.getMessage()}"
+                sleep(time: 120, unit: "SECONDS")
                 error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
             }
         }
