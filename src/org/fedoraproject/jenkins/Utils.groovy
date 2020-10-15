@@ -14,8 +14,30 @@ class Utils {
      *
      * @return generated pipeline ID
      */
-    static String generatePipelineId() {
+    static String generateRandomPipelineId() {
         return UUID.randomUUID().toString()
+    }
+
+    /*
+     * Returns a pipeline ID for the current build.
+     *
+     * The pipeline ID is generated from the job name and its parameters.
+     * Running the same job, with the same parameters will produce the same
+     * pipeline ID.
+     *
+     * @return pipeline ID
+     */
+    static String generatePipelineIdFromJobNameAndParams(def env, def params) {
+        // string2sha256(env.JOB_NAME + env.BUILD_ID)
+        def pipelineId = "${env.JOB_NAME}("
+
+        params.each { key, value ->
+            pipelineId += "${key}:${value}"
+        }
+
+        pipelineId += ')'
+
+        return string2sha256(pipelineId)
     }
 
     /*
