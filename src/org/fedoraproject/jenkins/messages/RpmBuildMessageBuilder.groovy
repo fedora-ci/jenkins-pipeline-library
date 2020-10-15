@@ -45,7 +45,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = "${pipelineMetadata['contact']['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -92,7 +92,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = "${pipelineMetadata['contact']['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -142,7 +142,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = "${pipelineMetadata['contact']['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['note'] = ''
     msgTemplate['test']['result'] = result
     msgTemplate['test']['xunit'] = xunit
@@ -208,7 +208,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = "${pipelineMetadata['contact']['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['result'] = 'failed'
 
     // test section
