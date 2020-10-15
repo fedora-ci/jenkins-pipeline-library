@@ -41,7 +41,7 @@ def call(Map params = [:]) {
         topics = new groovy.json.JsonSlurperClassic().parseText(topics)
 
         if (!artifactType in topics) {
-            error("")
+            error("Unable to determine the topic for the ${artifactType} artifact type. The mapping is missing.")
         }
         topic = topics[artifactType]['test'][messageType]
     }
