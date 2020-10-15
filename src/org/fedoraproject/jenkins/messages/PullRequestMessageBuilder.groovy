@@ -48,7 +48,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = "${pipelineMetadata['pipelineName'].replace(' ', '-').toLowerCase()}.${artifactType}"
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -98,7 +98,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = "${pipelineMetadata['pipelineName'].replace(' ', '-').toLowerCase()}.${artifactType}"
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -149,7 +149,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = "${pipelineMetadata['pipelineName'].replace(' ', '-').toLowerCase()}.${artifactType}"
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['test']['note'] = ''
     msgTemplate['test']['result'] = result
     msgTemplate['test']['xunit'] = xunit
@@ -218,7 +218,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
-    msgTemplate['test']['namespace'] = "${pipelineMetadata['pipelineName'].replace(' ', '-').toLowerCase()}.${artifactType}"
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['test']['result'] = 'failed'
 
     // test section
