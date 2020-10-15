@@ -54,7 +54,7 @@ def buildMessageQueued(String artifactId, Map pipelineMetadata) {
     msgTemplate['artifact']['builds'] = builds
 
     // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
+    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
     msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
 
     // test section
@@ -122,7 +122,7 @@ def buildMessageComplete(String artifactId, Map pipelineMetadata, String xunit) 
     msgTemplate['artifact']['builds'] = builds
 
     // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
+    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
     msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
 
     // test section
@@ -202,7 +202,7 @@ def buildMessageError(String artifactId, Map pipelineMetadata, String xunit) {
     msgTemplate['artifact']['builds'] = builds
 
     // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineId()
+    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
     msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
 
     // test section
