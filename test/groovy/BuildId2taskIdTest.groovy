@@ -8,7 +8,7 @@ class BuildId2taskIdTest extends BasePipelineTest {
     @Before
     void init() {
         super.setUp()
-    }  
+    }
 
     def buildId2taskId(taskId) {
         super.setUp()

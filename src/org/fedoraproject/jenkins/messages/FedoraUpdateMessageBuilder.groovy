@@ -32,7 +32,7 @@ def buildMessageQueued(String artifactId, Map pipelineMetadata) {
     // artifact section
     def taskIds = Utils.getIdFromArtifactId(artifactId: artifactId, asArray: true)
     def targetArtifactId = Utils.getTargetArtifactId(artifactId)
-    def koji = new Koji()
+    def koji = new Koji(env.KOJI_API_URL)
     def taskInfo
     def nvrs = []
     taskIds.each { taskId ->
@@ -100,7 +100,7 @@ def buildMessageComplete(String artifactId, Map pipelineMetadata, String xunit) 
     // artifact section
     def taskIds = Utils.getIdFromArtifactId(artifactId: artifactId, asArray: true)
     def targetArtifactId = Utils.getTargetArtifactId(artifactId)
-    def koji = new Koji()
+    def koji = new Koji(env.KOJI_API_URL)
     def taskInfo
     def nvrs = []
     taskIds.each { taskId ->
@@ -180,7 +180,7 @@ def buildMessageError(String artifactId, Map pipelineMetadata, String xunit) {
     // artifact section
     def taskIds = Utils.getIdFromArtifactId(artifactId: artifactId, asArray: true)
     def targetArtifactId = Utils.getTargetArtifactId(artifactId)
-    def koji = new Koji()
+    def koji = new Koji(env.KOJI_API_URL)
     def taskInfo
     def nvrs = []
     taskIds.each { taskId ->

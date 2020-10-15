@@ -29,7 +29,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
 
     // artifact section
-    def koji = new Koji()
+    def koji = new Koji(env.KOJI_API_URL)
     def taskInfo = koji.getTaskInfo(taskId.toInteger())
     msgTemplate['artifact']['id'] = taskInfo.id
     msgTemplate['artifact']['issuer'] = taskInfo.ownerName
@@ -76,7 +76,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
 
     // artifact section
-    def koji = new Koji()
+    def koji = new Koji(env.KOJI_API_URL)
     def taskInfo = koji.getTaskInfo(taskId.toInteger())
     msgTemplate['artifact']['id'] = taskInfo.id
     msgTemplate['artifact']['issuer'] = taskInfo.ownerName
@@ -117,7 +117,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
 
     // artifact section
-    def koji = new Koji()
+    def koji = new Koji(env.KOJI_API_URL)
     def taskInfo = koji.getTaskInfo(taskId.toInteger())
     msgTemplate['artifact']['id'] = taskInfo.id
     msgTemplate['artifact']['issuer'] = taskInfo.ownerName
@@ -192,7 +192,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
 
     // artifact section
-    def koji = new Koji()
+    def koji = new Koji(env.KOJI_API_URL)
     def taskInfo = koji.getTaskInfo(taskId.toInteger())
     msgTemplate['artifact']['id'] = taskInfo.id
     msgTemplate['artifact']['issuer'] = taskInfo.ownerName

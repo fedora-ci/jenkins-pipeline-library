@@ -23,14 +23,14 @@ class Koji implements Serializable {
     private XMLRPCClient client
 
     /*
-     * Constructor.
+     * Constructor. Talk to the "default" Koji instance.
      *
-     * The instance will take Koji API URL from BREW_API_URL environment variable.
-     * If the variable doesn't exist, the default value (URL of a production Koji)
-     * will be used.
+     * TODO: deprecate and remove this.
+     *
+     * @param script the current pipeline script
      */
     Koji() {
-        this(System.getenv('KOJI_API_URL') ?: 'https://koji.fedoraproject.org/kojihub')
+        this('https://koji.fedoraproject.org/kojihub')
     }
 
     /*
