@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-import groovy.json.JsonSlurperClassic
+import org.fedoraproject.jenkins.Utils
 
 
 /**
@@ -9,6 +9,17 @@ import groovy.json.JsonSlurperClassic
 def call(Map params = [:]) {
     // TODO: we could validate the payload against the Testing Farm schema
     def payload = params.get('payload')
+
+    def payloadMap = params.get('payloadMap')
+
+    if (!payload) {
+        if (payloadMap) {
+            payload = Utils.mapToJsonString(payloadMap)
+        } else {
+            error("Missing Testing Farm payload")
+        }
+    }
+
 
     def apiUrl = params.get('apiUrl') ?: env.FEDORA_CI_TESTING_FARM_API_URL
 
@@ -33,6 +44,6 @@ def call(Map params = [:]) {
 
 def httpPost(url, payload) {
     def response = httpRequest consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: "${payload}", url: "${url}", validResponseCodes: '200'
-    def contentJson = new JsonSlurperClassic().parseText(response.content)
+    def contentJson = Utils.jsonStringToMap(response.content)
     return contentJson
 }

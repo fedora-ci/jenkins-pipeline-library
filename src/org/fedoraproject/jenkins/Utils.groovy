@@ -1,5 +1,7 @@
 package org.fedoraproject.jenkins
 
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonBuilder
 import java.time.Instant
 import java.security.MessageDigest
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter
@@ -47,6 +49,26 @@ class Utils {
      */
     static String getTimestamp() {
         return Instant.now().toString()
+    }
+
+    /* Converts Groovy map to JSON string
+     *
+     * @return JSON string
+     */
+    static String mapToJsonString(def map, def pretty) {
+        def json = new JsonBuilder(map)
+        if (pretty) {
+            json = json.toPrettyString()
+        }
+        return json
+    }
+
+    /* Converts JSON string to Groovy map
+     *
+     * @return Groovy map
+     */
+    static Map jsonStringToMap(def jsonStr) {
+        return new JsonSlurperClassic().parseText(jsonStr)
     }
 
     /*

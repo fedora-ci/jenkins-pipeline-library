@@ -65,4 +65,19 @@ class UtilsTest extends BasePipelineTest {
 
         assertEquals 'fedora-update:FEDORA-2020-008cb761a2', Utils.getTargetArtifactId(compositeArtifactId)
     }
+
+    @Test
+    void mapToJsonStringTest() {
+        def payload = [name: 'Douglas', surname: 'Quaid', info: [:]]
+
+        assertEquals '{"name":"Douglas","surname":"Quaid","info":{}}', Utils.mapToJsonString(payload, false)
+    }
+
+    @Test
+    void jsonStringToMapTest() {
+        def payload = '{"name":"Douglas","surname":"Quaid","info":{}}'
+
+        def result = Utils.jsonStringToMap(payload)
+        assertEquals 'Quaid', result['surname']
+    }
 }
