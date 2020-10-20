@@ -10,26 +10,30 @@ def call(Map params = [:]) {
     def ref = params.get('ref')
 
     dir("temp-repoHasTests${env.BUILD_ID}") {
-        checkout([$class: 'GitSCM', branches: [[name: ref ]], userRemoteConfigs: [[url: repoUrl ]]])
+        try {
+            checkout([$class: 'GitSCM', branches: [[name: ref ]], userRemoteConfigs: [[url: repoUrl ]]])
 
-        // check STI first
-        def stdStiFiles = findFiles glob: 'tests/tests*.yml'
-        def nonStdStiFiles = findFiles glob: 'tests*.yml'
+            // check STI first
+            def stdStiFiles = findFiles glob: 'tests/tests*.yml'
+            def nonStdStiFiles = findFiles glob: 'tests*.yml'
 
-        echo "STI tests in ${repoUrl} (${ref}): ${stdStiFiles} ${nonStdStiFiles}"
-        if (stdStiFiles || nonStdStiFiles) {
-            return [type: 'sti', files: (stdStiFiles + nonStdStiFiles).collect{ it.path } ]
+            echo "STI tests in ${repoUrl} (${ref}): ${stdStiFiles} ${nonStdStiFiles}"
+            if (stdStiFiles || nonStdStiFiles) {
+                return [type: 'sti', files: (stdStiFiles + nonStdStiFiles).collect{ it.path } ]
+            }
+
+            // if STI tests were not found, let's try FMF
+            def stdFmf = findFiles glob: '.fmf/version'
+            echo "FMF tests in ${repoUrl} (${ref}): ${stdFmf}"
+
+            if (stdFmf) {
+                return [type: 'fmf', files: stdFmf.collect{ it.path }]
+            }
+
+            return [:]
+        } finally {
+            deleteDir()
         }
-
-        // if STI tests were not found, let's try FMF
-        def stdFmf = findFiles glob: '.fmf/version'
-        echo "FMF tests in ${repoUrl} (${ref}): ${stdFmf}"
-
-        if (stdFmf) {
-            return [type: 'fmf', files: stdFmf.collect{ it.path }]
-        }
-
-        deleteDir()
-        return [:]
     }
+
 }
