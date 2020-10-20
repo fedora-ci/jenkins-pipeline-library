@@ -9,11 +9,9 @@ def call(Map params = [:]) {
     def repoUrl = params.get('repoUrl')
     def ref = params.get('ref')
 
-    sh('ls -la')
     dir("temp-repoHasTests${env.BUILD_ID}") {
         checkout([$class: 'GitSCM', branches: [[name: ref ]], userRemoteConfigs: [[url: repoUrl ]]])
 
-        sh('ls -la')
         // check STI first
         def stdStiFiles = findFiles glob: 'tests/tests*.yml'
         def nonStdStiFiles = findFiles glob: 'tests*.yml'
