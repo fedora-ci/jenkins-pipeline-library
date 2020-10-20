@@ -34,5 +34,5 @@ def call(taskId) {
         ref = buildInfo.source.commitId
     }
 
-    return [url, ref]
+    return [url: url, ref: ref]
 }

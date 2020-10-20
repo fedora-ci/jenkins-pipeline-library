@@ -20,14 +20,14 @@ class GetRepoUrlAndRefFromTaskIdTest extends BasePipelineTest {
     @Test
     void testGetIdFromArtifactIdSRPMFromCli() {
         def result = getRepoUrlAndRefFromTaskId(53007551)
-        assertEquals 'https://src.fedoraproject.org/forks/msrb/rpms/tmt', result[0].toString()
-        assertEquals '161692bc1069b5a920cd43f4bf209dff76a49c60', result[1].toString()
+        assertEquals 'https://src.fedoraproject.org/forks/msrb/rpms/tmt', result['url'].toString()
+        assertEquals '161692bc1069b5a920cd43f4bf209dff76a49c60', result['ref'].toString()
     }
 
     @Test
     void testGetIdFromArtifactId() {
         def result = getRepoUrlAndRefFromTaskId(52973984)
-        assertEquals 'https://src.fedoraproject.org/rpms/python-pycdlib', result[0].toString()
-        assertEquals '4e2a406598390225cc346fb13111d930c7a0461d', result[1].toString()
+        assertEquals 'https://src.fedoraproject.org/rpms/python-pycdlib', result['url'].toString()
+        assertEquals '4e2a406598390225cc346fb13111d930c7a0461d', result['ref'].toString()
     }
 }
