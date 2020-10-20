@@ -80,4 +80,9 @@ class UtilsTest extends BasePipelineTest {
         def result = Utils.jsonStringToMap(payload)
         assertEquals 'Quaid', result['surname']
     }
+
+    @Test
+    void string2sha256Test() {
+        assertEquals 'f5497b5bef7e1dd5985b5641e54239821b88cb2150a44774d8f0f8bdd251983a', Utils.string2sha256('abc abc')
+    }
 }

@@ -4,7 +4,6 @@ import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
 import java.time.Instant
 import java.security.MessageDigest
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter
 
 import org.fedoraproject.jenkins.koji.model.BuildSource
 
@@ -96,7 +95,7 @@ class Utils {
     static String string2sha256(def input) {
         def digest = MessageDigest.getInstance("SHA-256")
         def hash = digest.digest(input.getBytes())
-        return new HexBinaryAdapter().marshal(hash).toLowerCase()
+        return hash.encodeHex().toString().toLowerCase()
     }
 
     static String getReleaseIdFromBranch(def env) {
