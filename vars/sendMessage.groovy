@@ -72,7 +72,7 @@ def call(Map params = [:]) {
 
     if (dryRun) {
         // dry run, just print the message
-        print("INFO: This is a dry run — skipping following \"${messageType}\" message: ${msg.toString()}\ntopic: ${topic}")
+        print("INFO: This is a dry run — skipping following \"${messageType}\" message: ${Utils.mapToJsonString(msg, false)}\ntopic: ${topic}")
         return
     }
 
