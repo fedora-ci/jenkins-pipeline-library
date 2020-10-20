@@ -14,7 +14,7 @@ def call(Map params = [:]) {
 
     if (!payload) {
         if (payloadMap) {
-            payload = Utils.mapToJsonString(payloadMap)
+            payload = Utils.mapToJsonString(payloadMap, true)
         } else {
             error("Missing Testing Farm payload")
         }
@@ -28,6 +28,8 @@ def call(Map params = [:]) {
     }
 
     apiUrl = apiUrl + '/v0.1/requests'
+
+    echo "Submitting following Testing Farm request: ${payload}"
 
     retry(30) {
         try {
