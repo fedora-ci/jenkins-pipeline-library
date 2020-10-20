@@ -55,9 +55,11 @@ class Utils {
      * @return JSON string
      */
     static String mapToJsonString(def map, def pretty) {
-        def json = new JsonBuilder(map)
+        def json
         if (pretty) {
-            json = json.toPrettyString()
+            json = new JsonBuilder(map).toPrettyString()
+        } else {
+            json = new JsonBuilder(map).toString()
         }
         return json
     }
