@@ -23,7 +23,7 @@ def call(taskId) {
 
         def prParts = srpmName.split(';')[0].split('_')
         // we want just the "python-pygments-pytest" part from the srpmName
-        def repoName = srpmName.split(';')[1].split('.src.rpm')[0].split('\\.')[0].replace(':', '/')
+        def repoName = srpmName.split(';')[1].split('.src.rpm')[0].reverse().split('\\.', 2)[1].reverse().replace(':', '/')
         url = "${env.FEDORA_CI_PAGURE_DIST_GIT_URL}/${repoName}"
         // the second item in the list should be the commit hash
         ref = prParts[2]
