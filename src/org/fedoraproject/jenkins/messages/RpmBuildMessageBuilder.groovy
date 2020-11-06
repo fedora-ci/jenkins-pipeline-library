@@ -41,6 +41,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
     msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
+    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
@@ -88,6 +89,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
     msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
+    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
@@ -131,6 +133,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
     msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
+    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     def result = 'needs_inspection'
@@ -204,6 +207,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     // pipeline section
     msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
     msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
+    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
