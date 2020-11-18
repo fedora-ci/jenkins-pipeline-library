@@ -125,6 +125,7 @@ class Koji implements Serializable {
         taskInfo.ownerId = result.get('owner')
 
         taskInfo.target = result.get('request')[1]
+        throw new Exception(result.get('request')[2].toString())
         taskInfo.scratch = result.get('request')[2].get('scratch', false)
 
         if (build != null) {
