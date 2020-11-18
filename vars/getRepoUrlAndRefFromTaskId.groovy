@@ -9,7 +9,7 @@ import org.fedoraproject.jenkins.koji.Koji
 def call(taskId) {
     def url
     def ref
-    def koji = new Koji()
+    def koji = new Koji(env.KOJI_API_URL)
     def buildInfo = koji.getTaskInfo(taskId.toInteger())
     if (buildInfo.source.raw.startsWith('cli-build')) {
         // the SRPM was provided via CLI
