@@ -42,7 +42,11 @@ def call(Map params = [:]) {
             def pullRequestInfo = pagure.getPullRequestInfo(taskId)
             def fullname = pullRequestInfo.get('project', [:])?.get('fullname') ?: 'unknown'
             def pullRequestId = pullRequestInfo.get('id', 0)
-            def shortCommit = pagure.splitPullRequestId(taskId)['commitId'][0..6]
+            def commitId = pagure.splitPullRequestId(taskId)['commitId']
+            def shortCommit = commitId
+            if (commitId.length() >= 7) {
+                shortCommit = pagure.splitPullRequestId(taskId)['commitId'][0..6]
+            }
             displayName = "[${artifactType}] ${fullname}#${pullRequestId}@${shortCommit}"
         } else {
             displayName = "UNKNOWN ARTIFACT TYPE: '${artifactType}'"
