@@ -20,7 +20,7 @@ def call(taskId) {
             def commentId = prIdList[1].split('\\.')[0]
             def prId = "dist-git-pr:${prUid}@hash#${commentId}"
 
-            def pagure = new Pagure()
+            def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
             def pullRequestInfo = pagure.getPullRequestInfo(taskId)
 
             ref = pullRequestInfo.get('commit_stop')

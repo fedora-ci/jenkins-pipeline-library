@@ -38,7 +38,7 @@ def call(Map params = [:]) {
             displayName = "[${artifactType}] ${taskId}"
         } else if (artifactType in ['fedora-dist-git', 'dist-git-pr']) {
             // handle pull-requests
-            def pagure = new Pagure()
+            def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
             def pullRequestInfo = pagure.getPullRequestInfo(taskId)
             def fullname = pullRequestInfo.get('project', [:])?.get('fullname') ?: 'unknown'
             def pullRequestId = pullRequestInfo.get('id', 0)

@@ -29,7 +29,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
 
     // artifact section
-    def pagure = new Pagure()
+    def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
     def pullRequestInfo = pagure.getPullRequestInfo(taskId)
     def uidCommitAndComment = pagure.splitPullRequestId(taskId)
 
@@ -80,7 +80,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
 
     // artifact section
-    def pagure = new Pagure()
+    def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
     def pullRequestInfo = pagure.getPullRequestInfo(taskId)
     def uidCommitAndComment = pagure.splitPullRequestId(taskId)
 
@@ -125,7 +125,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
 
     // artifact section
-    def pagure = new Pagure()
+    def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
     def pullRequestInfo = pagure.getPullRequestInfo(taskId)
     def uidCommitAndComment = pagure.splitPullRequestId(taskId)
 
@@ -202,7 +202,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
 
     // artifact section
-    def pagure = new Pagure()
+    def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
     def pullRequestInfo = pagure.getPullRequestInfo(taskId)
     def uidCommitAndComment = pagure.splitPullRequestId(taskId)
 
