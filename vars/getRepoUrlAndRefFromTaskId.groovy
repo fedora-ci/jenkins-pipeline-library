@@ -1,6 +1,7 @@
 #!/usr/bin/groovy
 
 import org.fedoraproject.jenkins.koji.Koji
+import org.fedoraproject.jenkins.pagure.Pagure
 
 
 /**
