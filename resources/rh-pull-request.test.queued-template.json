@@ -1,0 +1,38 @@
+{
+    "artifact": {
+      "comment_id": 0,
+      "commit_hash": "",
+      "id": "",
+      "issuer": "",
+      "repository": "",
+      "type": "dist-git-pr",
+      "uid": ""
+    },
+    "category": "",
+    "ci": {
+      "email": "",
+      "irc": "",
+      "name": "",
+      "team": "",
+      "url": ""
+    },
+    "docs": "",
+    "generated_at": "",
+    "issue_url": "",
+    "label": "",
+    "namespace": "",
+    "note": "",
+    "reason": "",
+    "run": {
+      "debug": "",
+      "log": "",
+      "log_raw": "",
+      "log_stream": "",
+      "rebuild": "",
+      "trigger_rebuild": "",
+      "url": ""
+    },
+    "thread_id": "",
+    "type": "",
+    "version": ""
+}

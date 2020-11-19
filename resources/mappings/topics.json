@@ -23,6 +23,14 @@
             "error": "org.centos.prod.ci.dist-git-pr.test.error"
         }
     },
+    "dist-git-pr": {
+        "test": {
+            "queued": "VirtualTopic.eng.ci.dist-git-pr.test.queued",
+            "running": "VirtualTopic.eng.ci.dist-git-pr.test.running",
+            "complete": "VirtualTopic.eng.ci.dist-git-pr.test.complete",
+            "error": "VirtualTopic.eng.ci.dist-git-pr.test.error"
+        }
+    },
     "fedora-update": {
         "test": {
             "queued": "org.centos.prod.ci.fedora-update.test.queued",

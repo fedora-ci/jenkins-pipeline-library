@@ -36,7 +36,7 @@ def call(Map params = [:]) {
             }
         } else if (artifactType == 'fedora-update') {
             displayName = "[${artifactType}] ${taskId}"
-        } else if (artifactType == 'fedora-dist-git') {
+        } else if (artifactType in ['fedora-dist-git', 'dist-git-pr']) {
             // handle pull-requests
             def pagure = new Pagure()
             def pullRequestInfo = pagure.getPullRequestInfo(taskId)
