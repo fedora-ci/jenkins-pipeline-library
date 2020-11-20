@@ -7,7 +7,7 @@ import org.fedoraproject.jenkins.pagure.Pagure
 /**
  * getRepoUrlAndRefFromTaskId() step.
  */
-def call(taskId) {
+def call(taskId, artifactId=null) {
     def url
     def ref
     def koji = new Koji(env.KOJI_API_URL)
@@ -22,7 +22,7 @@ def call(taskId) {
             def prId = "dist-git-pr:${prUid}@hash#${commentId}"
 
             def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
-            def pullRequestInfo = pagure.getPullRequestInfo(taskId)
+            def pullRequestInfo = pagure.getPullRequestInfo(prId)
 
             ref = pullRequestInfo.get('commit_stop')
             def repoName = pullRequestInfo.get('repo_from', [:]).get('full_name')
