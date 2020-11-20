@@ -28,23 +28,25 @@ def call(Map params = [:]) {
     def timeStart = new Date()
     def timeNow
 
+    // FIXME: this is here for easier debugging in the early stages; let's remove it once
+    // things are more stable
+    def tfArtifactsBaseUrl = env.FEDORA_CI_PAGURE_DIST_GIT_URL.startsWith('https://src.osci') ? "http://artifacts.osci.redhat.com/testing-farm" : "http://artifacts.dev.testing-farm.io"
+
     while (wait) {
         retry(30) {
             try {
                 response = httpGet(apiUrl)
             } catch(e) {
-                // FIXME: this is here for easier debugging in the early stages; let's remove it once
-                // things are more stable
-                echo "Testing Farm Artifacts URL: http://artifacts.dev.testing-farm.io/${requestId}"
+                // TODO: remove
+                echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
 
                 echo "ERROR: Oops, something went wrong. We were unable to call ${apiUrl} — let's wait 120 seconds and then try again: ${e.getMessage()}"
                 sleep(time: 120, unit: "SECONDS")
                 error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
             }
         }
-        // FIXME: this is here for easier debugging in the early stages; let's remove it once
-        // things are more stable
-        echo "Testing Farm Artifacts URL: http://artifacts.dev.testing-farm.io/${requestId}"
+        // TODO: remove
+        echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
         state = response.get('state')
         if (state in ['complete', 'error']) {
             return response
