@@ -113,11 +113,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['xunit'] = xunit
 
     // run section
-    if (msgTemplate['test']['xunit']) {
-        msgTemplate['run']['url'] = "${env.BUILD_URL}testReport/(root)/tests/"
-    } else {
-        msgTemplate['run']['url'] = "${env.BUILD_URL}"
-    }
+    msgTemplate['run']['url'] = "${env.BUILD_URL}"
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
     msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
     msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
