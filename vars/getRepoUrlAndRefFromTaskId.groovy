@@ -16,13 +16,12 @@ def call(taskId, artifactId=null) {
         // the SRPM was provided via CLI
         if (buildInfo.source.raw.contains('.pr.')) {
             def source = buildInfo.source.raw
-            def prIdList = source.split('.pr.')[1].split('.c.')
+            def prIdList = source.split('\\.pr\\.')[1].split('\\.c\\.')
             def prUid = prIdList[0]
             def commentId = prIdList[1].split('\\.')[0]
             def prId = "dist-git-pr:${prUid}@hash#${commentId}"
 
             def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
-            error("prId: ${prId}")
             def pullRequestInfo = pagure.getPullRequestInfo(prId)
 
             ref = pullRequestInfo.get('commit_stop')
