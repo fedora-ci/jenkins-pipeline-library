@@ -25,7 +25,7 @@ def call(taskId, artifactId=null) {
             def pullRequestInfo = pagure.getPullRequestInfo(prId)
 
             ref = pullRequestInfo.get('commit_stop')
-            def repoName = pullRequestInfo.get('repo_from', [:]).get('full_name')
+            def repoName = pullRequestInfo.get('repo_from', [:]).get('fullname')
             url = "${env.FEDORA_CI_PAGURE_DIST_GIT_URL}/${repoName}"
         } else {
             // srpmName is something like "fedora-ci_c7e32f545a8b4a0aa209b233c44b1f50_7579642717a0a4f83488560d50e2b5b5d76eaced_0;python-pygments-pytest.f34.src.rpm"
