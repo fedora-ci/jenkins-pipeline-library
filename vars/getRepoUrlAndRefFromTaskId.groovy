@@ -19,7 +19,7 @@ def call(taskId, artifactId=null) {
             def prIdList = source.split('\\.pr\\.')[1].split('\\.c\\.')
             def prUid = prIdList[0]
             def commentId = prIdList[1].split('\\.')[0]
-            def prId = "dist-git-pr:${prUid}@hash#${commentId}"
+            def prId = "${prUid}@hash#${commentId}"
 
             def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
             def pullRequestInfo = pagure.getPullRequestInfo(prId)
