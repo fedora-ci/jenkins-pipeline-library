@@ -6,6 +6,14 @@
  */
 def call(result) {
 
+    if (result == null) {
+        // null means that we haven't even called Testing Farm.
+        // We are either aborting the pipeline before we had a chance to call it,
+        // or something completely unexpected happened...
+        // In any case, there are no results to evaluate.
+        return
+    }
+
     catchError {
         if (!result || result['state'] == 'error' || result['result']['overall'] == 'error') {
             error('There was an infrastructure failure.')
