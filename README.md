@@ -27,6 +27,7 @@ This is a list of all steps implemented in the library. Click on a particular st
 * [getReleaseIdFromBranch()](./docs/steps/getReleaseIdFromBranch.md)
 * [isProduction()](./docs/steps/isProduction.md)
 * [isPullRequest()](./docs/steps/isPullRequest.md)
+* [loadConfig()](./docs/steps/loadConfig.md)
 * [sendMessage()](./docs/steps/sendMessage.md)
 * [setBuildNameFromArtifactId()](./docs/steps/setBuildNameFromArtifactId.md)
 * [setJobDescriptionFromMetadata()](./docs/steps/setJobDescriptionFromMetadata.md)
