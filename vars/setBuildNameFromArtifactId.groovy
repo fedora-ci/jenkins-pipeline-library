@@ -10,6 +10,7 @@ import org.fedoraproject.jenkins.Utils
  */
 def call(Map params = [:]) {
     def artifactId = params.get('artifactId')
+    def profileName = params.get('profile')
     def displayName
 
     if (!artifactId) {
@@ -52,4 +53,7 @@ def call(Map params = [:]) {
     }
 
     currentBuild.displayName = displayName
+    if (profileName) {
+        currentBuild.description = "test profile: ${profileName}"
+    }
 }
