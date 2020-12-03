@@ -25,6 +25,7 @@ This is a list of all steps implemented in the library. Click on a particular st
 * [buildImageAndPushToRegistry()](./docs/steps/buildImageAndPushToRegistry.md)
 * [getGitUrl()](./docs/steps/getGitUrl.md)
 * [getReleaseIdFromBranch()](./docs/steps/getReleaseIdFromBranch.md)
+* [gzip()](./docs/steps/gzip.md)
 * [isProduction()](./docs/steps/isProduction.md)
 * [isPullRequest()](./docs/steps/isPullRequest.md)
 * [loadConfig()](./docs/steps/loadConfig.md)
