@@ -53,11 +53,6 @@ def buildMessageQueued(String artifactId, Map pipelineMetadata) {
     }
     msgTemplate['artifact']['builds'] = builds
 
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
-
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
@@ -121,11 +116,6 @@ def buildMessageComplete(String artifactId, Map pipelineMetadata, String xunit) 
         builds.add([nvr: nvr])
     }
     msgTemplate['artifact']['builds'] = builds
-
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     def result = 'needs_inspection'
@@ -202,11 +192,6 @@ def buildMessageError(String artifactId, Map pipelineMetadata, String xunit) {
         builds.add([nvr: nvr])
     }
     msgTemplate['artifact']['builds'] = builds
-
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']

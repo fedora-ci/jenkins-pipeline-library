@@ -85,4 +85,10 @@ class UtilsTest extends BasePipelineTest {
     void string2sha256Test() {
         assertEquals 'f5497b5bef7e1dd5985b5641e54239821b88cb2150a44774d8f0f8bdd251983a', Utils.string2sha256('abc abc')
     }
+
+    @Test
+    void generatePipelineIdFromArtifactIdAndTestcaseTest() {
+        def result = Utils.generatePipelineIdFromArtifactIdAndTestcase('koji-build:123456', 'fedora-ci.koji-build.rpminspect.static-analysis')
+        assertEquals 'f17d6cc02a77a34db48fd6bf39f2fb2a86a823b4849058292abc5300eb9b0c5b', result
+    }
 }

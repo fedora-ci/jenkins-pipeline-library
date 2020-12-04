@@ -14,6 +14,21 @@ def getMessageVersion() {
     return '0.2.1'
 }
 
+def getPipelineSection(artifactType, taskId, pipelineMetadata) {
+    // construct the pipeline section
+    def namespace = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    def pipeline = [
+        'id': Utils.generatePipelineIdFromArtifactIdAndTestcase(
+            "${artifactType}:${taskId}",
+            "${namespace}.${pipelineMetadata['testType']}.${pipelineMetadata['testCategory']}"
+        ),
+        'name': pipelineMetadata['pipelineName'],
+        'build': "${env.BUILD_NUMBER}"
+    ]
+    return pipeline
+}
+
+
 def buildMessageQueued(String artifactId, String artifactType, String taskId, Map pipelineMetadata) {
 
     def msg
@@ -30,8 +45,13 @@ def buildMessageQueued(String artifactId, String artifactType, String taskId, Ma
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
 
-    if (msg && !msg.get('version')) {
-        msg['version'] = getMessageVersion()
+    if (msg) {
+        if (!msg.get('version')) {
+            msg['version'] = getMessageVersion()
+        }
+        if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
+            msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+        }
     }
     return msg
 }
@@ -53,8 +73,13 @@ def buildMessageRunning(String artifactId, String artifactType, String taskId, M
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
 
-    if (msg && !msg.get('version')) {
-        msg['version'] = getMessageVersion()
+    if (msg) {
+        if (!msg.get('version')) {
+            msg['version'] = getMessageVersion()
+        }
+        if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
+            msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+        }
     }
     return msg
 }
@@ -76,8 +101,13 @@ def buildMessageComplete(String artifactId, String artifactType, String taskId, 
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
 
-    if (msg && !msg.get('version')) {
-        msg['version'] = getMessageVersion()
+    if (msg) {
+        if (!msg.get('version')) {
+            msg['version'] = getMessageVersion()
+        }
+        if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
+            msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+        }
     }
     return msg
 }
@@ -99,8 +129,13 @@ def buildMessageError(String artifactId, String artifactType, String taskId, Map
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
 
-    if (msg && !msg.get('version')) {
-        msg['version'] = getMessageVersion()
+    if (msg) {
+        if (!msg.get('version')) {
+            msg['version'] = getMessageVersion()
+        }
+        if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
+            msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+        }
     }
     return msg
 }
