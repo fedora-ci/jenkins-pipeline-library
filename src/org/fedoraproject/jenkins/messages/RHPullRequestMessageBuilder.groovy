@@ -42,13 +42,16 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
     msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
-    // pipeline section
-    msgTemplate['thread_id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-
     // test section
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['category'] = pipelineMetadata['testCategory']
     msgTemplate['type'] = pipelineMetadata['testType']
+
+    // pipeline section
+    msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
+        "${artifactType}:${taskId}",
+        "${msgTemplate['namespace']}.${artifactType}.${msgTemplate['type']}.${msgTemplate['category']}"
+    )
 
     // run section
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
@@ -95,9 +98,6 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
     msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
-    // pipeline section
-    msgTemplate['thread_id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-
     // test section
     def result = 'needs_inspection'
     if (currentBuild.result == 'SUCCESS') {
@@ -111,6 +111,12 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['type'] = pipelineMetadata['testType']
     msgTemplate['status'] = result
     msgTemplate['xunit'] = xunit
+
+    // pipeline section
+    msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
+        "${artifactType}:${taskId}",
+        "${msgTemplate['namespace']}.${artifactType}.${msgTemplate['type']}.${msgTemplate['category']}"
+    )
 
     // run section
     msgTemplate['run']['url'] = "${env.BUILD_URL}"
@@ -157,14 +163,17 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
     msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
-    // pipeline section
-    msgTemplate['thread_id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['category'] = pipelineMetadata['testCategory']
     msgTemplate['type'] = pipelineMetadata['testType']
     msgTemplate['status'] = "failed"
     msgTemplate['xunit'] = xunit
+
+    // pipeline section
+    msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
+        "${artifactType}:${taskId}",
+        "${msgTemplate['namespace']}.${artifactType}.${msgTemplate['type']}.${msgTemplate['category']}"
+    )
 
     // run section
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"

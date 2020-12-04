@@ -41,11 +41,6 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
     msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
-
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
@@ -92,11 +87,6 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
     msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
 
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
-
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
@@ -136,11 +126,6 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['artifact']['commit_hash'] = uidCommitAndComment.get('commitId')
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
     msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
-
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     def result = 'needs_inspection'
@@ -213,11 +198,6 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['artifact']['commit_hash'] = uidCommitAndComment.get('commitId')
     msgTemplate['artifact']['issuer'] = pullRequestInfo.get('user', [:])?.get('name')
     msgTemplate['artifact']['uid'] = pullRequestInfo.get('uid')
-
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']

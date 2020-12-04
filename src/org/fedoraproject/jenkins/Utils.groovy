@@ -42,6 +42,18 @@ class Utils {
     }
 
     /*
+     * Returns a pipeline ID for the artifactId and testcase name.
+     *
+     * Working with the same artifactId and the same testcase name
+     * will produce the same pipeline ID.
+     *
+     * @return pipeline ID
+     */
+    static String generatePipelineIdFromArtifactIdAndTestcase(def artifactId, def testcase) {
+        return string2sha256(artifactId + testcase)
+    }
+
+    /*
      * Returns current UTC timestamp.
      *
      * @return current UTC timestamp

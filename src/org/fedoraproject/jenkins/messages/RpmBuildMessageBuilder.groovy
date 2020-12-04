@@ -38,11 +38,6 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
     msgTemplate['artifact']['type'] = artifactType
 
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
-
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
@@ -86,11 +81,6 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
     msgTemplate['artifact']['type'] = artifactType
 
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
-
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
@@ -129,11 +119,6 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['artifact']['baseline'] = taskInfo.nvr
     msgTemplate['artifact']['source'] = taskInfo.source.raw
     msgTemplate['artifact']['type'] = artifactType
-
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     def result = 'needs_inspection'
@@ -203,11 +188,6 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['artifact']['nvr'] = taskInfo.nvr
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
     msgTemplate['artifact']['type'] = artifactType
-
-    // pipeline section
-    msgTemplate['pipeline']['id'] = Utils.generatePipelineIdFromJobNameAndParams(env, params)
-    msgTemplate['pipeline']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['pipeline']['build'] = "${env.BUILD_NUMBER}"
 
     // test section
     msgTemplate['test']['type'] = pipelineMetadata['testType']
