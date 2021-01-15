@@ -17,6 +17,7 @@ def call(Map params = [:]) {
     def topic = params.get('topic')
     def messageProvider = params.get('messageProvider') ?: env.FEDORA_CI_MESSAGE_PROVIDER
     def xunit = params.get('xunit') ?: ''
+    def runUrl = params.get('runUrl') ?: ''
 
     def targetArtifactId = artifactId
     if (Utils.isCompositeArtifact(artifactId)) {
@@ -47,19 +48,19 @@ def call(Map params = [:]) {
     }
 
     if (messageType == 'queued') {
-        msg = new MessageBuilder().buildMessageQueued(artifactId, artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageQueued(artifactId, artifactType, taskId, pipelineMetadata, runUrl)
     }
 
     if (messageType == 'running') {
-        msg = new MessageBuilder().buildMessageRunning(artifactId, artifactType, taskId, pipelineMetadata)
+        msg = new MessageBuilder().buildMessageRunning(artifactId, artifactType, taskId, pipelineMetadata, runUrl)
     }
 
     if (messageType == 'complete') {
-        msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit)
+        msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl)
     }
 
     if (messageType == 'error') {
-        msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit)
+        msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl)
     }
 
     def msgProps = ''

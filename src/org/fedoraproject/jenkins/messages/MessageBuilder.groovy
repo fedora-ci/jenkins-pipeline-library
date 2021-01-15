@@ -29,7 +29,7 @@ def getPipelineSection(artifactType, taskId, pipelineMetadata) {
 }
 
 
-def buildMessageQueued(String artifactId, String artifactType, String taskId, Map pipelineMetadata) {
+def buildMessageQueued(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String runUrl) {
 
     def msg
 
@@ -52,12 +52,15 @@ def buildMessageQueued(String artifactId, String artifactType, String taskId, Ma
         if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
             msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
         }
+        if (runUrl && msg.get('run', {})?.get('url')) {
+            msg['run']['url'] = runUrl
+        }
     }
     return msg
 }
 
 
-def buildMessageRunning(String artifactId, String artifactType, String taskId, Map pipelineMetadata) {
+def buildMessageRunning(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String runUrl) {
 
     def msg
 
@@ -80,12 +83,15 @@ def buildMessageRunning(String artifactId, String artifactType, String taskId, M
         if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
             msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
         }
+        if (runUrl && msg.get('run', {})?.get('url')) {
+            msg['run']['url'] = runUrl
+        }
     }
     return msg
 }
 
 
-def buildMessageComplete(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit) {
+def buildMessageComplete(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl) {
 
     def msg
 
@@ -108,12 +114,15 @@ def buildMessageComplete(String artifactId, String artifactType, String taskId, 
         if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
             msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
         }
+        if (runUrl && msg.get('run', {})?.get('url')) {
+            msg['run']['url'] = runUrl
+        }
     }
     return msg
 }
 
 
-def buildMessageError(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit) {
+def buildMessageError(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl) {
 
     def msg
 
@@ -135,6 +144,9 @@ def buildMessageError(String artifactId, String artifactType, String taskId, Map
         }
         if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
             msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+        }
+        if (runUrl && msg.get('run', {})?.get('url')) {
+            msg['run']['url'] = runUrl
         }
     }
     return msg
