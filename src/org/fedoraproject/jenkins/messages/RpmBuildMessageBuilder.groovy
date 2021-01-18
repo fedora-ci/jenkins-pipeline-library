@@ -138,6 +138,8 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     // run section
     if (msgTemplate['test']['xunit']) {
         msgTemplate['run']['url'] = "${env.BUILD_URL}testReport/(root)/tests/"
+    } else if (env.FEDORA_CI_DASHBOARD_URL) {
+        msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
     } else {
         msgTemplate['run']['url'] = "${env.BUILD_URL}"
     }
@@ -171,14 +173,6 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
     msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
 
-    // run section
-    msgTemplate['run']['url'] = "${env.BUILD_URL}"
-    msgTemplate['run']['log'] = "${env.BUILD_URL}console"
-    msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
-    msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
-    msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
-    msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
-
     // artifact section
     def koji = new Koji(env.KOJI_API_URL)
     def taskInfo = koji.getTaskInfo(taskId.toInteger())
@@ -194,6 +188,18 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['result'] = 'failed'
+
+    // run section
+    if (env.FEDORA_CI_DASHBOARD_URL) {
+        msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
+    } else {
+        msgTemplate['run']['url'] = "${env.BUILD_URL}"
+    }
+    msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+    msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+    msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
+    msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
+    msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
 
     // test section
     msgTemplate['error']['reason'] = 'Infrastructure Failure'
