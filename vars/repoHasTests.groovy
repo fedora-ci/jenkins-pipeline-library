@@ -9,7 +9,7 @@ def call(Map params = [:]) {
     def repoUrl = params.get('repoUrl')
     def ref = params.get('ref')
 
-    dir("temp-repoHasTests${env.BUILD_ID}") {
+    dir("/tmp/temp-repoHasTests${env.BUILD_ID}") {
         try {
             checkout([$class: 'GitSCM', branches: [[name: ref ]], userRemoteConfigs: [[url: repoUrl ]]])
 
