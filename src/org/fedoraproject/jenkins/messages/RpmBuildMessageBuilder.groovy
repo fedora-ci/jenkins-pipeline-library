@@ -136,13 +136,14 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['test']['xunit'] = xunit
 
     // run section
+    msgTemplate['run']['url'] = "${env.BUILD_URL}"
     if (msgTemplate['test']['xunit']) {
         msgTemplate['run']['url'] = "${env.BUILD_URL}testReport/(root)/tests/"
-    } else if (env.FEDORA_CI_DASHBOARD_URL) {
-        msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
-    } else {
-        msgTemplate['run']['url'] = "${env.BUILD_URL}"
     }
+    if (env.FEDORA_CI_DASHBOARD_URL) {
+        msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
+    }
+
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
     msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
     msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
@@ -190,11 +191,11 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['test']['result'] = 'failed'
 
     // run section
+    msgTemplate['run']['url'] = "${env.BUILD_URL}"
     if (env.FEDORA_CI_DASHBOARD_URL) {
         msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
-    } else {
-        msgTemplate['run']['url'] = "${env.BUILD_URL}"
     }
+
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
     msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
     msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
