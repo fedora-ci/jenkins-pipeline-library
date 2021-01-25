@@ -93,7 +93,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 }
 
 
-def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit) {
+def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit, Boolean isSkipped, String note) {
 
     def msgTemplate
 
@@ -122,7 +122,9 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     // test section
     def result = 'needs_inspection'
-    if (currentBuild.result == 'SUCCESS') {
+    if (isSkipped) {
+        result = 'info'
+    } else if (currentBuild.result == 'SUCCESS') {
         result = 'passed'
     } else if (currentBuild.result == 'UNSTABLE') {
         result = 'needs_inspection'
@@ -131,7 +133,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
-    msgTemplate['test']['note'] = ''
+    msgTemplate['test']['note'] = note
     msgTemplate['test']['result'] = result
     msgTemplate['test']['xunit'] = xunit
 

@@ -18,6 +18,8 @@ def call(Map params = [:]) {
     def messageProvider = params.get('messageProvider') ?: env.FEDORA_CI_MESSAGE_PROVIDER
     def xunit = params.get('xunit') ?: ''
     def runUrl = params.get('runUrl') ?: ''
+    def isSkipped = params.get('isSkipped').asBoolean() ?: false
+    def note = params.get('note') ?: ''
 
     def targetArtifactId = artifactId
     if (Utils.isCompositeArtifact(artifactId)) {
@@ -56,7 +58,7 @@ def call(Map params = [:]) {
     }
 
     if (messageType == 'complete') {
-        msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl)
+        msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, isSkipped, note)
     }
 
     if (messageType == 'error') {

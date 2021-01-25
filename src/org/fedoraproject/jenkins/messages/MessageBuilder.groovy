@@ -91,18 +91,18 @@ def buildMessageRunning(String artifactId, String artifactType, String taskId, M
 }
 
 
-def buildMessageComplete(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl) {
+def buildMessageComplete(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl, Boolean isSkipped, String note) {
 
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new RpmBuildMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit, isSkipped, note)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'fedora-update') {
-        msg = new FedoraUpdateMessageBuilder().buildMessageComplete(artifactId, pipelineMetadata, xunit)
+        msg = new FedoraUpdateMessageBuilder().buildMessageComplete(artifactId, pipelineMetadata, xunit, isSkipped)
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }

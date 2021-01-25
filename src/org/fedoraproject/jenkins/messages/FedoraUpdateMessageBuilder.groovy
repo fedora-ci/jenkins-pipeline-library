@@ -78,7 +78,7 @@ def buildMessageRunning(String artifactId, Map pipelineMetadata) {
 }
 
 
-def buildMessageComplete(String artifactId, Map pipelineMetadata, String xunit) {
+def buildMessageComplete(String artifactId, Map pipelineMetadata, String xunit, Boolean isSkipped) {
 
     def msgTemplate
 
@@ -119,7 +119,9 @@ def buildMessageComplete(String artifactId, Map pipelineMetadata, String xunit) 
 
     // test section
     def result = 'needs_inspection'
-    if (currentBuild.result == 'SUCCESS') {
+    if (isSkipped) {
+        result = 'info'
+    } else if (currentBuild.result == 'SUCCESS') {
         result = 'passed'
     } else if (currentBuild.result == 'UNSTABLE') {
         result = 'needs_inspection'
