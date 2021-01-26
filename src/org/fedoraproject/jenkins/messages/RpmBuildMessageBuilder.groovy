@@ -7,7 +7,7 @@ import org.fedoraproject.jenkins.koji.Koji
 import org.fedoraproject.jenkins.Utils
 
 
-def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata) {
+def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata, String scenario) {
 
     def msgTemplate
 
@@ -42,6 +42,9 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    if (scenario) {
+        msgTemplate['test']['scenario'] = scenario
+    }
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -50,7 +53,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
 }
 
 
-def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata) {
+def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata, String scenario) {
 
     def msgTemplate
 
@@ -85,6 +88,9 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    if (scenario) {
+        msgTemplate['test']['scenario'] = scenario
+    }
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -93,7 +99,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 }
 
 
-def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit, Boolean isSkipped, String note) {
+def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit, Boolean isSkipped, String note, String scenario) {
 
     def msgTemplate
 
@@ -136,6 +142,9 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['test']['note'] = note
     msgTemplate['test']['result'] = result
     msgTemplate['test']['xunit'] = xunit
+    if (scenario) {
+        msgTemplate['test']['scenario'] = scenario
+    }
 
     // run section
     msgTemplate['run']['url'] = "${env.BUILD_URL}"
@@ -161,7 +170,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 }
 
 
-def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, String xunit) {
+def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, String xunit, String scenario) {
 
     def msgTemplate
 
@@ -191,6 +200,9 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['result'] = 'failed'
+    if (scenario) {
+        msgTemplate['test']['scenario'] = scenario
+    }
 
     // run section
     msgTemplate['run']['url'] = "${env.BUILD_URL}"

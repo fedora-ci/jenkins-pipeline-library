@@ -20,6 +20,7 @@ def call(Map params = [:]) {
     def runUrl = params.get('runUrl') ?: ''
     def isSkipped = params.get('isSkipped').asBoolean() ?: false
     def note = params.get('note') ?: ''
+    def scenario = params.get('testScenario') ?: ''
 
     def targetArtifactId = artifactId
     if (Utils.isCompositeArtifact(artifactId)) {
@@ -50,19 +51,19 @@ def call(Map params = [:]) {
     }
 
     if (messageType == 'queued') {
-        msg = new MessageBuilder().buildMessageQueued(artifactId, artifactType, taskId, pipelineMetadata, runUrl)
+        msg = new MessageBuilder().buildMessageQueued(artifactId, artifactType, taskId, pipelineMetadata, runUrl, scenario)
     }
 
     if (messageType == 'running') {
-        msg = new MessageBuilder().buildMessageRunning(artifactId, artifactType, taskId, pipelineMetadata, runUrl)
+        msg = new MessageBuilder().buildMessageRunning(artifactId, artifactType, taskId, pipelineMetadata, runUrl, scenario)
     }
 
     if (messageType == 'complete') {
-        msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, isSkipped, note)
+        msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, isSkipped, note, scenario)
     }
 
     if (messageType == 'error') {
-        msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl)
+        msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, scenario)
     }
 
     def msgProps = ''

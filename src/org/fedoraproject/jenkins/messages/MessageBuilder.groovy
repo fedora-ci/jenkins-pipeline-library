@@ -29,12 +29,12 @@ def getPipelineSection(artifactType, taskId, pipelineMetadata) {
 }
 
 
-def buildMessageQueued(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String runUrl) {
+def buildMessageQueued(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String runUrl, String scenario) {
 
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
+        msg = new RpmBuildMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata, scenario)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
     } else if (artifactType == 'dist-git-pr') {
@@ -60,12 +60,12 @@ def buildMessageQueued(String artifactId, String artifactType, String taskId, Ma
 }
 
 
-def buildMessageRunning(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String runUrl) {
+def buildMessageRunning(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String runUrl, String scenario) {
 
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
+        msg = new RpmBuildMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata, scenario)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
     } else if (artifactType == 'dist-git-pr') {
@@ -91,12 +91,12 @@ def buildMessageRunning(String artifactId, String artifactType, String taskId, M
 }
 
 
-def buildMessageComplete(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl, Boolean isSkipped, String note) {
+def buildMessageComplete(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl, Boolean isSkipped, String note, String scenario) {
 
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit, isSkipped, note)
+        msg = new RpmBuildMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'dist-git-pr') {
@@ -122,12 +122,12 @@ def buildMessageComplete(String artifactId, String artifactType, String taskId, 
 }
 
 
-def buildMessageError(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl) {
+def buildMessageError(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl, String scenario) {
 
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new RpmBuildMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit, scenario)
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'dist-git-pr') {
