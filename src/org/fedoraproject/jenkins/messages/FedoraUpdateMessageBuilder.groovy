@@ -202,7 +202,7 @@ def buildMessageError(String artifactId, Map pipelineMetadata, String xunit) {
     msgTemplate['test']['result'] = 'failed'
 
     // test section
-    msgTemplate['error']['reason'] = 'Infrastructure Failure'
+    msgTemplate['error']['reason'] = env.ERROR_MESSAGE ? "${env.ERROR_MESSAGE}" : 'Infrastructure Failure'
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
