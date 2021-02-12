@@ -16,7 +16,12 @@ def call(result) {
 
     catchError {
         if (!result || result['state'] == 'error' || result['result']['overall'] == 'error') {
-            error('There was an infrastructure failure.')
+            def message = 'There was an infrastructure failure.'
+            if (result['result']['summary']) {
+                message = result['result']['summary']
+                env.ERROR_MESSAGE = message
+            }
+            error(message)
         }
     }
 

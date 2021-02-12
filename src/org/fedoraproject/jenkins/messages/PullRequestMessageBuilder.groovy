@@ -206,7 +206,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['test']['result'] = 'failed'
 
     // test section
-    msgTemplate['error']['reason'] = 'Infrastructure Failure'
+    msgTemplate['error']['reason'] = env.ERROR_MESSAGE ? "${env.ERROR_MESSAGE}" : 'Infrastructure Failure'
     msgTemplate['error']['url'] = "${env.BUILD_URL}console"
 
     // misc
