@@ -54,7 +54,7 @@ def call(Map params = [:]) {
 
         checkTimeout(timeStart, timeout)
 
-        sleep(time: 20, unit: "SECONDS")
+        sleep(time: 60, unit: "SECONDS")
     }
 }
 
@@ -69,7 +69,7 @@ def checkTimeout(timeStart, timeout) {
 
 
 def httpGet(url) {
-    def response = httpRequest consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', httpMode: 'GET', url: "${url}", validResponseCodes: '200'
+    def response = httpRequest consoleLogResponseBody: false, contentType: 'APPLICATION_JSON', httpMode: 'GET', url: "${url}", validResponseCodes: '200'
     def contentJson = new JsonSlurperClassic().parseText(response.content)
     return contentJson
 }
