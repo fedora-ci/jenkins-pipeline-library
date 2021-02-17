@@ -54,7 +54,7 @@ def call(Map params = [:]) {
 
         checkTimeout(timeStart, timeout)
 
-        sleep(time: 60, unit: "SECONDS")
+        sleep(time: 90, unit: "SECONDS")
     }
 }
 
