@@ -11,7 +11,20 @@ def call(Map params = [:]) {
 
     dir("temp-repoHasTests${env.BUILD_ID}") {
         try {
-            checkout([$class: 'GitSCM', branches: [[name: ref ]], userRemoteConfigs: [[url: repoUrl ]]])
+            sh("git clone ${repoUrl} .")
+            // check that the commit hash exists
+            def refExists = sh(script: "git cat-file -e ${ref}", returnStatus: true)
+            if (refExists != 0) {
+                echo """
+*******************************************************************************
+    Given commit hash (${ref}) is not in the repository.
+    Somebody probably force-pushed.
+    In any case, there is nothing we can do here...
+*******************************************************************************
+                """
+                return [:]
+            }
+            sh("git reset --hard ${ref}")
 
             // check STI first
             def stdStiFiles = findFiles glob: 'tests/tests*.yml'
