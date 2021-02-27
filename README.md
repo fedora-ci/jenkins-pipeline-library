@@ -26,6 +26,7 @@ This is a list of all steps implemented in the library. Click on a particular st
 * [getGitUrl()](./docs/steps/getGitUrl.md)
 * [getReleaseIdFromBranch()](./docs/steps/getReleaseIdFromBranch.md)
 * [gzip()](./docs/steps/gzip.md)
+* [isScratchBuild()](./docs/steps/isScratchBuild.md)
 * [isProduction()](./docs/steps/isProduction.md)
 * [isPullRequest()](./docs/steps/isPullRequest.md)
 * [loadConfig()](./docs/steps/loadConfig.md)
