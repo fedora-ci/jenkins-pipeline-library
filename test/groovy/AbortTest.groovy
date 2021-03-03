@@ -18,4 +18,9 @@ class AbortTest extends BasePipelineTest {
     void testAbortStep() {
         abortStep('Abort test')
     }
+
+    @Test
+    void testAbortStepWithStatus() {
+        abortStep('Abort test', 'SUCCESS')
+    }
 }

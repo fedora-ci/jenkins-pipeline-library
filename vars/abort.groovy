@@ -4,7 +4,7 @@
 /**
  * abort() step.
  */
-def call(String message) {
-    currentBuild.result = 'ABORTED'
+def call(String message, String status = 'ABORTED') {
+    currentBuild.result = status
     error(message)
 }
