@@ -12,10 +12,11 @@ def call(Map params = [:]) {
     def artifactId = params.get('artifactId')
     def profileName = params.get('profile')
     def displayName
+    def packageName = ''
 
     if (!artifactId) {
         currentBuild.displayName = '[pipeline update]'
-        return
+        return packageName
     }
 
     try {
@@ -31,6 +32,7 @@ def call(Map params = [:]) {
             def koji = new Koji(env.KOJI_API_URL)
             def taskInfo = koji.getTaskInfo(taskId.toInteger())
             displayName = "[${artifactType}] ${taskInfo.nvr}"
+            packageName = "${taskInfo.name}"
             if (taskInfo.scratch) {
                 displayName = "[scratch] ${displayName}"
             }
@@ -48,6 +50,7 @@ def call(Map params = [:]) {
                 shortCommit = pagure.splitPullRequestId(taskId)['commitId'][0..6]
             }
             displayName = "[${artifactType}] ${fullname}#${pullRequestId}@${shortCommit}"
+            packageName = "${pullRequestInfo.get('project', [:])?.get('name') ?: 'unknown'}"
         } else {
             displayName = "UNKNOWN ARTIFACT TYPE: '${artifactType}'"
         }
@@ -60,4 +63,6 @@ def call(Map params = [:]) {
     if (profileName) {
         currentBuild.description = "test profile: ${profileName}"
     }
+
+    return packageName
 }
