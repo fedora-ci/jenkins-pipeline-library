@@ -16,7 +16,7 @@ def call(Map params = [:]) {
 
     if (!artifactId) {
         currentBuild.displayName = '[pipeline update]'
-        return packageName
+        return packageName.toString()
     }
 
     try {
@@ -64,5 +64,5 @@ def call(Map params = [:]) {
         currentBuild.description = "test profile: ${profileName}"
     }
 
-    return packageName
+    return packageName.toString()
 }
