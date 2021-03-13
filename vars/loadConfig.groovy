@@ -1,5 +1,7 @@
 #!/usr/bin/groovy
 
+import groovy.json.JsonSlurper
+
 
 /**
  * loadConfig() step.
@@ -12,7 +14,8 @@ def call(Map params = [:]) {
         error("Config file \"${configFile}\" doesn't exist")
     }
 
-    def config = readJSON(file: configFile)
+    def rawConfig = readFile(configFile)
+    def config = new JsonSlurper().parseText(rawConfig)
 
     if (profileName) {
         def profile = config.get('profiles', [:])?.get(profileName)
