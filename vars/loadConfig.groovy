@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 
 
 /**
@@ -15,7 +15,7 @@ def call(Map params = [:]) {
     }
 
     def rawConfig = readFile(configFile)
-    def config = new JsonSlurper().parseText(rawConfig)
+    def config = new JsonSlurperClassic().parseText(rawConfig)
 
     if (profileName) {
         def profile = config.get('profiles', [:])?.get(profileName)
