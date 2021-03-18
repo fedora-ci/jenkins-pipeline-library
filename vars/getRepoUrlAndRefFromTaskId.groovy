@@ -46,7 +46,7 @@ def call(taskId, artifactId=null) {
         url = buildInfo.source.url
 
         def prefix = ~/^git\+/
-        def suffix = ~/.git$/
+        def suffix = ~/\.git$/
 
         url -= prefix
         url -= suffix
