@@ -19,8 +19,12 @@ def call(Map params = [:]) {
     def xunit = params.get('xunit') ?: ''
     def runUrl = params.get('runUrl') ?: ''
     def isSkipped = params.get('isSkipped').asBoolean() ?: false
+    def isInfo = params.get('isInfo').asBoolean() ?: false
     def note = params.get('note') ?: ''
     def scenario = params.get('testScenario') ?: ''
+
+    // isInfo is an alias for isSkipped
+    isSkipped = isSkipped || isInfo
 
     def targetArtifactId = artifactId
     if (Utils.isCompositeArtifact(artifactId)) {
