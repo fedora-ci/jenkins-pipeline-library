@@ -4,7 +4,7 @@ import groovy.json.JsonSlurperClassic
 
 
 /**
- * waitForTestingFarmResults() step.
+ * waitForTestingFarm() step.
  */
 def call(Map params = [:]) {
     def requestId = params.get('requestId')
