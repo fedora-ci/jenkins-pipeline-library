@@ -66,10 +66,3 @@ def checkTestingFarmRequestStatus(requestId) {
         }
     }
 }
-
-
-def httpGet(url) {
-    def response = httpRequest consoleLogResponseBody: false, contentType: 'APPLICATION_JSON', httpMode: 'GET', url: "${url}", validResponseCodes: '200'
-    def contentJson = new JsonSlurperClassic().parseText(response.content)
-    return contentJson
-}
