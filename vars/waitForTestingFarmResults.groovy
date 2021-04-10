@@ -24,6 +24,8 @@ def call(Map params = [:]) {
     def wait = true
     def response
     def state
+    def napTime
+    def notFirstCheck = false
 
     def timeStart = new Date()
     def timeNow
@@ -51,10 +53,17 @@ def call(Map params = [:]) {
         if (state in ['complete', 'error']) {
             return response
         }
+        napTime = 90
+        if (state in ['new', 'queued'] && notFirstCheck) {
+            // the request can stay queued for a very long time;
+            // if that is the case, don't check the status that often
+            napTime = 600
+        }
 
         checkTimeout(timeStart, timeout)
 
-        sleep(time: 90, unit: "SECONDS")
+        sleep(time: napTime, unit: "SECONDS")
+        notFirstCheck = true
     }
 }
 
@@ -69,7 +78,7 @@ def checkTimeout(timeStart, timeout) {
 
 
 def httpGet(url) {
-    def response = httpRequest consoleLogResponseBody: false, contentType: 'APPLICATION_JSON', httpMode: 'GET', url: "${url}", validResponseCodes: '200'
+    def response = httpRequest consoleLogResponseBody: false, contentType: 'APPLICATION_JSON', httpMode: 'GET', url: "${url}", validResponseCodes: '200', quiet: true
     def contentJson = new JsonSlurperClassic().parseText(response.content)
     return contentJson
 }
