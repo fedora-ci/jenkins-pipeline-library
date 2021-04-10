@@ -48,6 +48,7 @@ def call(Map params = [:]) {
             }
         }
         // TODO: remove
+        echo "Testing Farm API Request URL: ${apiUrl}"
         echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
         state = response.get('state')
         if (state in ['complete', 'error']) {
