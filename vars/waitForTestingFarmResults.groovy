@@ -1,8 +1,6 @@
 #!/usr/bin/groovy
 
 import groovy.json.JsonSlurperClassic
-import groovy.time.TimeDuration
-import groovy.time.TimeCategory
 
 
 /**
@@ -10,10 +8,37 @@ import groovy.time.TimeCategory
  */
 def call(Map params = [:]) {
     def requestId = params.get('requestId')
-    def timeout = params.get('timeout')
+    def hook = params.get('hook')
 
-    // FIXME: use the real Testing Farm URL, once it is available
-    def apiUrl = params.get('apiUrl') ?: env.FEDORA_CI_TESTING_FARM_API_URL
+    def tfArtifactsBaseUrl = env.FEDORA_CI_TESTING_FARM_ARTIFACTS_URL
+    def apiUrl = env.FEDORA_CI_TESTING_FARM_API_URL
+
+    echo "**************************************************************************************************"
+    echo "Testing Farm API Request URL: ${apiUrl}/v0.1/requests/${requestId}"
+    echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
+    echo "\n"
+
+    echo "Waiting for Testing Farm..."
+    def statusResult
+    while (true) {
+        data = waitForWebhook(hook)
+        statusResult = checkTestingFarmRequestStatus(testingFarmRequestId)
+        echo "The status is now \"${statusResult.status}\""
+        if (statusResult.status in ['complete', 'error']) {
+            break
+        }
+        echo "Waiting for Testing Farm..."
+    }
+    testingFarmResult = statusResult.response
+    xunit = testingFarmResult.get('result', [:])?.get('xunit', '') ?: ''
+
+    return [apiResponse: statusResult.response, requestStatus: statusResult.status, xunit: xunit]
+}
+
+
+def checkTestingFarmRequestStatus(requestId) {
+
+    def apiUrl = env.FEDORA_CI_TESTING_FARM_API_URL
 
     if (!apiUrl) {
         error('FAIL: Testing Farm API URL is not configured')
@@ -21,49 +46,24 @@ def call(Map params = [:]) {
 
     apiUrl = apiUrl + '/v0.1/requests/' + "${requestId}"
 
-    def wait = true
     def response
-    def state
+    def contentJson
 
-    def timeStart = new Date()
-    def timeNow
-
-    // FIXME: this is here for easier debugging in the early stages; let's remove it once
-    // things are more stable
-    def tfArtifactsBaseUrl = env.FEDORA_CI_PAGURE_DIST_GIT_URL.startsWith('https://src.osci') ? "http://artifacts.osci.redhat.com/testing-farm" : "http://artifacts.dev.testing-farm.io"
-
-    while (wait) {
-        retry(30) {
-            try {
-                response = httpGet(apiUrl)
-            } catch(e) {
-                // TODO: remove
-                echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
-
-                echo "ERROR: Oops, something went wrong. We were unable to call ${apiUrl} — let's wait 120 seconds and then try again: ${e.getMessage()}"
-                sleep(time: 120, unit: "SECONDS")
-                error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
-            }
+    retry(30) {
+        try {
+            response = httpRequest(
+                consoleLogResponseBody: true,
+                contentType: 'APPLICATION_JSON',
+                httpMode: 'GET',
+                url: "${apiUrl}",
+                validResponseCodes: '200'
+            )
+            contentJson = new JsonSlurperClassic().parseText(response.content)
+            return [status: contentJson.get('state'), response: contentJson]
+        } catch(e) {
+            sleep(time: 10, unit: "SECONDS")
+            error("Failed to call Testing Farm: ${e.getClass().getCanonicalName()}: ${e.getMessage()}")
         }
-        // TODO: remove
-        echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
-        state = response.get('state')
-        if (state in ['complete', 'error']) {
-            return response
-        }
-
-        checkTimeout(timeStart, timeout)
-
-        sleep(time: 90, unit: "SECONDS")
-    }
-}
-
-@NonCPS
-def checkTimeout(timeStart, timeout) {
-    timeNow = new Date()
-    TimeDuration duration = TimeCategory.minus(timeNow, timeStart)
-    if (duration.getMinutes() >= timeout) {
-        error("Timeout reached and there are still no test results")
     }
 }
 
