@@ -13,7 +13,7 @@ def call(Map params = [:]) {
     def tfArtifactsBaseUrl = env.FEDORA_CI_TESTING_FARM_ARTIFACTS_URL
     def apiUrl = env.FEDORA_CI_TESTING_FARM_API_URL
 
-    echo "**************************************************************************************************"
+    echo "**********************************************************************************************************************"
     echo "Testing Farm API Request URL: ${apiUrl}/v0.1/requests/${requestId}"
     echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
     echo "\n"
@@ -22,7 +22,7 @@ def call(Map params = [:]) {
     def statusResult
     while (true) {
         data = waitForWebhook(hook)
-        statusResult = checkTestingFarmRequestStatus(testingFarmRequestId)
+        statusResult = checkTestingFarmRequestStatus(requestId)
         echo "The status is now \"${statusResult.status}\""
         if (statusResult.status in ['complete', 'error']) {
             break
