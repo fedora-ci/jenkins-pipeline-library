@@ -52,7 +52,7 @@ def checkTestingFarmRequestStatus(requestId) {
     retry(30) {
         try {
             response = httpRequest(
-                consoleLogResponseBody: true,
+                consoleLogResponseBody: false,
                 contentType: 'APPLICATION_JSON',
                 httpMode: 'GET',
                 url: "${apiUrl}",
