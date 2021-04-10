@@ -18,6 +18,7 @@ def call(Map params = [:]) {
     echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
     echo "\n"
 
+    echo "The status is now \"queued\""
     echo "Waiting for Testing Farm..."
     def statusResult
     while (true) {
