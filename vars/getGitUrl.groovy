@@ -6,7 +6,16 @@
  */
 def call(Map params = [:]) {
 
-    def gitUrl = env.GIT_URL
+    def gitUrl
+    if (env.GIT_URL) {
+        gitUrl = env.GIT_URL
+    } else {
+        // The pipeline is probably skipping the default checkout
+        // and therefore the env.GIT_URL is not populated.
+        // Let's hope that somebody called "checkout scm" before
+        // calling this step.
+        gitUrl = scm.getUserRemoteConfigs()[0].getUrl()
+    }
 
     // pull request
     if (env.CHANGE_ID) {
