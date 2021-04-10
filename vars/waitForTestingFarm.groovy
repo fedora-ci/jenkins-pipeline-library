@@ -56,7 +56,8 @@ def checkTestingFarmRequestStatus(requestId) {
                 contentType: 'APPLICATION_JSON',
                 httpMode: 'GET',
                 url: "${apiUrl}",
-                validResponseCodes: '200'
+                validResponseCodes: '200',
+                quiet: true
             )
             contentJson = new JsonSlurperClassic().parseText(response.content)
             return [status: contentJson.get('state'), response: contentJson]
