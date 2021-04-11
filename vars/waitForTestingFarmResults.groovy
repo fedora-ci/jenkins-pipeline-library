@@ -43,7 +43,7 @@ do
     echo "Waiting for Testing Farm..."
   fi
   prev_state="\$state"
-  sleep 120
+  sleep 90
 done
 """, label: "Wait for test results"
     )
