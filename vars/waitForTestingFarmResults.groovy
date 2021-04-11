@@ -30,15 +30,19 @@ def call(Map params = [:]) {
     sh(
         script: """
 set +x
+prev_state="none"
 while true
 do
   state="\$(curl --retry 10 --retry-connrefused --connect-timeout 10 --retry-delay 30  -s '${apiUrl}' | jq --raw-output ''.state'')"
   if [ "\$state" = "complete" ] || [ "\$state" = "error" ]; then
-    echo "Done! The current status \\"\$state\\"."
+    echo "Done! The current state is \\"\$state\\"."
     break
   fi
-  echo "The current status is \\"\$state\\"."
-  echo "Waiting for Testing Farm..."
+  if [ "\$state" != "\$prev_state" ]; then
+    echo "The current state is \\"\$state\\"."
+    echo "Waiting for Testing Farm..."
+  fi
+  prev_state="\$state"
   sleep 120
 done
 """, label: "Wait for test results"
