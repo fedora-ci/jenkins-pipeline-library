@@ -16,8 +16,8 @@ def call(result) {
 
     catchError {
         if (!result || result['state'] == 'error' || result['result']['overall'] == 'error') {
-            def message = 'There was an infrastructure failure.'
-            if (result['result']['summary']) {
+            def message = 'Infrastructure Error :/'
+            if (result.get('result', [:]).get('summary')) {
                 message = result['result']['summary']
                 env.ERROR_MESSAGE = message
             }
