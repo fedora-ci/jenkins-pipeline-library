@@ -18,19 +18,17 @@ def call(Map params = [:]) {
     echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
     echo "\n"
 
-    timestamps {
-        echo "The status is now \"queued\""
-        echo "Waiting for Testing Farm..."
-        def statusResult
-        while (true) {
-            data = waitForWebhook(hook)
-            statusResult = checkTestingFarmRequestStatus(requestId)
-            echo "The status is now \"${statusResult.status}\""
-            if (statusResult.status in ['complete', 'error']) {
-                break
-            }
-            echo "Waiting for Testing Farm..."
+    echo "The status is now \"queued\""
+    echo "Waiting for Testing Farm..."
+    def statusResult
+    while (true) {
+        data = waitForWebhook(hook)
+        statusResult = checkTestingFarmRequestStatus(requestId)
+        echo "The status is now \"${statusResult.status}\""
+        if (statusResult.status in ['complete', 'error']) {
+            break
         }
+        echo "Waiting for Testing Farm..."
     }
     testingFarmResult = statusResult.response
     xunit = testingFarmResult.get('result', [:])?.get('xunit', '') ?: ''
