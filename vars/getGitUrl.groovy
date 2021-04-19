@@ -17,12 +17,21 @@ def call(Map params = [:]) {
         gitUrl = scm.getUserRemoteConfigs()[0].getUrl()
     }
 
+    def changeFork = params.get('changeFork') ?: env.CHANGE_FORK
     // pull request
     if (env.CHANGE_ID) {
         def urlList = gitUrl.split('/')
-        // Yeah, but what about the repository name?
-        // https://issues.jenkins-ci.org/browse/JENKINS-58450
-        urlList[-2] = env.CHANGE_FORK
+
+        // for GitHub, the change id is just a username;
+        // bu for GitLab, the change id is "username/repository"...
+        // meh...
+        if (changeFork.contains('/')) {
+            urlList = urlList[0..-3]
+            urlList += changeFork + '.git'
+        } else {
+            // just replace the org/username
+            urlList[-2] = changeFork
+        }
         gitUrl = urlList.join('/')
     }
 

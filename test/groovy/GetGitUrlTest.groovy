@@ -15,9 +15,14 @@ class GetGitUrlTest extends BasePipelineTest {
     }
 
     @Test
-    void testIsProduction() {
+    void testGitHubFork() {
         def result = getGitUrlStep()
         assertEquals 'https://github.com/msrb/rpmdeplint-image.git', result
     }
 
+    @Test
+    void testGitLabFork() {
+        def result = getGitUrlStep(changeFork: 'msrb/rpmdeplint-image')
+        assertEquals 'https://github.com/msrb/rpmdeplint-image.git', result
+    }
 }
