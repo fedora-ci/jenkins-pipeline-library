@@ -29,8 +29,6 @@ def call(Map params = [:]) {
 
     apiUrl = apiUrl + '/v0.1/requests'
 
-    echo "Submitting following Testing Farm request: ${payload}"
-
     retry(30) {
         try {
             return httpPost(apiUrl, payload)
