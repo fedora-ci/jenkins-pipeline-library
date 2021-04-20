@@ -43,7 +43,14 @@ def call(Map params = [:]) {
 
 
 def httpPost(url, payload) {
-    def response = httpRequest consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: "${payload}", url: "${url}", validResponseCodes: '200'
+    def response = httpRequest(
+        consoleLogResponseBody: false,
+        contentType: 'APPLICATION_JSON',
+        httpMode: 'POST',
+        requestBody: "${payload}",
+        url: "${url}",
+        validResponseCodes: '200'
+    )
     def contentJson = Utils.jsonStringToMap(response.content)
     return contentJson
 }
