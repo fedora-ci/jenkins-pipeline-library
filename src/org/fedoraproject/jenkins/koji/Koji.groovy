@@ -302,6 +302,7 @@ class Koji implements Serializable {
                 sleep(10000)  // 5 seconds
             }
         }
-        throw new RuntimeException("Failed after $times retries".toString(), exceptions[-1])
+        echo "Meh... Failed to talk to Koji ${times} times..."
+        throw exceptions[-1]  // rethrow the last expeception
     }
 }
