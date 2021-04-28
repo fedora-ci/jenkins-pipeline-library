@@ -290,7 +290,7 @@ class Koji implements Serializable {
      * @param body code to retry
      * @return output of the body closure or RuntimeException if none of the tries succeeded
      */
-    private def retry(int times = 5, Closure errorHandler = {e-> println(e.message)}, Closure body) {
+    private def retry(int times = 10, Closure errorHandler = {e-> println(e.message)}, Closure body) {
         int retries = 0
         def exceptions = []
         while(retries++ < times) {
@@ -299,7 +299,7 @@ class Koji implements Serializable {
             } catch(e) {
                 exceptions << e
                 errorHandler.call(e)
-                sleep(1000)  // 1 second
+                sleep(10000)  // 5 seconds
             }
         }
         throw new RuntimeException("Failed after $times retries".toString(), exceptions[-1])
