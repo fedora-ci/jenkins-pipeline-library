@@ -14,19 +14,40 @@ def call(result) {
         return
     }
 
+    // if the result is "error", we stop the pipeline and set the Jenkins build status to "FAILURE" (default for errors)
     catchError {
-        if (!result || result['state'] == 'error' || result['result']['overall'] == 'error') {
-            def message = 'Infrastructure Error :/'
-            if (result.get('result', [:]).get('summary')) {
+        if (!result || result.get('state') == 'error' || result.get('result')?.get('overall') == 'error') {
+            def message = ''
+            if (result.get('result', [:])?.get('summary')) {
                 message = result['result']['summary']
+            } else if (result.get('notes')) {
+                // the whole result.result section may be missing if TF failed to dispatch the request;
+                // but we can still check if there are any message with explanation in the notes...
+                result.get('notes').each { note ->
+                    if (note.get('level') == 'error') {
+                        // this should be the note which describes what happened
+                        message = note.get('message') ?: message
+                    }
+                }
+            }
+
+            if (message) {
+                // error() call down below prints the message to the log,
+                // but we can store it in an environment variable as well
+                // and then reuse it for example when sending messages
+                // to the message bus
                 env.ERROR_MESSAGE = message
+            } else {
+                // we don't know what happened...
+                message = 'Infrastructure Error :/'
             }
             error(message)
         }
     }
 
+    // if the result is "failed", we stop the pipeline and set the Jenkins build status to "UNSTABLE"
     catchError(buildResult: 'UNSTABLE') {
-        if (result['state'] == 'complete' && result['result']['overall'] == 'failed') {
+        if (result.get('state') == 'complete' && result.get('result')?.get('overall') == 'failed') {
             error('There are test failures.')
         }
     }
