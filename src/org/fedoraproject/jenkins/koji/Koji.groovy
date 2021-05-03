@@ -61,7 +61,7 @@ class Koji implements Serializable {
     private def call(String method, Object... params) {
 
         this.retry {
-            return this.client.call(method , params)
+            return this.client.call(method, params)
         }
     }
 
@@ -290,16 +290,18 @@ class Koji implements Serializable {
      * @param body code to retry
      * @return output of the body closure or RuntimeException if none of the tries succeeded
      */
-    private def retry(int times = 10, Closure errorHandler = {e-> echo(e.message)}, Closure body) {
+    private def retry(int times = 10, Closure errorHandler = {e-> println(e.message)}, Closure body) {
         int retries = 0
         def exceptions = []
+        def sleepTime = 2000  // 2 second
         while(retries++ < times) {
             try {
                 return body.call()
             } catch(e) {
                 exceptions << e
                 errorHandler.call(e)
-                sleep(10000)  // 5 seconds
+                sleep(sleepTime)
+                sleepTime *= 2  // double the sleep time
             }
         }
         error("Meh... Failed to talk to Koji ${times} times...")
