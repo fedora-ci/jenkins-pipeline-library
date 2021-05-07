@@ -45,8 +45,31 @@ def call(Map params = [:]) {
     }
 
     if (!topic) {
-        def topics = libraryResource 'mappings/topics.json'
-        topics = new groovy.json.JsonSlurperClassic().parseText(topics)
+        // If we called this step in this pipeline run before,
+        // we should find cached topics mapping in the environment.
+        if (!env._PIPELINE_LIBRARY_TOPICS_MAPPING) {
+            // If the mapping is not in the environment yet,
+            // we fetch it from the configured URL and cache it.
+            // So we will find it there next time.
+            def response
+            def sleepTime = 5  // seconds
+            retry (10) {
+                try {
+                    response = httpRequest(
+                        url: env.TOPICS_MAPPING_CONFIG_URL,
+                        quiet: true,
+                        consoleLogResponseBody: false
+                    )
+                } catch(e) {
+                    echo "Error: Failed to fetch topics mapping from ${env.TOPICS_MAPPING_CONFIG_URL}"
+                    sleep(time: sleepTime, unit:"SECONDS")
+                    sleepTime *= 2  // double the sleep time
+                    throw e
+                }
+            }
+            env._PIPELINE_LIBRARY_TOPICS_MAPPING = response.content
+        }
+        topics = new groovy.json.JsonSlurperClassic().parseText(env._PIPELINE_LIBRARY_TOPICS_MAPPING)
 
         if (!artifactType in topics) {
             error("Unable to determine the topic for the ${artifactType} artifact type. The mapping is missing.")
