@@ -11,7 +11,8 @@ import org.fedoraproject.jenkins.messages.MessageBuilder
 def call(Map params = [:]) {
 
     def messageType = params.get('type')
-    def artifactId = params.get('artifactId')
+    def mainArtifactId = params.get('artifactId')
+    def additionalArtifactIds = params.get('additionalArtifactIds') ?: ''
     def pipelineMetadata = params.get('pipelineMetadata')
     def dryRun = params.get('dryRun')
     def topic = params.get('topic')
@@ -26,118 +27,137 @@ def call(Map params = [:]) {
     // isInfo is an alias for isSkipped
     isSkipped = isSkipped || isInfo
 
-    def targetArtifactId = artifactId
-    if (Utils.isCompositeArtifact(artifactId)) {
-        targetArtifactId = Utils.getTargetArtifactId(artifactId)
+    def sentResults = []
+    additionalArtifactIds = additionalArtifactIds.split(',') ?: []
+    def artifactIds = [mainArtifactId]
+    if (additionalArtifactIds) {
+        artifactIds = additionalArtifactIds + mainArtifactId
     }
+    artifactIds.each { artifactId ->
+        if (!artifactId) {
+            return
+        }
+        def targetArtifactId = artifactId
+        if (Utils.isCompositeArtifact(artifactId)) {
+            targetArtifactId = Utils.getTargetArtifactId(artifactId)
+        }
 
-    if (!targetArtifactId.contains(':')) {
-        error("Invalid artifact Id: ${targetArtifactId} — the correct syntax is 'artifactType:id'")
-    }
+        if (!targetArtifactId.contains(':')) {
+            error("Invalid artifact Id: ${targetArtifactId} — the correct syntax is 'artifactType:id'")
+        }
 
-    def artifactType = targetArtifactId.split(':')[0]
-    def taskId = targetArtifactId.split(':')[1]
+        def artifactType = targetArtifactId.split(':')[0]
+        def taskId = targetArtifactId.split(':')[1]
 
-    def msg
+        def msg
 
-    if (!messageType in ['queued', 'running', 'complete', 'error']) {
-        error("Unknown message type: ${messageType}")
-    }
+        if (!messageType in ['queued', 'running', 'complete', 'error']) {
+            error("Unknown message type: ${messageType}")
+        }
 
-    if (!topic) {
-        // If we called this step in this pipeline run before,
-        // we should find cached topics mapping in the environment.
-        if (!env._PIPELINE_LIBRARY_TOPICS_MAPPING) {
-            // If the mapping is not in the environment yet,
-            // we fetch it from the configured URL and cache it.
-            // So we will find it there next time.
-            def response
-            def sleepTime = 5  // seconds
-            retry (10) {
-                try {
-                    response = httpRequest(
-                        url: env.TOPICS_MAPPING_CONFIG_URL,
-                        quiet: true,
-                        consoleLogResponseBody: false
-                    )
-                } catch(e) {
-                    echo "Error: Failed to fetch topics mapping from ${env.TOPICS_MAPPING_CONFIG_URL}"
-                    sleep(time: sleepTime, unit:"SECONDS")
-                    sleepTime *= 2  // double the sleep time
-                    throw e
+        if (!topic) {
+            // If we called this step in this pipeline run before,
+            // we should find cached topics mapping in the environment.
+            if (!env._PIPELINE_LIBRARY_TOPICS_MAPPING) {
+                // If the mapping is not in the environment yet,
+                // we fetch it from the configured URL and cache it.
+                // So we will find it there next time.
+                def response
+                def sleepTime = 5  // seconds
+                retry (10) {
+                    try {
+                        response = httpRequest(
+                            url: env.TOPICS_MAPPING_CONFIG_URL,
+                            quiet: true,
+                            consoleLogResponseBody: false
+                        )
+                    } catch(e) {
+                        echo "Error: Failed to fetch topics mapping from ${env.TOPICS_MAPPING_CONFIG_URL}"
+                        sleep(time: sleepTime, unit:"SECONDS")
+                        sleepTime *= 2  // double the sleep time
+                        throw e
+                    }
                 }
+                env._PIPELINE_LIBRARY_TOPICS_MAPPING = response.content
             }
-            env._PIPELINE_LIBRARY_TOPICS_MAPPING = response.content
-        }
-        topics = new groovy.json.JsonSlurperClassic().parseText(env._PIPELINE_LIBRARY_TOPICS_MAPPING)
+            topics = new groovy.json.JsonSlurperClassic().parseText(env._PIPELINE_LIBRARY_TOPICS_MAPPING)
 
-        if (!artifactType in topics) {
-            error("Unable to determine the topic for the ${artifactType} artifact type. The mapping is missing.")
-        }
-        topic = topics[artifactType]['test'][messageType]
-    }
-
-    if (messageType == 'queued') {
-        msg = new MessageBuilder().buildMessageQueued(artifactId, artifactType, taskId, pipelineMetadata, runUrl, scenario)
-    }
-
-    if (messageType == 'running') {
-        msg = new MessageBuilder().buildMessageRunning(artifactId, artifactType, taskId, pipelineMetadata, runUrl, scenario)
-    }
-
-    if (messageType == 'complete') {
-        msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, isSkipped, note, scenario)
-    }
-
-    if (messageType == 'error') {
-        msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, scenario)
-    }
-
-    def msgProps = ''
-    def msgContent = JsonOutput.toJson(msg)
-
-    if (!msg) {
-        print("INFO: '${messageType}' message is not defined for the '${artifactType}' artifact type.")
-        return
-    }
-
-    if (dryRun) {
-        // dry run, just print the message
-        print("INFO: This is a dry run — skipping following \"${messageType}\" message: ${Utils.mapToJsonString(msg, false)}\ntopic: ${topic}")
-        return
-    }
-
-    if (!messageProvider) {
-        print("FAIL: Missing configuration for the message provider - unable to send following message: ${msg.toString()}")
-        return
-    }
-
-    retry(10) {
-        try {
-            // 1 minute should be more than enough time to send the message
-            timeout(1) {
-                // Send message and return SendResult
-                sendResult = sendCIMessage(
-                    messageContent: msgContent,
-                    messageProperties: msgProps,
-                    messageType: "Custom",
-                    overrides: [
-                        topic: topic
-                    ],
-                    failOnError: true,
-                    providerName: messageProvider
-                )
+            if (!artifactType in topics) {
+                error("Unable to determine the topic for the ${artifactType} artifact type. The mapping is missing.")
             }
-        } catch(e) {
-            echo "FAIL: Could not send message to ${messageProvider} on topic ${topic}"
-            echo "${e}"
-            sleep 30
-            error e.getMessage()
+            topic = topics[artifactType]['test'][messageType]
+        }
+
+        if (messageType == 'queued') {
+            msg = new MessageBuilder().buildMessageQueued(artifactId, artifactType, taskId, pipelineMetadata, runUrl, scenario)
+        }
+
+        if (messageType == 'running') {
+            msg = new MessageBuilder().buildMessageRunning(artifactId, artifactType, taskId, pipelineMetadata, runUrl, scenario)
+        }
+
+        if (messageType == 'complete') {
+            msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, isSkipped, note, scenario)
+        }
+
+        if (messageType == 'error') {
+            msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, scenario)
+        }
+
+        def msgProps = ''
+        def msgContent = JsonOutput.toJson(msg)
+
+        if (!msg) {
+            print("INFO: '${messageType}' message is not defined for the '${artifactType}' artifact type.")
+            return
+        }
+
+        if (dryRun) {
+            // dry run, just print the message
+            print("INFO: This is a dry run — skipping following \"${messageType}\" message: ${Utils.mapToJsonString(msg, false)}\ntopic: ${topic}")
+            return
+        }
+
+        if (!messageProvider) {
+            print("FAIL: Missing configuration for the message provider - unable to send following message: ${msg.toString()}")
+            return
+        }
+
+        def sentResult
+        retry(10) {
+            try {
+                // 1 minute should be more than enough time to send the message
+                timeout(1) {
+                    // Send message
+                    sentResult = sendCIMessage(
+                        messageContent: msgContent,
+                        messageProperties: msgProps,
+                        messageType: "Custom",
+                        overrides: [
+                            topic: topic
+                        ],
+                        failOnError: true,
+                        providerName: messageProvider
+                    )
+                }
+            } catch(e) {
+                echo "FAIL: Could not send message to ${messageProvider} on topic ${topic}"
+                echo "${e}"
+                sleep 30
+                error e.getMessage()
+            }
+        }
+        String resultMsgId = sentResult.getMessageId()
+        String resultMsgContent = sentResult.getMessageContent()
+
+        print("INFO: Message sent; id = ${resultMsgId}")
+        sentResults += sentResult
+
+        if (artifactIds.length > 1) {
+            // there is more than one artifact id, so let's wait a bit before sending
+            // the next message
+            sleep(time: 1, unit: 'SECONDS')
         }
     }
-    String resultMsgId = sendResult.getMessageId()
-    String resultMsgContent = sendResult.getMessageContent()
-
-    print("INFO: Message sent; id = ${resultMsgId}")
-    return sendResult
+    return sentResults
 }
