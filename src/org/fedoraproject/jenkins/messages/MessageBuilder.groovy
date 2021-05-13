@@ -122,14 +122,14 @@ def buildMessageComplete(String artifactId, String artifactType, String taskId, 
 }
 
 
-def buildMessageError(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl, String scenario) {
+def buildMessageError(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl, String scenario, String errorReason) {
 
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit, scenario)
+        msg = new RpmBuildMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit, scenario, errorReason)
     } else if (artifactType == 'fedora-dist-git') {
-        msg = new PullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new PullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit, errorReason)
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'fedora-update') {

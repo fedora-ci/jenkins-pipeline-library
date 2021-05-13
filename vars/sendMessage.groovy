@@ -23,6 +23,7 @@ def call(Map params = [:]) {
     def isInfo = params.get('isInfo').asBoolean() ?: false
     def note = params.get('note') ?: ''
     def scenario = params.get('testScenario') ?: ''
+    def errorReason = params.get('errorReason') ?: ''
 
     // isInfo is an alias for isSkipped
     isSkipped = isSkipped || isInfo
@@ -101,7 +102,7 @@ def call(Map params = [:]) {
         }
 
         if (messageType == 'error') {
-            msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, scenario)
+            msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, scenario, errorReason)
         }
 
         def msgProps = ''
