@@ -11,7 +11,17 @@ def call(Map params = [:]) {
 
     dir("temp-repoHasTests${env.BUILD_ID}") {
         try {
-            sh("git clone ${repoUrl} .")
+
+            def retryCounter = 0
+
+            // retry git-clone 10 times, and sleep 1 minute between retries
+            retry(10) {
+                if (retryCounter) {
+                    sleep(time: 1, unit: 'MINUTES')
+                }
+                retryCounter += 1
+                sh("git clone ${repoUrl} .")
+            }
             // check that the commit hash exists
             def refExists = sh(script: "git cat-file -e ${ref}", returnStatus: true)
             if (refExists != 0) {
