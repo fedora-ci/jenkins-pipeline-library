@@ -170,7 +170,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 }
 
 
-def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, String xunit, String scenario) {
+def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, String xunit, String scenario, String errorReason) {
 
     def msgTemplate
 
@@ -217,7 +217,11 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
 
     // test section
-    msgTemplate['error']['reason'] = env.ERROR_MESSAGE ? "${env.ERROR_MESSAGE}" : 'Infrastructure Failure'
+    if (errorReason) {
+        msgTemplate['error']['reason'] = errorReason
+    } else {
+        msgTemplate['error']['reason'] = env.ERROR_MESSAGE ? "${env.ERROR_MESSAGE}" : 'Infrastructure Failure'
+    }
     msgTemplate['error']['url'] = "${env.BUILD_URL}console"
 
     // misc
