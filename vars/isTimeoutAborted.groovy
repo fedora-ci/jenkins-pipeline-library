@@ -22,6 +22,7 @@ def call(Map params = [:]) {
         return false
     }
 
+    timeout = timeout.toInteger()
     // we need the timeout in seconds
     if (timeUnit == 'MINUTES') {
         timeout = timeout * 60
