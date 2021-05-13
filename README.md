@@ -29,6 +29,7 @@ This is a list of all steps implemented in the library. Click on a particular st
 * [isScratchBuild()](./docs/steps/isScratchBuild.md)
 * [isProduction()](./docs/steps/isProduction.md)
 * [isPullRequest()](./docs/steps/isPullRequest.md)
+* [isTimeoutAborted()](./docs/steps/isTimeoutAborted.md)
 * [loadConfig()](./docs/steps/loadConfig.md)
 * [sendMessage()](./docs/steps/sendMessage.md)
 * [setBuildNameFromArtifactId()](./docs/steps/setBuildNameFromArtifactId.md)
