@@ -1,0 +1,35 @@
+{
+    "artifact": {
+        "context": "",
+        "id": "",
+        "issuer": "",
+        "name": "",
+        "nsvc": "",
+        "stream": "",
+        "type": "",
+        "version": ""
+    },
+    "category": "",
+    "ci": {
+        "email": "",
+        "irc": "",
+        "name": "",
+        "team": "",
+        "url": ""
+    },
+    "generated_at": "",
+    "label": [],
+    "namespace": "",
+    "note": "",
+    "run": {
+        "log": "",
+        "rebuild": "",
+        "url": ""
+    },
+    "status": "",
+    "system": [],
+    "thread_id": "",
+    "type": "",
+    "version": "",
+    "xunit": ""
+}

@@ -1,0 +1,41 @@
+{
+    "artifact": {
+        "context": "",
+        "id": "",
+        "issuer": "",
+        "name": "",
+        "nsvc": "",
+        "stream": "",
+        "type": "",
+        "version": ""
+    },
+    "category": "",
+    "ci": {
+        "email": "",
+        "irc": "",
+        "name": "",
+        "team": "",
+        "url": ""
+    },
+    "docs": null,
+    "generated_at": "",
+    "issue_url": null,
+    "label": null,
+    "namespace": "",
+    "note": null,
+    "reason": null,
+    "run": {
+        "additional_info": [],
+        "debug": "",
+        "log": "",
+        "log_raw": "",
+        "log_stream": "",
+        "parameters": {},
+        "rebuild": "",
+        "trigger_rebuild": "",
+        "url": ""
+    },
+    "thread_id": "",
+    "type": "",
+    "version": ""
+}
