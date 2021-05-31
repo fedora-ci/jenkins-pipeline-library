@@ -42,6 +42,7 @@ Fedora CI is "artifact-centric", i.e. everything more or less evolves around art
 * koji-build
 * fedora-dist-git
 * fedora-update
+* redhat-module
 
 Other artifact types are not supported yet.
 

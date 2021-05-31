@@ -39,6 +39,8 @@ def buildMessageQueued(String artifactId, String artifactType, String taskId, Ma
         msg = new PullRequestMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
+    } else if (artifactType == 'redhat-module') {
+        msg = new ModuleMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageQueued(artifactId, pipelineMetadata)
     } else {
@@ -70,6 +72,8 @@ def buildMessageRunning(String artifactId, String artifactType, String taskId, M
         msg = new PullRequestMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
+    } else if (artifactType == 'redhat-module') {
+        msg = new ModuleMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageRunning(artifactId, pipelineMetadata)
     } else {
@@ -101,6 +105,8 @@ def buildMessageComplete(String artifactId, String artifactType, String taskId, 
         msg = new PullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
+    } else if (artifactType == 'redhat-module') {
+        msg = new ModuleMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageComplete(artifactId, pipelineMetadata, xunit, isSkipped)
     } else {
@@ -132,6 +138,8 @@ def buildMessageError(String artifactId, String artifactType, String taskId, Map
         msg = new PullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit, errorReason)
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
+    } else if (artifactType == 'redhat-module') {
+        msg = new ModuleMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageError(artifactId, pipelineMetadata, xunit)
     } else {
