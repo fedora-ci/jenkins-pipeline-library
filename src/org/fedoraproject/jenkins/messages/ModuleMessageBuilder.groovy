@@ -39,6 +39,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['category'] = pipelineMetadata['testCategory']
     msgTemplate['type'] = pipelineMetadata['testType']
+    msgTemplate['docs'] = pipelineMetadata['docs']
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
@@ -95,6 +96,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['category'] = pipelineMetadata['testCategory']
     msgTemplate['type'] = pipelineMetadata['testType']
+    msgTemplate['docs'] = pipelineMetadata['docs']
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
@@ -160,6 +162,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['type'] = pipelineMetadata['testType']
     msgTemplate['status'] = result
     msgTemplate['xunit'] = xunit
+    msgTemplate['docs'] = pipelineMetadata['docs']
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
