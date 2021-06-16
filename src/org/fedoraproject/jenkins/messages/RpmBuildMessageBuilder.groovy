@@ -42,6 +42,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata,
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
     }
@@ -88,6 +89,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
     }
@@ -142,6 +144,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['test']['note'] = note
     msgTemplate['test']['result'] = result
     msgTemplate['test']['xunit'] = xunit
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
     }
@@ -200,6 +203,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['result'] = 'failed'
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
     }

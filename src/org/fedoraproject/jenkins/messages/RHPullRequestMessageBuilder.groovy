@@ -46,6 +46,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['category'] = pipelineMetadata['testCategory']
     msgTemplate['type'] = pipelineMetadata['testType']
+    msgTemplate['docs'] = pipelineMetadata['docs']
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
@@ -111,6 +112,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['type'] = pipelineMetadata['testType']
     msgTemplate['status'] = result
     msgTemplate['xunit'] = xunit
+    msgTemplate['docs'] = pipelineMetadata['docs']
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
@@ -168,6 +170,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['type'] = pipelineMetadata['testType']
     msgTemplate['status'] = "failed"
     msgTemplate['xunit'] = xunit
+    msgTemplate['docs'] = pipelineMetadata['docs']
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(

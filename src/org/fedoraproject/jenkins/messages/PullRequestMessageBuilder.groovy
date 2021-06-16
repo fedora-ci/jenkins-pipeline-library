@@ -45,6 +45,7 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -91,6 +92,7 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     msgTemplate['test']['type'] = pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
@@ -141,6 +143,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
     msgTemplate['test']['note'] = ''
     msgTemplate['test']['result'] = result
     msgTemplate['test']['xunit'] = xunit
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
 
     // run section
     if (msgTemplate['test']['xunit']) {
@@ -204,6 +207,7 @@ def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, 
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['test']['result'] = 'failed'
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
 
     // test section
     if (errorReason) {
