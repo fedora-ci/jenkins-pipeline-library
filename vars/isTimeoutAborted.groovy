@@ -11,7 +11,7 @@ def call(Map params = [:]) {
     // and compare it with the expected timeout. Meh...
 
     def timeout = params.get('timeout')
-    def timeUnit = params.get('timeUnit', 'SECONDS')
+    def timeUnit = params.get('unit', 'SECONDS')
 
     if (timeout == null) {
         error('Required argument missing: timeout')
