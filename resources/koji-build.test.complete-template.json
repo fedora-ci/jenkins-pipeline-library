@@ -48,7 +48,7 @@
         "label": ""
      }],
   "notification": {
-     "recipients": [ "", "" ]
+     "recipients": []
   },
   "generated_at": "",
   "version": ""

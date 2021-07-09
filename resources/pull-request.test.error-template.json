@@ -34,7 +34,7 @@
         "reason": ""
     },
     "notification": {
-        "recipients": [ "" ]
+        "recipients": []
     },
     "generated_at": "",
     "version": "0.2.1"
