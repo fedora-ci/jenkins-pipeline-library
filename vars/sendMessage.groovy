@@ -24,6 +24,10 @@ def call(Map params = [:]) {
     def note = params.get('note') ?: ''
     def scenario = params.get('testScenario') ?: ''
     def errorReason = params.get('errorReason') ?: ''
+    def ciConfig = params.get('ciConfig') ?: [:]
+    def isNestedRun = params.get('_isNestedRun', false)?.toBoolean()
+    def testType = params.get('testType') ?: ''
+    def testResult = params.get('testResult') ?: ''
 
     // isInfo is an alias for isSkipped
     isSkipped = isSkipped || isInfo
@@ -98,11 +102,11 @@ def call(Map params = [:]) {
         }
 
         if (messageType == 'complete') {
-            msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, isSkipped, note, scenario)
+            msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, gzip(xunit), runUrl, isSkipped, note, scenario, testType, testResult)
         }
 
         if (messageType == 'error') {
-            msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, scenario, errorReason)
+            msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, gzip(xunit), runUrl, scenario, errorReason)
         }
 
         def msgProps = ''
@@ -116,7 +120,7 @@ def call(Map params = [:]) {
         if (dryRun) {
             // dry run, just print the message
             print("INFO: This is a dry run — skipping following \"${messageType}\" message: ${Utils.mapToJsonString(msg, false)}\ntopic: ${topic}")
-            return
+            // return
         }
 
         if (!messageProvider) {
@@ -129,17 +133,18 @@ def call(Map params = [:]) {
             try {
                 // 1 minute should be more than enough time to send the message
                 timeout(1) {
+                    echo "sent..."
                     // Send message
-                    sentResult = sendCIMessage(
-                        messageContent: msgContent,
-                        messageProperties: msgProps,
-                        messageType: "Custom",
-                        overrides: [
-                            topic: topic
-                        ],
-                        failOnError: true,
-                        providerName: messageProvider
-                    )
+                    // sentResult = sendCIMessage(
+                    //     messageContent: msgContent,
+                    //     messageProperties: msgProps,
+                    //     messageType: "Custom",
+                    //     overrides: [
+                    //         topic: topic
+                    //     ],
+                    //     failOnError: true,
+                    //     providerName: messageProvider
+                    // )
                 }
             } catch(e) {
                 echo "FAIL: Could not send message to ${messageProvider} on topic ${topic}"
@@ -148,17 +153,37 @@ def call(Map params = [:]) {
                 error e.getMessage()
             }
         }
-        String resultMsgId = sentResult.getMessageId()
-        String resultMsgContent = sentResult.getMessageContent()
+        // String resultMsgId = sentResult.getMessageId()
+        // String resultMsgContent = sentResult.getMessageContent()
 
-        print("INFO: Message sent; id = ${resultMsgId}")
-        sentResults += sentResult
+        // print("INFO: Message sent; id = ${resultMsgId}")
+        // sentResults += sentResult
 
         if (artifactIds.length > 1) {
             // there is more than one artifact id, so let's wait a bit before sending
             // the next message
             sleep(time: 1, unit: 'SECONDS')
         }
+
+        print("separate...")
+        print("1: ${ciConfig} 2: ${isNestedRun} 3: ${messageType}")
+        if (ciConfig && !isNestedRun && messageType == 'complete') {
+            print("in...")
+
+            if (ciConfig.get('resultsdb-testcase') == 'separate') {
+                print("in2...")
+
+                def xunitMap = Utils.xunit2simpleMap(xunit)
+                xunitMap.each { name, result ->
+                    params['_isNestedRun'] = true
+                    params['testType'] = name
+                    params['testResult'] = result
+                    params['xunit'] = xunit
+                    call(params)
+                }
+            }
+        }
     }
+
     return sentResults
 }

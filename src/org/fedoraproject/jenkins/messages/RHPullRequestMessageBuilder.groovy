@@ -70,8 +70,17 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
     return msgTemplate
 }
 
-
-def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit) {
+def buildMessageComplete(
+        String artifactType,
+        String taskId,
+        Map pipelineMetadata,
+        String xunit,
+        Boolean isSkipped,
+        String note,
+        String scenario,
+        String testType,
+        String testResult
+    ) {
 
     def msgTemplate
 
@@ -101,7 +110,11 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     // test section
     def result = 'needs_inspection'
-    if (currentBuild.result == 'SUCCESS') {
+    if (isSkipped) {
+        result = 'info'
+    } else if (testResult) {
+        result = testResult
+    } else if (currentBuild.result == 'SUCCESS') {
         result = 'passed'
     } else if (currentBuild.result == 'UNSTABLE') {
         result = 'needs_inspection'
@@ -109,7 +122,7 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['category'] = pipelineMetadata['testCategory']
-    msgTemplate['type'] = pipelineMetadata['testType']
+    msgTemplate['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['status'] = result
     msgTemplate['xunit'] = xunit
     msgTemplate['docs'] = pipelineMetadata['docs']
