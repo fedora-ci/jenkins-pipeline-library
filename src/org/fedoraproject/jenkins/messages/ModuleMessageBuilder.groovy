@@ -7,8 +7,11 @@ import org.fedoraproject.jenkins.mbs.Mbs
 import org.fedoraproject.jenkins.Utils
 
 
-def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata) {
-
+def buildMessageQueued(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'redhat-module.test.queued-template.json'
@@ -64,8 +67,11 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
 }
 
 
-def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata) {
-
+def buildMessageRunning(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'redhat-module.test.running-template.json'
@@ -121,8 +127,12 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 }
 
 
-def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit) {
-
+def buildMessageComplete(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String xunit
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'redhat-module.test.complete-template.json'
@@ -187,8 +197,12 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 }
 
 
-def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, String xunit) {
-
+def buildMessageError(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String xunit
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'redhat-module.test.error-template.json'

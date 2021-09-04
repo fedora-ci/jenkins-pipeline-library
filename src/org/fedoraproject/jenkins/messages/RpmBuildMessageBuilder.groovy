@@ -7,8 +7,12 @@ import org.fedoraproject.jenkins.koji.Koji
 import org.fedoraproject.jenkins.Utils
 
 
-def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata, String scenario) {
-
+def buildMessageQueued(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String scenario
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'koji-build.test.queued-template.json'
@@ -54,8 +58,12 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata,
 }
 
 
-def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata, String scenario) {
-
+def buildMessageRunning(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String scenario
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'koji-build.test.running-template.json'
@@ -101,8 +109,15 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 }
 
 
-def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit, Boolean isSkipped, String note, String scenario) {
-
+def buildMessageComplete(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String xunit,
+    Boolean isSkipped,
+    String note,
+    String scenario
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'koji-build.test.complete-template.json'
@@ -173,8 +188,14 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 }
 
 
-def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, String xunit, String scenario, String errorReason) {
-
+def buildMessageError(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String xunit,
+    String scenario,
+    String errorReason
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'koji-build.test.error-template.json'

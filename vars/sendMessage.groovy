@@ -62,7 +62,6 @@ def call(Map params = [:]) {
             if (!env._PIPELINE_LIBRARY_TOPICS_MAPPING) {
                 // If the mapping is not in the environment yet,
                 // we fetch it from the configured URL and cache it.
-                // So we will find it there next time.
                 def response
                 def sleepTime = 5  // seconds
                 retry (10) {
@@ -90,19 +89,52 @@ def call(Map params = [:]) {
         }
 
         if (messageType == 'queued') {
-            msg = new MessageBuilder().buildMessageQueued(artifactId, artifactType, taskId, pipelineMetadata, runUrl, scenario)
+            msg = new MessageBuilder().buildMessageQueued(
+                artifactId,
+                artifactType,
+                taskId,
+                pipelineMetadata,
+                runUrl,
+                scenario
+            )
         }
 
         if (messageType == 'running') {
-            msg = new MessageBuilder().buildMessageRunning(artifactId, artifactType, taskId, pipelineMetadata, runUrl, scenario)
+            msg = new MessageBuilder().buildMessageRunning(
+                artifactId,
+                artifactType,
+                taskId,
+                pipelineMetadata,
+                runUrl,
+                scenario
+            )
         }
 
         if (messageType == 'complete') {
-            msg = new MessageBuilder().buildMessageComplete(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, isSkipped, note, scenario)
+            msg = new MessageBuilder().buildMessageComplete(
+                artifactId,
+                artifactType,
+                taskId,
+                pipelineMetadata,
+                xunit,
+                runUrl,
+                isSkipped,
+                note,
+                scenario
+            )
         }
 
         if (messageType == 'error') {
-            msg = new MessageBuilder().buildMessageError(artifactId, artifactType, taskId, pipelineMetadata, xunit, runUrl, scenario, errorReason)
+            msg = new MessageBuilder().buildMessageError(
+                artifactId,
+                artifactType,
+                taskId,
+                pipelineMetadata,
+                xunit,
+                runUrl,
+                scenario,
+                errorReason
+            )
         }
 
         def msgProps = ''
