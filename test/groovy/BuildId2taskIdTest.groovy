@@ -12,6 +12,7 @@ class BuildId2taskIdTest extends BasePipelineTest {
 
     def buildId2taskId(taskId) {
         super.setUp()
+        binding.setVariable('env', ['KOJI_API_URL': 'https://koji.fedoraproject.org/kojihub'])
         def step = helper.loadScript('vars/buildId2taskId.groovy', binding)
         return step(taskId)
     }
