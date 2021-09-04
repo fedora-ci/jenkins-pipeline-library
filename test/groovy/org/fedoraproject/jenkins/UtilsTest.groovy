@@ -87,6 +87,30 @@ class UtilsTest extends BasePipelineTest {
     }
 
     @Test
+    void xunitResults2mapTest() {
+        def xunit = '''
+<testsuites overall-result=\"passed\">
+    <testsuite overall-result=\"passed\" tests=\"1\" name=\"ts1\">
+        <testcase name=\"/check-sat-x86_64\" result=\"passed\">
+            <testing-environment name=\"requested\">
+                <property name=\"arch\" value=\"x86_64\"/>
+            </testing-environment>
+        </testcase>
+    </testsuite>
+    <testsuite overall-result=\"failed\" tests=\"1\" name=\"ts2\">
+        <testcase name=\"/check-sat-x86_64\" result=\"failed\">
+            <testing-environment name=\"requested\">
+                <property name=\"arch\" value=\"x86_64\"/>
+            </testing-environment>
+        </testcase>
+    </testsuite>
+</testsuites>
+        '''
+        def result = Utils.xunitResults2map(xunit)
+        assertEquals 2, result.size()
+    }
+
+    @Test
     void generatePipelineIdFromArtifactIdAndTestcaseTest() {
         def result = Utils.generatePipelineIdFromArtifactIdAndTestcase('koji-build:123456', 'fedora-ci.koji-build.rpminspect.static-analysis')
         assertEquals 'f17d6cc02a77a34db48fd6bf39f2fb2a86a823b4849058292abc5300eb9b0c5b', result
