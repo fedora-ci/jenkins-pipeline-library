@@ -22,10 +22,10 @@ class KojiTest extends BasePipelineTest {
     @Test
     void getBuildTargetsTest() {
         Koji koji = new Koji()
-        def buildTarget = koji.getBuildTargets('f32')
+        def buildTarget = koji.getBuildTargets('f36')
         assertNotNull buildTarget
         assertTrue buildTarget.size == 1
-        assertTrue buildTarget[0]['name'] == 'f32'
+        assertTrue buildTarget[0]['name'] == 'f36'
     }
 
     @Test

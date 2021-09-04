@@ -12,6 +12,7 @@ class SetBuildNameFromArtifactIdTest extends BasePipelineTest {
 
     def setBuildNameFromArtifactId(params) {
         super.setUp()
+        binding.setVariable('env', ['KOJI_API_URL': 'https://koji.fedoraproject.org/kojihub'])
         def step = helper.loadScript('vars/setBuildNameFromArtifactId.groovy', binding)
         return step(params)
     }

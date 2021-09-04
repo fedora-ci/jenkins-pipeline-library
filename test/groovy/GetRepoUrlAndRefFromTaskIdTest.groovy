@@ -12,7 +12,10 @@ class GetRepoUrlAndRefFromTaskIdTest extends BasePipelineTest {
 
     def getRepoUrlAndRefFromTaskId(params) {
         super.setUp()
-        binding.setVariable('env', ['FEDORA_CI_PAGURE_DIST_GIT_URL': 'https://src.fedoraproject.org'])
+        binding.setVariable('env', [
+            'FEDORA_CI_PAGURE_DIST_GIT_URL': 'https://src.fedoraproject.org',
+            'KOJI_API_URL': 'https://koji.fedoraproject.org/kojihub'
+        ])
         def step = helper.loadScript('vars/getRepoUrlAndRefFromTaskId.groovy', binding)
         return step(params)
     }
