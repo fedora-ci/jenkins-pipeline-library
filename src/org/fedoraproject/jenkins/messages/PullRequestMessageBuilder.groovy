@@ -7,8 +7,11 @@ import org.fedoraproject.jenkins.pagure.Pagure
 import org.fedoraproject.jenkins.Utils
 
 
-def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata) {
-
+def buildMessageQueued(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'pull-request.test.queued-template.json'
@@ -54,8 +57,11 @@ def buildMessageQueued(String artifactType, String taskId, Map pipelineMetadata)
 }
 
 
-def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata) {
-
+def buildMessageRunning(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'pull-request.test.running-template.json'
@@ -101,8 +107,12 @@ def buildMessageRunning(String artifactType, String taskId, Map pipelineMetadata
 }
 
 
-def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadata, String xunit) {
-
+def buildMessageComplete(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String xunit
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'pull-request.test.complete-template.json'
@@ -166,8 +176,13 @@ def buildMessageComplete(String artifactType, String taskId, Map pipelineMetadat
 }
 
 
-def buildMessageError(String artifactType, String taskId, Map pipelineMetadata, String xunit, String errorReason) {
-
+def buildMessageError(
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String xunit,
+    String errorReason
+) {
     def msgTemplate
 
     def msgTemplateString = libraryResource 'pull-request.test.error-template.json'

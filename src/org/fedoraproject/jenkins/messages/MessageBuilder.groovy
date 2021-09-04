@@ -29,20 +29,36 @@ def getPipelineSection(artifactType, taskId, pipelineMetadata) {
 }
 
 
-def buildMessageQueued(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String runUrl, String scenario) {
-
+def buildMessageQueued(
+    String artifactId,
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String runUrl,
+    String scenario
+) {
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata, scenario)
+        msg = new RpmBuildMessageBuilder().buildMessageQueued(
+            artifactType, taskId, pipelineMetadata, scenario
+        )
     } else if (artifactType == 'fedora-dist-git') {
-        msg = new PullRequestMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
+        msg = new PullRequestMessageBuilder().buildMessageQueued(
+            artifactType, taskId, pipelineMetadata
+        )
     } else if (artifactType == 'dist-git-pr') {
-        msg = new RHPullRequestMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
+        msg = new RHPullRequestMessageBuilder().buildMessageQueued(
+            artifactType, taskId, pipelineMetadata
+        )
     } else if (artifactType == 'redhat-module') {
-        msg = new ModuleMessageBuilder().buildMessageQueued(artifactType, taskId, pipelineMetadata)
+        msg = new ModuleMessageBuilder().buildMessageQueued(
+            artifactType, taskId, pipelineMetadata
+        )
     } else if (artifactType == 'fedora-update') {
-        msg = new FedoraUpdateMessageBuilder().buildMessageQueued(artifactId, pipelineMetadata)
+        msg = new FedoraUpdateMessageBuilder().buildMessageQueued(
+            artifactId, pipelineMetadata
+        )
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -62,20 +78,36 @@ def buildMessageQueued(String artifactId, String artifactType, String taskId, Ma
 }
 
 
-def buildMessageRunning(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String runUrl, String scenario) {
-
+def buildMessageRunning(
+    String artifactId,
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String runUrl,
+    String scenario
+) {
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata, scenario)
+        msg = new RpmBuildMessageBuilder().buildMessageRunning(
+            artifactType, taskId, pipelineMetadata, scenario
+        )
     } else if (artifactType == 'fedora-dist-git') {
-        msg = new PullRequestMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
+        msg = new PullRequestMessageBuilder().buildMessageRunning(
+            artifactType, taskId, pipelineMetadata
+        )
     } else if (artifactType == 'dist-git-pr') {
-        msg = new RHPullRequestMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
+        msg = new RHPullRequestMessageBuilder().buildMessageRunning(
+            artifactType, taskId, pipelineMetadata
+        )
     } else if (artifactType == 'redhat-module') {
-        msg = new ModuleMessageBuilder().buildMessageRunning(artifactType, taskId, pipelineMetadata)
+        msg = new ModuleMessageBuilder().buildMessageRunning(
+            artifactType, taskId, pipelineMetadata
+        )
     } else if (artifactType == 'fedora-update') {
-        msg = new FedoraUpdateMessageBuilder().buildMessageRunning(artifactId, pipelineMetadata)
+        msg = new FedoraUpdateMessageBuilder().buildMessageRunning(
+            artifactId, pipelineMetadata
+        )
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -95,20 +127,39 @@ def buildMessageRunning(String artifactId, String artifactType, String taskId, M
 }
 
 
-def buildMessageComplete(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl, Boolean isSkipped, String note, String scenario) {
-
+def buildMessageComplete(
+    String artifactId,
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String xunit,
+    String runUrl,
+    Boolean isSkipped,
+    String note,
+    String scenario
+) {
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario)
+        msg = new RpmBuildMessageBuilder().buildMessageComplete(
+            artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario
+        )
     } else if (artifactType == 'fedora-dist-git') {
-        msg = new PullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new PullRequestMessageBuilder().buildMessageComplete(
+            artifactType, taskId, pipelineMetadata, xunit
+        )
     } else if (artifactType == 'dist-git-pr') {
-        msg = new RHPullRequestMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new RHPullRequestMessageBuilder().buildMessageComplete(
+            artifactType, taskId, pipelineMetadata, xunit
+        )
     } else if (artifactType == 'redhat-module') {
-        msg = new ModuleMessageBuilder().buildMessageComplete(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new ModuleMessageBuilder().buildMessageComplete(
+            artifactType, taskId, pipelineMetadata, xunit
+        )
     } else if (artifactType == 'fedora-update') {
-        msg = new FedoraUpdateMessageBuilder().buildMessageComplete(artifactId, pipelineMetadata, xunit, isSkipped)
+        msg = new FedoraUpdateMessageBuilder().buildMessageComplete(
+            artifactId, pipelineMetadata, xunit, isSkipped
+        )
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
@@ -128,20 +179,38 @@ def buildMessageComplete(String artifactId, String artifactType, String taskId, 
 }
 
 
-def buildMessageError(String artifactId, String artifactType, String taskId, Map pipelineMetadata, String xunit, String runUrl, String scenario, String errorReason) {
-
+def buildMessageError(
+    String artifactId,
+    String artifactType,
+    String taskId,
+    Map pipelineMetadata,
+    String xunit,
+    String runUrl,
+    String scenario,
+    String errorReason
+) {
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
-        msg = new RpmBuildMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit, scenario, errorReason)
+        msg = new RpmBuildMessageBuilder().buildMessageError(
+            artifactType, taskId, pipelineMetadata, xunit, scenario, errorReason
+        )
     } else if (artifactType == 'fedora-dist-git') {
-        msg = new PullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit, errorReason)
+        msg = new PullRequestMessageBuilder().buildMessageError(
+            artifactType, taskId, pipelineMetadata, xunit, errorReason
+        )
     } else if (artifactType == 'dist-git-pr') {
-        msg = new RHPullRequestMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new RHPullRequestMessageBuilder().buildMessageError(
+            artifactType, taskId, pipelineMetadata, xunit
+        )
     } else if (artifactType == 'redhat-module') {
-        msg = new ModuleMessageBuilder().buildMessageError(artifactType, taskId, pipelineMetadata, xunit)
+        msg = new ModuleMessageBuilder().buildMessageError(
+            artifactType, taskId, pipelineMetadata, xunit
+        )
     } else if (artifactType == 'fedora-update') {
-        msg = new FedoraUpdateMessageBuilder().buildMessageError(artifactId, pipelineMetadata, xunit)
+        msg = new FedoraUpdateMessageBuilder().buildMessageError(
+            artifactId, pipelineMetadata, xunit
+        )
     } else {
         throw new Exception("Unknown artifact type: ${artifactType}")
     }
