@@ -4,6 +4,8 @@ import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
 import java.time.Instant
 import java.security.MessageDigest
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 
 import org.fedoraproject.jenkins.koji.model.BuildSource
 
@@ -110,6 +112,29 @@ class Utils {
         def digest = MessageDigest.getInstance("SHA-256")
         def hash = digest.digest(input.getBytes())
         return hash.encodeHex().toString().toLowerCase()
+    }
+
+    /*
+     * Extract results from XUnit and return them as a map.
+     *
+     * Result example:
+     * [
+     *    "test-suite-1": "passed",
+     *    "test-suite-2": "failed"
+     * ]
+     *
+     * @return result map
+     */
+    static Map xunitResults2map(def xunit) {
+        def result = [:]
+        if (xunit) {
+            xunit = xunit.replace('\\"', '"')
+            def xml = new XmlSlurper().parseText(xunit)
+            if (xml.testsuite.size() > 0) {
+                xml.testsuite.each { ts -> result[ts.@'name'] = ts.@'overall-result' }
+            }
+        }
+        return result
     }
 
     static String getReleaseIdFromBranch(def env) {
