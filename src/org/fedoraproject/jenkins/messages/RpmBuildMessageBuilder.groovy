@@ -11,7 +11,9 @@ def buildMessageQueued(
     String artifactType,
     String taskId,
     Map pipelineMetadata,
-    String scenario
+    String scenario,
+    String testType,
+    String testProfile
 ) {
     def msgTemplate
 
@@ -43,12 +45,16 @@ def buildMessageQueued(
     msgTemplate['artifact']['type'] = artifactType
 
     // test section
-    msgTemplate['test']['type'] = pipelineMetadata['testType']
+    msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
+    }
+    if (testProfile) {
+        // this is a non-standard field
+        msgTemplate['test']['profile'] = testProfile
     }
 
     // misc
@@ -62,7 +68,9 @@ def buildMessageRunning(
     String artifactType,
     String taskId,
     Map pipelineMetadata,
-    String scenario
+    String scenario,
+    String testType,
+    String testProfile
 ) {
     def msgTemplate
 
@@ -94,12 +102,16 @@ def buildMessageRunning(
     msgTemplate['artifact']['type'] = artifactType
 
     // test section
-    msgTemplate['test']['type'] = pipelineMetadata['testType']
+    msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
+    }
+    if (testProfile) {
+        // this is a non-standard field
+        msgTemplate['test']['profile'] = testProfile
     }
 
     // misc
@@ -116,7 +128,9 @@ def buildMessageComplete(
     String xunit,
     Boolean isSkipped,
     String note,
-    String scenario
+    String scenario,
+    String testType,
+    String testProfile
 ) {
     def msgTemplate
 
@@ -153,7 +167,7 @@ def buildMessageComplete(
         result = 'needs_inspection'
     }
 
-    msgTemplate['test']['type'] = pipelineMetadata['testType']
+    msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['note'] = note
@@ -162,6 +176,10 @@ def buildMessageComplete(
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
+    }
+    if (testProfile) {
+        // this is a non-standard field
+        msgTemplate['test']['profile'] = testProfile
     }
 
     // run section
@@ -194,7 +212,9 @@ def buildMessageError(
     Map pipelineMetadata,
     String xunit,
     String scenario,
-    String errorReason
+    String errorReason,
+    String testType,
+    String testProfile
 ) {
     def msgTemplate
 
@@ -220,13 +240,17 @@ def buildMessageError(
     msgTemplate['artifact']['type'] = artifactType
 
     // test section
-    msgTemplate['test']['type'] = pipelineMetadata['testType']
+    msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['result'] = 'failed'
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
+    }
+    if (testProfile) {
+        // this is a non-standard field
+        msgTemplate['test']['profile'] = testProfile
     }
 
     // run section
