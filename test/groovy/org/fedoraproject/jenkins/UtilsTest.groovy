@@ -90,14 +90,14 @@ class UtilsTest extends BasePipelineTest {
     void xunitResults2mapTest() {
         def xunit = '''
 <testsuites overall-result=\"passed\">
-    <testsuite overall-result=\"passed\" tests=\"1\" name=\"ts1\">
+    <testsuite result=\"passed\" tests=\"1\" name=\"ts1\">
         <testcase name=\"/check-sat-x86_64\" result=\"passed\">
             <testing-environment name=\"requested\">
                 <property name=\"arch\" value=\"x86_64\"/>
             </testing-environment>
         </testcase>
     </testsuite>
-    <testsuite overall-result=\"failed\" tests=\"1\" name=\"ts2\">
+    <testsuite result=\"failed\" tests=\"1\" name=\"ts2\">
         <testcase name=\"/check-sat-x86_64\" result=\"failed\">
             <testing-environment name=\"requested\">
                 <property name=\"arch\" value=\"x86_64\"/>
@@ -108,6 +108,9 @@ class UtilsTest extends BasePipelineTest {
         '''
         def result = Utils.xunitResults2map(xunit)
         assertEquals 2, result.size()
+        println("${result}")
+        assertEquals 'passed', result['ts1'].toString()
+        assertEquals 'needs_inspection', result['ts2'].toString()
     }
 
     @Test

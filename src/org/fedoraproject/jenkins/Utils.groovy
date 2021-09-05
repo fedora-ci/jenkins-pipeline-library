@@ -117,24 +117,32 @@ class Utils {
     /*
      * Extract results from XUnit and return them as a map.
      *
+     * The results are messaging-friendly, i.e. "failed" is
+     * translated to "needs_inspection".
+     *
      * Result example:
      * [
      *    "test-suite-1": "passed",
-     *    "test-suite-2": "failed"
+     *    "test-suite-2": "needs_inspection"
      * ]
      *
      * @return result map
      */
     static Map xunitResults2map(def xunit) {
-        def result = [:]
+        def results = [:]
         if (xunit) {
             xunit = xunit.replace('\\"', '"')
             def xml = new XmlSlurper().parseText(xunit)
             if (xml.testsuite.size() > 0) {
-                xml.testsuite.each { ts -> result[ts.@'name'] = ts.@'overall-result' }
+                xml.testsuite.each { ts -> results["${ts.@'name'}"] = "${ts.@'result'}" }
+            }
+            results.each { key, value ->
+                if (value == 'failed') {
+                    results[key] = 'needs_inspection'
+                }
             }
         }
-        return result
+        return results
     }
 
     static String getReleaseIdFromBranch(def env) {
