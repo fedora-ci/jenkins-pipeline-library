@@ -41,7 +41,7 @@ This is a list of all steps implemented in the library. Click on a particular st
 
 Fedora CI is "artifact-centric", i.e. everything more or less evolves around artifacts. This library currently supports following artifact types:
 
-* koji-build
+* koji-build and brew-build
 * fedora-dist-git
 * fedora-update
 * redhat-module
@@ -57,7 +57,7 @@ One thing not covered by the official documentation is unit testing. This librar
 To run the tests, type:
 
 ```shell
-mvn clean test
+./runtest.sh
 ```
 
 ### Coding style
