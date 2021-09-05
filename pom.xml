@@ -16,6 +16,14 @@
         </license>
     </licenses>
 
+    <repositories>
+        <repository>
+            <id>jenkins-releases</id>
+            <name>Jenkins Releases</name>
+            <url>http://repo.jenkins-ci.org/releases</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Test dependencies -->
         <dependency>
@@ -28,6 +36,18 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-basic-steps</artifactId>
+            <version>2.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-cps</artifactId>
+            <version>2.36</version>
             <scope>test</scope>
         </dependency>
 
