@@ -35,25 +35,27 @@ def buildMessageQueued(
     String taskId,
     Map pipelineMetadata,
     String runUrl,
-    String scenario
+    String scenario,
+    String testType,
+    String testProfile
 ) {
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageQueued(
-            artifactType, taskId, pipelineMetadata, scenario
+            artifactType, taskId, pipelineMetadata, scenario, testType, testProfile
         )
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageQueued(
-            artifactType, taskId, pipelineMetadata
+            artifactType, taskId, pipelineMetadata, scenario, testType, testProfile
         )
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageQueued(
-            artifactType, taskId, pipelineMetadata
+            artifactType, taskId, pipelineMetadata, scenario, testType, testProfile
         )
     } else if (artifactType == 'redhat-module') {
         msg = new ModuleMessageBuilder().buildMessageQueued(
-            artifactType, taskId, pipelineMetadata
+            artifactType, taskId, pipelineMetadata, scenario, testType, testProfile
         )
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageQueued(
@@ -84,25 +86,27 @@ def buildMessageRunning(
     String taskId,
     Map pipelineMetadata,
     String runUrl,
-    String scenario
+    String scenario,
+    String testType,
+    String testProfile
 ) {
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageRunning(
-            artifactType, taskId, pipelineMetadata, scenario
+            artifactType, taskId, pipelineMetadata, scenario, testType, testProfile
         )
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageRunning(
-            artifactType, taskId, pipelineMetadata
+            artifactType, taskId, pipelineMetadata, scenario, testType, testProfile
         )
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageRunning(
-            artifactType, taskId, pipelineMetadata
+            artifactType, taskId, pipelineMetadata, scenario, testType, testProfile
         )
     } else if (artifactType == 'redhat-module') {
         msg = new ModuleMessageBuilder().buildMessageRunning(
-            artifactType, taskId, pipelineMetadata
+            artifactType, taskId, pipelineMetadata, scenario, testType, testProfile
         )
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageRunning(
@@ -136,25 +140,28 @@ def buildMessageComplete(
     String runUrl,
     Boolean isSkipped,
     String note,
-    String scenario
+    String scenario,
+    String testType,
+    String testProfile,
+    String testResult
 ) {
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageComplete(
-            artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario
+            artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario, testType, testProfile
         )
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageComplete(
-            artifactType, taskId, pipelineMetadata, xunit
+            artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario, testType, testProfile
         )
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageComplete(
-            artifactType, taskId, pipelineMetadata, xunit
+            artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario, testType, testProfile
         )
     } else if (artifactType == 'redhat-module') {
         msg = new ModuleMessageBuilder().buildMessageComplete(
-            artifactType, taskId, pipelineMetadata, xunit
+            artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario, testType, testProfile
         )
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageComplete(
@@ -174,6 +181,13 @@ def buildMessageComplete(
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
         }
+        if (testResult && !isSkipped) {
+            if (msg.get('test')) {
+                msg['test']['result'] = testResult
+            } else if (msg.get('status')) {
+                msg['status'] = testResult
+            }
+        }
     }
     return msg
 }
@@ -187,25 +201,27 @@ def buildMessageError(
     String xunit,
     String runUrl,
     String scenario,
-    String errorReason
+    String errorReason,
+    String testType,
+    String testProfile
 ) {
     def msg
 
     if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageError(
-            artifactType, taskId, pipelineMetadata, xunit, scenario, errorReason
+            artifactType, taskId, pipelineMetadata, xunit, scenario, errorReason, testType, testProfile
         )
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageError(
-            artifactType, taskId, pipelineMetadata, xunit, errorReason
+            artifactType, taskId, pipelineMetadata, xunit, scenario, errorReason, testType, testProfile
         )
     } else if (artifactType == 'dist-git-pr') {
         msg = new RHPullRequestMessageBuilder().buildMessageError(
-            artifactType, taskId, pipelineMetadata, xunit
+            artifactType, taskId, pipelineMetadata, xunit, scenario, errorReason, testType, testProfile
         )
     } else if (artifactType == 'redhat-module') {
         msg = new ModuleMessageBuilder().buildMessageError(
-            artifactType, taskId, pipelineMetadata, xunit
+            artifactType, taskId, pipelineMetadata, xunit, scenario, errorReason, testType, testProfile
         )
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageError(

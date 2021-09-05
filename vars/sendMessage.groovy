@@ -24,6 +24,9 @@ def call(Map params = [:]) {
     def note = params.get('note') ?: ''
     def scenario = params.get('testScenario') ?: ''
     def errorReason = params.get('errorReason') ?: ''
+    def testType = params.get('testType') ?: ''
+    def testResult = params.get('testResult') ?: ''
+    def testProfile = params.get('testProfile') ?: ''
 
     // isInfo is an alias for isSkipped
     isSkipped = isSkipped || isInfo
@@ -95,7 +98,9 @@ def call(Map params = [:]) {
                 taskId,
                 pipelineMetadata,
                 runUrl,
-                scenario
+                scenario,
+                testType,
+                testProfile
             )
         }
 
@@ -106,7 +111,9 @@ def call(Map params = [:]) {
                 taskId,
                 pipelineMetadata,
                 runUrl,
-                scenario
+                scenario,
+                testType,
+                testProfile
             )
         }
 
@@ -120,7 +127,10 @@ def call(Map params = [:]) {
                 runUrl,
                 isSkipped,
                 note,
-                scenario
+                scenario,
+                testType,
+                testProfile,
+                testResult
             )
         }
 
@@ -133,7 +143,9 @@ def call(Map params = [:]) {
                 xunit,
                 runUrl,
                 scenario,
-                errorReason
+                errorReason,
+                testType,
+                testProfile
             )
         }
 

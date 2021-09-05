@@ -10,7 +10,10 @@ import org.fedoraproject.jenkins.Utils
 def buildMessageQueued(
     String artifactType,
     String taskId,
-    Map pipelineMetadata
+    Map pipelineMetadata,
+    String scenario,
+    String testType,
+    String testProfile
 ) {
     // OSCI is not sending queued messages for pull requests (?)
     return [:]
@@ -20,7 +23,10 @@ def buildMessageQueued(
 def buildMessageRunning(
     String artifactType,
     String taskId,
-    Map pipelineMetadata
+    Map pipelineMetadata,
+    String scenario,
+    String testType,
+    String testProfile
 ) {
     def msgTemplate
 
@@ -51,8 +57,15 @@ def buildMessageRunning(
     // test section
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['category'] = pipelineMetadata['testCategory']
-    msgTemplate['type'] = pipelineMetadata['testType']
+    msgTemplate['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['docs'] = pipelineMetadata['docs']
+    if (scenario) {
+        msgTemplate['scenario'] = scenario
+    }
+    if (testProfile) {
+        // this is a non-standard field
+        msgTemplate['profile'] = testProfile
+    }
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
@@ -81,7 +94,12 @@ def buildMessageComplete(
     String artifactType,
     String taskId,
     Map pipelineMetadata,
-    String xunit
+    String xunit,
+    Boolean isSkipped,
+    String note,
+    String scenario,
+    String testType,
+    String testProfile
 ) {
     def msgTemplate
 
@@ -111,7 +129,9 @@ def buildMessageComplete(
 
     // test section
     def result = 'needs_inspection'
-    if (currentBuild.result == 'SUCCESS') {
+    if (isSkipped) {
+        result = 'info'
+    } else if (currentBuild.result == 'SUCCESS') {
         result = 'passed'
     } else if (currentBuild.result == 'UNSTABLE') {
         result = 'needs_inspection'
@@ -119,10 +139,18 @@ def buildMessageComplete(
 
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['category'] = pipelineMetadata['testCategory']
-    msgTemplate['type'] = pipelineMetadata['testType']
+    msgTemplate['type'] = testType ?: pipelineMetadata['testType']
+    msgTemplate['note'] = note
     msgTemplate['status'] = result
     msgTemplate['xunit'] = xunit
     msgTemplate['docs'] = pipelineMetadata['docs']
+    if (scenario) {
+        msgTemplate['scenario'] = scenario
+    }
+    if (testProfile) {
+        // this is a non-standard field
+        msgTemplate['profile'] = testProfile
+    }
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
@@ -151,7 +179,11 @@ def buildMessageError(
     String artifactType,
     String taskId,
     Map pipelineMetadata,
-    String xunit
+    String xunit,
+    String scenario,
+    String errorReason,
+    String testType,
+    String testProfile
 ) {
     def msgTemplate
 
@@ -181,10 +213,17 @@ def buildMessageError(
 
     msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.dist-git-pr"
     msgTemplate['category'] = pipelineMetadata['testCategory']
-    msgTemplate['type'] = pipelineMetadata['testType']
+    msgTemplate['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['status'] = "failed"
     msgTemplate['xunit'] = xunit
     msgTemplate['docs'] = pipelineMetadata['docs']
+    if (scenario) {
+        msgTemplate['scenario'] = scenario
+    }
+    if (testProfile) {
+        // this is a non-standard field
+        msgTemplate['profile'] = testProfile
+    }
 
     // pipeline section
     msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
