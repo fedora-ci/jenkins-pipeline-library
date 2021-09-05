@@ -7,9 +7,10 @@ The step returns the name of the artifact.
 ## Parameters
 
 * **artifactId**: string; artifact Id
+* **profile**: string; (optional) test profile name
 
 ## Example Usage
 
 ```groovy
-setBuildNameFromArtifactId(artifactId: 'koji-build:4328752')
+setBuildNameFromArtifactId(artifactId: 'koji-build:4328752', profile: 'f36')
 ```
