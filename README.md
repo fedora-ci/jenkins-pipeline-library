@@ -23,6 +23,7 @@ This is a list of all steps implemented in the library. Click on a particular st
 * [abort()](./docs/steps/abort.md)
 * [buildId2taskId()](./docs/steps/buildId2taskId.md)
 * [buildImageAndPushToRegistry()](./docs/steps/buildImageAndPushToRegistry.md)
+* [getArtifactType()](./docs/steps/getArtifactType.md)
 * [getGatingRequirements()](./docs/steps/getGatingRequirements.md)
 * [getGitUrl()](./docs/steps/getGitUrl.md)
 * [getReleaseIdFromBranch()](./docs/steps/getReleaseIdFromBranch.md)
