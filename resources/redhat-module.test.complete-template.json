@@ -1,35 +1,46 @@
 {
     "artifact": {
         "context": "",
-        "id": "",
+        "id": 0,
         "issuer": "",
         "name": "",
         "nsvc": "",
+        "nvr": "",
         "stream": "",
         "type": "",
         "version": ""
     },
-    "category": "",
-    "ci": {
+    "contact": {
+        "docs": "",
         "email": "",
         "irc": "",
         "name": "",
         "team": "",
         "url": ""
     },
-    "generated_at": "",
-    "label": [],
-    "namespace": "",
     "note": "",
-    "run": {
-        "log": "",
-        "rebuild": "",
-        "url": ""
+    "pipeline": {
+        "id": "",
+        "name": ""
     },
-    "status": "",
+    "recipients": [],
+    "run": {
+        "url": "",
+        "log": "",
+        "log_raw": "",
+        "log_stream": "",
+        "debug": "",
+        "rebuild": ""
+    },
     "system": [],
-    "thread_id": "",
-    "type": "",
-    "version": "",
-    "xunit": ""
+    "test": {
+        "category": "",
+        "docs": "",
+        "namespace": "",
+        "result": "",
+        "type": "",
+        "xunit": ""
+    },
+    "generated_at": "",
+    "version": ""
 }

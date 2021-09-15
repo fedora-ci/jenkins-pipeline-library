@@ -20,58 +20,48 @@ def buildMessageQueued(
     def msgTemplateString = libraryResource 'redhat-module.test.queued-template.json'
     msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
 
-    // CI/contact section
-    msgTemplate['ci']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['ci']['team'] = pipelineMetadata['maintainer']
-    msgTemplate['ci']['url'] = pipelineMetadata['docs']
-    msgTemplate['ci']['docs'] = pipelineMetadata['docs']
-    msgTemplate['ci']['irc'] = pipelineMetadata['contact']['irc']
-    msgTemplate['ci']['email'] = pipelineMetadata['contact']['email']
+    // contact section
+    msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
+    msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
+    msgTemplate['contact']['url'] = pipelineMetadata['docs']
+    msgTemplate['contact']['docs'] = pipelineMetadata['docs']
+    msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
+    msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
+
+    // run section
+    msgTemplate['run']['url'] = "${env.BUILD_URL}"
+    msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+    msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+    msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
 
     // artifact section
     def mbs = new Mbs(env.FEDORA_CI_MBS_URL)
     def moduleInfo = mbs.getModuleBuildInfo(taskId)
-
-    msgTemplate['artifact']['type'] = 'redhat-module'
+    msgTemplate['artifact']['type'] = artifactType
     msgTemplate['artifact']['context'] = moduleInfo.get('context')
     msgTemplate['artifact']['id'] = moduleInfo.get('id')
     msgTemplate['artifact']['issuer'] = moduleInfo.get('owner')
     msgTemplate['artifact']['name'] = moduleInfo.get('name')
     msgTemplate['artifact']['nsvc'] = mbs.getModuleName(moduleInfo)
+    msgTemplate['artifact']['nvr'] = mbs.getModuleName(moduleInfo).replace(':', '-')
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
     // test section
-    msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
-    msgTemplate['category'] = pipelineMetadata['testCategory']
-    msgTemplate['type'] = testType ?: pipelineMetadata['testType']
-    msgTemplate['docs'] = pipelineMetadata['docs']
+    msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
+    msgTemplate['test']['category'] = pipelineMetadata['testCategory']
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['scenario'] = scenario
+        msgTemplate['test']['scenario'] = scenario
     }
     if (testProfile) {
         // this is a non-standard field
-        msgTemplate['profile'] = testProfile
+        msgTemplate['test']['profile'] = testProfile
     }
-
-    // pipeline section
-    msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
-        "${artifactType}:${taskId}",
-        "${msgTemplate['namespace']}.${artifactType}.${msgTemplate['type']}.${msgTemplate['category']}"
-    )
-
-    // run section
-    msgTemplate['run']['log'] = "${env.BUILD_URL}console"
-    msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
-    msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
-    msgTemplate['run']['url'] = "${env.BUILD_URL}"
-
-    msgTemplate['system'] = []  // do we need this?
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
-
-    msgTemplate['version'] = "0.1.0"
 
     return msgTemplate
 }
@@ -90,58 +80,48 @@ def buildMessageRunning(
     def msgTemplateString = libraryResource 'redhat-module.test.running-template.json'
     msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
 
-    // CI/contact section
-    msgTemplate['ci']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['ci']['team'] = pipelineMetadata['maintainer']
-    msgTemplate['ci']['url'] = pipelineMetadata['docs']
-    msgTemplate['ci']['docs'] = pipelineMetadata['docs']
-    msgTemplate['ci']['irc'] = pipelineMetadata['contact']['irc']
-    msgTemplate['ci']['email'] = pipelineMetadata['contact']['email']
+    // contact section
+    msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
+    msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
+    msgTemplate['contact']['url'] = pipelineMetadata['docs']
+    msgTemplate['contact']['docs'] = pipelineMetadata['docs']
+    msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
+    msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
+
+    // run section
+    msgTemplate['run']['url'] = "${env.BUILD_URL}"
+    msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+    msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+    msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
 
     // artifact section
     def mbs = new Mbs(env.FEDORA_CI_MBS_URL)
     def moduleInfo = mbs.getModuleBuildInfo(taskId)
-
-    msgTemplate['artifact']['type'] = 'redhat-module'
+    msgTemplate['artifact']['type'] = artifactType
     msgTemplate['artifact']['context'] = moduleInfo.get('context')
     msgTemplate['artifact']['id'] = moduleInfo.get('id')
     msgTemplate['artifact']['issuer'] = moduleInfo.get('owner')
     msgTemplate['artifact']['name'] = moduleInfo.get('name')
     msgTemplate['artifact']['nsvc'] = mbs.getModuleName(moduleInfo)
+    msgTemplate['artifact']['nvr'] = mbs.getModuleName(moduleInfo).replace(':', '-')
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
     // test section
-    msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
-    msgTemplate['category'] = pipelineMetadata['testCategory']
-    msgTemplate['type'] = testType ?: pipelineMetadata['testType']
-    msgTemplate['docs'] = pipelineMetadata['docs']
+    msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
+    msgTemplate['test']['category'] = pipelineMetadata['testCategory']
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['scenario'] = scenario
+        msgTemplate['test']['scenario'] = scenario
     }
     if (testProfile) {
         // this is a non-standard field
-        msgTemplate['profile'] = testProfile
+        msgTemplate['test']['profile'] = testProfile
     }
-
-    // pipeline section
-    msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
-        "${artifactType}:${taskId}",
-        "${msgTemplate['namespace']}.${artifactType}.${msgTemplate['type']}.${msgTemplate['category']}"
-    )
-
-    // run section
-    msgTemplate['run']['log'] = "${env.BUILD_URL}console"
-    msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
-    msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
-    msgTemplate['run']['url'] = "${env.BUILD_URL}"
-
-    msgTemplate['system'] = []  // do we need this?
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
-
-    msgTemplate['version'] = "0.1.0"
 
     return msgTemplate
 }
@@ -163,24 +143,24 @@ def buildMessageComplete(
     def msgTemplateString = libraryResource 'redhat-module.test.complete-template.json'
     msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
 
-    // CI/contact section
-    msgTemplate['ci']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['ci']['team'] = pipelineMetadata['maintainer']
-    msgTemplate['ci']['url'] = pipelineMetadata['docs']
-    msgTemplate['ci']['docs'] = pipelineMetadata['docs']
-    msgTemplate['ci']['irc'] = pipelineMetadata['contact']['irc']
-    msgTemplate['ci']['email'] = pipelineMetadata['contact']['email']
+    // contact section
+    msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
+    msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
+    msgTemplate['contact']['url'] = pipelineMetadata['docs']
+    msgTemplate['contact']['docs'] = pipelineMetadata['docs']
+    msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
+    msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
 
     // artifact section
     def mbs = new Mbs(env.FEDORA_CI_MBS_URL)
     def moduleInfo = mbs.getModuleBuildInfo(taskId)
-
-    msgTemplate['artifact']['type'] = 'redhat-module'
+    msgTemplate['artifact']['type'] = artifactType
     msgTemplate['artifact']['context'] = moduleInfo.get('context')
     msgTemplate['artifact']['id'] = moduleInfo.get('id')
     msgTemplate['artifact']['issuer'] = moduleInfo.get('owner')
     msgTemplate['artifact']['name'] = moduleInfo.get('name')
     msgTemplate['artifact']['nsvc'] = mbs.getModuleName(moduleInfo)
+    msgTemplate['artifact']['nvr'] = mbs.getModuleName(moduleInfo).replace(':', '-')
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
@@ -194,39 +174,40 @@ def buildMessageComplete(
         result = 'needs_inspection'
     }
 
-    msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
-    msgTemplate['category'] = pipelineMetadata['testCategory']
-    msgTemplate['type'] = testType ?: pipelineMetadata['testType']
-    msgTemplate['note'] = note
-    msgTemplate['status'] = result
-    msgTemplate['xunit'] = xunit
-    msgTemplate['docs'] = pipelineMetadata['docs']
+    msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
+    msgTemplate['test']['category'] = pipelineMetadata['testCategory']
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['note'] = note
+    msgTemplate['test']['result'] = result
+    msgTemplate['test']['xunit'] = xunit
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['scenario'] = scenario
+        msgTemplate['test']['scenario'] = scenario
     }
     if (testProfile) {
         // this is a non-standard field
-        msgTemplate['profile'] = testProfile
+        msgTemplate['test']['profile'] = testProfile
     }
 
-    // pipeline section
-    msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
-        "${artifactType}:${taskId}",
-        "${msgTemplate['namespace']}.${artifactType}.${msgTemplate['type']}.${msgTemplate['category']}"
-    )
-
     // run section
+    msgTemplate['run']['url'] = "${env.BUILD_URL}"
+    if (msgTemplate['test']['xunit']) {
+        msgTemplate['run']['url'] = "${env.BUILD_URL}testReport/(root)/tests/"
+    }
+    if (env.FEDORA_CI_DASHBOARD_URL) {
+        msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
+    }
+
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+    msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+    msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
     msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
     msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
-    msgTemplate['run']['url'] = "${env.BUILD_URL}"
 
     msgTemplate['system'] = []  // do we need this?
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
-
-    msgTemplate['version'] = "0.1.0"
 
     return msgTemplate
 }
@@ -247,59 +228,63 @@ def buildMessageError(
     def msgTemplateString = libraryResource 'redhat-module.test.error-template.json'
     msgTemplate = new groovy.json.JsonSlurperClassic().parseText(msgTemplateString)
 
-    // CI/contact section
-    msgTemplate['ci']['name'] = pipelineMetadata['pipelineName']
-    msgTemplate['ci']['team'] = pipelineMetadata['maintainer']
-    msgTemplate['ci']['url'] = pipelineMetadata['docs']
-    msgTemplate['ci']['docs'] = pipelineMetadata['docs']
-    msgTemplate['ci']['irc'] = pipelineMetadata['contact']['irc']
-    msgTemplate['ci']['email'] = pipelineMetadata['contact']['email']
+    // contact section
+    msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
+    msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
+    msgTemplate['contact']['url'] = pipelineMetadata['docs']
+    msgTemplate['contact']['docs'] = pipelineMetadata['docs']
+    msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
+    msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
 
     // artifact section
     def mbs = new Mbs(env.FEDORA_CI_MBS_URL)
     def moduleInfo = mbs.getModuleBuildInfo(taskId)
-
-    msgTemplate['artifact']['type'] = 'redhat-module'
+    msgTemplate['artifact']['type'] = artifactType
     msgTemplate['artifact']['context'] = moduleInfo.get('context')
     msgTemplate['artifact']['id'] = moduleInfo.get('id')
     msgTemplate['artifact']['issuer'] = moduleInfo.get('owner')
     msgTemplate['artifact']['name'] = moduleInfo.get('name')
     msgTemplate['artifact']['nsvc'] = mbs.getModuleName(moduleInfo)
+    msgTemplate['artifact']['nvr'] = mbs.getModuleName(moduleInfo).replace(':', '-')
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
     // test section
-    msgTemplate['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
-    msgTemplate['category'] = pipelineMetadata['testCategory']
-    msgTemplate['type'] = testType ?: pipelineMetadata['testType']
-    msgTemplate['status'] = "failed"
-    msgTemplate['xunit'] = xunit
+    msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
+    msgTemplate['test']['category'] = pipelineMetadata['testCategory']
+    msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
+    msgTemplate['test']['result'] = 'failed'
+    msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['scenario'] = scenario
+        msgTemplate['test']['scenario'] = scenario
     }
     if (testProfile) {
         // this is a non-standard field
-        msgTemplate['profile'] = testProfile
+        msgTemplate['test']['profile'] = testProfile
     }
 
-    // pipeline section
-    msgTemplate['thread_id'] = Utils.generatePipelineIdFromArtifactIdAndTestcase(
-        "${artifactType}:${taskId}",
-        "${msgTemplate['namespace']}.${artifactType}.${msgTemplate['type']}.${msgTemplate['category']}"
-    )
-
     // run section
+    msgTemplate['run']['url'] = "${env.BUILD_URL}"
+    if (env.FEDORA_CI_DASHBOARD_URL) {
+        msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
+    }
+
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
+    msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
+    msgTemplate['run']['log_stream'] = "${env.BUILD_URL}console"
     msgTemplate['run']['debug'] = "${env.BUILD_URL}console"
     msgTemplate['run']['rebuild'] = "${env.BUILD_URL}rebuild"
-    msgTemplate['run']['url'] = "${env.BUILD_URL}"
 
-    msgTemplate['system'] = []  // do we need this?
+    // test section
+    if (errorReason) {
+        msgTemplate['error']['reason'] = errorReason
+    } else {
+        msgTemplate['error']['reason'] = env.ERROR_MESSAGE ? "${env.ERROR_MESSAGE}" : 'Infrastructure Failure'
+    }
+    msgTemplate['error']['url'] = "${env.BUILD_URL}console"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
-
-    msgTemplate['version'] = "0.1.0"
 
     return msgTemplate
 }
