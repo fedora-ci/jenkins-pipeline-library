@@ -11,7 +11,7 @@ import org.fedoraproject.jenkins.messages.FedoraUpdateMessageBuilder
 
 
 def getMessageVersion() {
-    return '0.2.1'
+    return '1.1.9'
 }
 
 def getPipelineSection(artifactType, taskId, pipelineMetadata) {

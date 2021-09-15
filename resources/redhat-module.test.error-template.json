@@ -1,41 +1,46 @@
 {
     "artifact": {
         "context": "",
-        "id": "",
+        "id": 0,
         "issuer": "",
         "name": "",
         "nsvc": "",
+        "nvr": "",
         "stream": "",
         "type": "",
         "version": ""
     },
-    "category": "",
-    "ci": {
+    "contact": {
+        "docs": "",
         "email": "",
         "irc": "",
         "name": "",
         "team": "",
         "url": ""
     },
-    "docs": null,
-    "generated_at": "",
-    "issue_url": "",
-    "label": null,
-    "namespace": "",
-    "note": null,
-    "reason": "",
+    "note": "",
+    "pipeline": {
+        "id": "",
+        "name": ""
+    },
+    "error": {
+        "reason": "",
+        "issue_url": ""
+    },
     "run": {
-        "additional_info": [],
-        "debug": "",
+        "url": "",
         "log": "",
         "log_raw": "",
         "log_stream": "",
-        "parameters": {},
-        "rebuild": "",
-        "trigger_rebuild": "",
-        "url": ""
+        "debug": "",
+        "rebuild": ""
     },
-    "thread_id": "",
-    "type": "",
+    "test": {
+        "category": "",
+        "docs": "",
+        "namespace": "",
+        "type": ""
+    },
+    "generated_at": "",
     "version": ""
 }
