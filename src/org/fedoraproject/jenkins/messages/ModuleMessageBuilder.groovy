@@ -43,7 +43,7 @@ def buildMessageQueued(
     msgTemplate['artifact']['issuer'] = moduleInfo.get('owner')
     msgTemplate['artifact']['name'] = moduleInfo.get('name')
     msgTemplate['artifact']['nsvc'] = mbs.getModuleName(moduleInfo)
-    msgTemplate['artifact']['nvr'] = mbs.getModuleName(moduleInfo).replace(':', '-')
+    msgTemplate['artifact']['nvr'] = mbs.getModuleNVR(moduleInfo)
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
@@ -103,7 +103,7 @@ def buildMessageRunning(
     msgTemplate['artifact']['issuer'] = moduleInfo.get('owner')
     msgTemplate['artifact']['name'] = moduleInfo.get('name')
     msgTemplate['artifact']['nsvc'] = mbs.getModuleName(moduleInfo)
-    msgTemplate['artifact']['nvr'] = mbs.getModuleName(moduleInfo).replace(':', '-')
+    msgTemplate['artifact']['nvr'] = mbs.getModuleNVR(moduleInfo)
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
@@ -160,7 +160,7 @@ def buildMessageComplete(
     msgTemplate['artifact']['issuer'] = moduleInfo.get('owner')
     msgTemplate['artifact']['name'] = moduleInfo.get('name')
     msgTemplate['artifact']['nsvc'] = mbs.getModuleName(moduleInfo)
-    msgTemplate['artifact']['nvr'] = mbs.getModuleName(moduleInfo).replace(':', '-')
+    msgTemplate['artifact']['nvr'] = mbs.getModuleNVR(moduleInfo)
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
@@ -245,7 +245,7 @@ def buildMessageError(
     msgTemplate['artifact']['issuer'] = moduleInfo.get('owner')
     msgTemplate['artifact']['name'] = moduleInfo.get('name')
     msgTemplate['artifact']['nsvc'] = mbs.getModuleName(moduleInfo)
-    msgTemplate['artifact']['nvr'] = mbs.getModuleName(moduleInfo).replace(':', '-')
+    msgTemplate['artifact']['nvr'] = mbs.getModuleNVR(moduleInfo)
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
