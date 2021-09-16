@@ -51,4 +51,17 @@ class Mbs implements Serializable {
         }
         return "${buildInfo.name}:${buildInfo.stream}:${buildInfo.version}:${buildInfo.context}"
     }
+
+    /*
+     * Get module NVR.
+     *
+     * @param buildInfo Obtained via getModuleBuildInfo()
+     * @return module NVR
+     */
+    def getModuleNVR(def buildInfo) {
+        if (!buildInfo) {
+            return ''
+        }
+        return "${buildInfo.name}-${buildInfo.stream}-${buildInfo.version}.${buildInfo.context}"
+    }
 }
