@@ -39,6 +39,7 @@ def call(Map params = [:]) {
             // We need to find a better place how to work with repositories.
             // And therefore, this "CI config" feature is not mentioned in documentation.
             def ciConfig = [:]
+            def plans = []
             def ciConfigPath = findFiles glob: 'ci.fmf'
             echo "CI config in ${repoUrl} (${ref}): ${ciConfigPath}"
             if (ciConfigPath) {
@@ -53,6 +54,10 @@ def call(Map params = [:]) {
 python3 -c "import yaml, json; y=yaml.safe_load(open('ci.fmf')); json.dump(y, open('ci.fmf.json', 'w'))"
 """)
                 ciConfig = readJSON(file: 'ci.fmf.json')
+
+                if (ciConfig.get('resultsdb-testcase') == 'separate') {
+                    plans = sh(script: 'tmt plan ls', returnStdout: true).trim().split('\n')
+                }
             }
 
             // check STI first
@@ -69,7 +74,7 @@ python3 -c "import yaml, json; y=yaml.safe_load(open('ci.fmf')); json.dump(y, op
             echo "FMF tests in ${repoUrl} (${ref}): ${stdFmf}"
 
             if (stdFmf) {
-                return [type: 'fmf', files: stdFmf.collect{ it.path }, ciConfig: ciConfig]
+                return [type: 'fmf', files: stdFmf.collect{ it.path }, ciConfig: ciConfig, plans: plans]
             }
 
             return [:]
