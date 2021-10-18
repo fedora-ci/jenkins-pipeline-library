@@ -225,6 +225,37 @@ class Koji implements Serializable {
     }
 
     /*
+     * Returns the task ID of the package with given tag
+     *
+     * @param tagName
+     * @param packageName
+     * @return task ID or null
+     */
+    Integer getTaggedTaskId(String tagName, String packageName) {
+
+        Object[] results = (Object[]) this.call(
+            'listTagged',
+            tagName,
+            [
+                'inherit': true,
+                'latest': true,
+                'package': packageName
+            ]
+        )
+
+        // List<String> ids = new ArrayList<String>()
+        // for (Map<String, Object> result: results) {
+        //     ids.add(result.get('task_id'))
+        // }
+
+        if (!results) {
+            return null
+        }
+
+        return results[0]['task_id']
+    }
+
+    /*
      * Returns information about all build targets known to Koji.
      *
      * If "name" parameter is provided, then only information
