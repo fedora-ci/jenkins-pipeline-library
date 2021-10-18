@@ -32,7 +32,7 @@ def call(Map params = [:]) {
     }
 
     // Greenwave's "subject_type" is our artifact type, but with underscores
-    def subjectType = "${artifactType.replace('-', '_')}"
+    def subjectType = "koji_build"
 
     def koji = new Koji(env.KOJI_API_URL)
     def nvr = "${koji.getTaskInfo(taskId.toInteger()).nvr}"
