@@ -35,7 +35,8 @@ def call(Map params = [:]) {
     def subjectType = "${artifactType.replace('-', '_')}"
 
     def koji = new Koji(env.KOJI_API_URL)
-    def taskInfo = koji.getTaskInfo(taskId.toInteger())
+    def nvr = "${koji.getTaskInfo(taskId.toInteger()).nvr}"
+    koji = null
 
     filteredRequirements = [] as Set
 
@@ -60,7 +61,7 @@ def call(Map params = [:]) {
                     "decision_context": "${decisionContext}",
                     "product_version": "${productVersion}",
                     "subject_type": "${subjectType}",
-                    "subject_identifier": "${taskInfo.nvr}",
+                    "subject_identifier": "${nvr}",
                     "verbose": false
                 }
             """
