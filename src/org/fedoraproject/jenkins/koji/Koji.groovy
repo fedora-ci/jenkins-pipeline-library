@@ -225,13 +225,13 @@ class Koji implements Serializable {
     }
 
     /*
-     * Returns information about the NVR of a package in given tag
+     * Returns information about the package build in given tag
      *
      * @param tagName
      * @param packageName
-     * @return [taskId: taskId, nvr: nvr] or null
+     * @return [id: taskId, nvr: nvr, name: name] or null
      */
-    Map<String, Object> getTaggedNVR(String tagName, String packageName) {
+    Map<String, Object> getTaggedBuild(String tagName, String packageName) {
 
         Object[] results = (Object[]) this.call(
             'listTagged',
@@ -239,20 +239,16 @@ class Koji implements Serializable {
             [
                 'inherit': true,
                 'latest': true,
-                'package': packageName
+                'package': packageName,
+                '__starstar': true
             ]
         )
 
-        // List<String> ids = new ArrayList<String>()
-        // for (Map<String, Object> result: results) {
-        //     ids.add(result.get('task_id'))
-        // }
-
         if (!results) {
-            return null
+            return
         }
 
-        return [taskId: results[0]['task_id'], nvr: results[0]['nvr']]
+        return [id: results[0]['task_id'], nvr: results[0]['nvr'], name: results[0]['name']]
     }
 
     /*
