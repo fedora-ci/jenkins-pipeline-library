@@ -12,6 +12,7 @@ import org.fedoraproject.jenkins.Utils
 def call(Map params = [:]) {
     def artifactId = params.get('artifactId')
     def profileName = params.get('profile')
+    def scenarioName = params.get('scenario')
     def displayName
     def packageName = ''
 
@@ -65,8 +66,15 @@ def call(Map params = [:]) {
     }
 
     currentBuild.displayName = displayName
+    def description = ""
     if (profileName) {
-        currentBuild.description = "test profile: ${profileName}"
+        description += "test profile: ${profileName}\n"
+    }
+    if (scenarioName) {
+        description += "scenario: ${scenarioName}\n"
+    }
+    if (description) {
+        currentBuild.description = description
     }
 
     return packageName.toString()
