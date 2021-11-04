@@ -50,7 +50,9 @@ def buildMessageQueued(
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['test']['scenario'] = scenario
+        // msgTemplate['test']['scenario'] = scenario
+        // OSCI-2612: we need to append the scenario to the test case name
+        msgTemplate['test']['category'] += "/scenario=${scenario}"
     }
     if (testProfile) {
         // this is a non-standard field
@@ -108,7 +110,9 @@ def buildMessageRunning(
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['test']['scenario'] = scenario
+        // msgTemplate['test']['scenario'] = scenario
+        // OSCI-2612: we need to append the scenario to the test case name
+        msgTemplate['test']['category'] += "/scenario=${scenario}"
     }
     if (testProfile) {
         // this is a non-standard field
@@ -175,7 +179,9 @@ def buildMessageComplete(
     msgTemplate['test']['xunit'] = xunit
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['test']['scenario'] = scenario
+        // msgTemplate['test']['scenario'] = scenario
+        // OSCI-2612: we need to append the scenario to the test case name
+        msgTemplate['test']['category'] += "/scenario=${scenario}"
     }
     if (testProfile) {
         // this is a non-standard field
@@ -252,7 +258,9 @@ def buildMessageError(
     msgTemplate['test']['result'] = 'failed'
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['test']['scenario'] = scenario
+        // msgTemplate['test']['scenario'] = scenario
+        // OSCI-2612: we need to append the scenario to the test case name
+        msgTemplate['test']['category'] += "/scenario=${scenario}"
     }
     if (testProfile) {
         // this is a non-standard field
