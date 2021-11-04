@@ -171,7 +171,6 @@ def buildMessageComplete(
     msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
-    msgTemplate['test']['note'] = note
     msgTemplate['test']['result'] = result
     msgTemplate['test']['xunit'] = xunit
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
@@ -181,6 +180,11 @@ def buildMessageComplete(
     if (testProfile) {
         // this is a non-standard field
         msgTemplate['test']['profile'] = testProfile
+    }
+    if (note) {
+        msgTemplate['test']['note'] = note
+        // version <= 0.x
+        msgTemplate['note'] = note
     }
 
     // run section
