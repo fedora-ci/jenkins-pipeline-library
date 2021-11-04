@@ -14,12 +14,12 @@ def getMessageVersion() {
     return '1.1.9'
 }
 
-def getPipelineSection(artifactType, taskId, pipelineMetadata) {
+def getPipelineSection(artifactType, taskId, scenario, pipelineMetadata) {
     // construct the pipeline section
     def namespace = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
     def pipeline = [
         'id': Utils.generatePipelineIdFromArtifactIdAndTestcase(
-            "${artifactType}:${taskId}",
+            "${artifactType}:${taskId}+${scenario}",
             "${namespace}.${pipelineMetadata['testType']}.${pipelineMetadata['testCategory']}"
         ),
         'name': pipelineMetadata['pipelineName'],
@@ -70,7 +70,7 @@ def buildMessageQueued(
             msg['version'] = getMessageVersion()
         }
         if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
-            msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+            msg['pipeline'] = getPipelineSection(artifactType, taskId, scenario, pipelineMetadata)
         }
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
@@ -121,7 +121,7 @@ def buildMessageRunning(
             msg['version'] = getMessageVersion()
         }
         if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
-            msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+            msg['pipeline'] = getPipelineSection(artifactType, taskId, scenario, pipelineMetadata)
         }
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
@@ -176,7 +176,7 @@ def buildMessageComplete(
             msg['version'] = getMessageVersion()
         }
         if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
-            msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+            msg['pipeline'] = getPipelineSection(artifactType, taskId, scenario, pipelineMetadata)
         }
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
@@ -236,7 +236,7 @@ def buildMessageError(
             msg['version'] = getMessageVersion()
         }
         if (!msg.get('pipeline')?.get('id') && !msg.get('thread_id')) {
-            msg['pipeline'] = getPipelineSection(artifactType, taskId, pipelineMetadata)
+            msg['pipeline'] = getPipelineSection(artifactType, taskId, scenario, pipelineMetadata)
         }
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
