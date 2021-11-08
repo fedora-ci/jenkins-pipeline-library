@@ -14,6 +14,7 @@ def call(Map params = [:]) {
     def decisionContext = params.get('decisionContext')
     def productVersion = params.get('productVersion')
     def testcase = params.get('testcase')
+    def testcasePrefix = params.get('testcasePrefix')
     def scenarioPrefix = params.get('scenarioPrefix')
     def scenario = params.get('scenario')
 
@@ -72,6 +73,9 @@ def call(Map params = [:]) {
     results = gatingDecision.get('satisfied_requirements') + gatingDecision.get('unsatisfied_requirements')
     results.each { requirement ->
         if (testcase && testcase != requirement.get('testcase')) {
+            return
+        }
+        if (testcasePrefix && !requirement.get('testcase').startsWith(testcasePrefix)) {
             return
         }
         if (scenario && scenario != requirement.get('scenario')) {
