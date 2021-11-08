@@ -9,8 +9,9 @@ It is possible to filter the requirements by testcase name, scenario, and/or sce
 * **artifactId**: string; artifact Id
 * **decisionContext**: string; Greenwave decision context
 * **productVersion**: string; Greenwave product version
+* **testcasePrefix**: string; (optional) test case name prefix
 * **testcase**: string; (optional) test case name
-* **scenarioPrefix**: string; (optional) test scenarion prefix
+* **scenarioPrefix**: string; (optional) test scenario prefix
 * **scenario**: string; (optional) test scenario
 
 ## Example Usage
