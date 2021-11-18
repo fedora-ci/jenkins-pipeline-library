@@ -60,7 +60,9 @@ def buildMessageRunning(
     msgTemplate['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['scenario'] = scenario
+        // msgTemplate['test']['scenario'] = scenario
+        // OSCI-2612: we need to append the scenario to the test case name
+        msgTemplate['category'] += "/scenario=${scenario}"
     }
     if (testProfile) {
         // this is a non-standard field
@@ -145,7 +147,9 @@ def buildMessageComplete(
     msgTemplate['xunit'] = xunit
     msgTemplate['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['scenario'] = scenario
+        // msgTemplate['test']['scenario'] = scenario
+        // OSCI-2612: we need to append the scenario to the test case name
+        msgTemplate['category'] += "/scenario=${scenario}"
     }
     if (testProfile) {
         // this is a non-standard field
@@ -218,7 +222,9 @@ def buildMessageError(
     msgTemplate['xunit'] = xunit
     msgTemplate['docs'] = pipelineMetadata['docs']
     if (scenario) {
-        msgTemplate['scenario'] = scenario
+        // msgTemplate['test']['scenario'] = scenario
+        // OSCI-2612: we need to append the scenario to the test case name
+        msgTemplate['category'] += "/scenario=${scenario}"
     }
     if (testProfile) {
         // this is a non-standard field
