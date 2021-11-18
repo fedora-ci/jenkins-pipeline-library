@@ -37,7 +37,7 @@ def call(Map params = [:]) {
     artifactIds.each { a ->
         taskId = a.split(':')[1]
         taskInfo = koji.getTaskInfo(taskId.toInteger())
-        artifactsInfo["${a}"] = [
+        artifactsInfo[a] = [
             name: "${taskInfo.name}".toString(),
             nvr: "${taskInfo.nvr}".toString(),
             id: "${taskInfo.id}"
