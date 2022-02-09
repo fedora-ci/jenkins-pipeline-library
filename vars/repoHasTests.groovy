@@ -7,6 +7,7 @@ def call(Map params = [:]) {
 
     def repoUrl = params.get('repoUrl')
     def ref = params.get('ref')
+    def context = params.get('context')
 
     dir("temp-repoHasTests${env.BUILD_ID}") {
         try {
@@ -56,7 +57,11 @@ python3 -c "import yaml, json; y=yaml.safe_load(open('ci.fmf')); json.dump(y, op
                 ciConfig = readJSON(file: 'ci.fmf.json')
 
                 if (ciConfig.get('resultsdb-testcase') == 'separate') {
-                    plans = sh(script: 'tmt plan ls --filter enabled:true', returnStdout: true).trim().split('\n').findAll{it != null && !it.isEmpty()}
+                    def contextStr = ''
+                    context.each { key, value ->
+                        contextStr += " --context ${key}=${value}"
+                    }
+                    plans = sh(script: "tmt ${contextStr} plan ls --filter enabled:true", returnStdout: true).trim().split('\n').findAll{it != null && !it.isEmpty()}
                 }
             }
 
