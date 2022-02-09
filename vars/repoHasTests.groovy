@@ -56,7 +56,7 @@ python3 -c "import yaml, json; y=yaml.safe_load(open('ci.fmf')); json.dump(y, op
                 ciConfig = readJSON(file: 'ci.fmf.json')
 
                 if (ciConfig.get('resultsdb-testcase') == 'separate') {
-                    plans = sh(script: 'tmt plan ls --filter enabled:true', returnStdout: true).trim().split('\n')
+                    plans = sh(script: 'tmt plan ls --filter enabled:true', returnStdout: true).trim().split('\n').findAll{it != null && !it.isEmpty()}​
                 }
             }
 
