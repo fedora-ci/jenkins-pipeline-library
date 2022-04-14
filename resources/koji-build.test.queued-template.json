@@ -1,36 +1,32 @@
 {
-    "contact": {
-      "name": "",
-      "team": "",
-      "url": "",
-      "docs": "",
-      "irc": "#fedora-ci",
-      "email": "fedora-ci@fedoraproject.org"
-    },
-    "run": {
-      "url": "",
-      "log": "",
-      "log_raw": "",
-      "log_stream": ""
-    },
-    "artifact": {
-      "type": "",
-      "id": "",
-      "issuer": "",
-      "component": "",
-      "nvr": "",
-      "scratch": true
-    },
-    "pipeline": {
-      "id": "",
-      "name": "",
-      "build": ""
-    },
-    "test": {
-      "category": "",
-      "namespace": "",
-      "type": ""
-    },
-    "generated_at": "",
-    "version": ""
-  }
+  "contact": {
+    "name": "",
+    "team": "",
+    "docs": "",
+    "irc": "#fedora-ci",
+    "email": "fedora-ci@fedoraproject.org"
+  },
+  "run": {
+    "url": "",
+    "log": ""
+  },
+  "artifact": {
+    "type": "",
+    "id": "",
+    "issuer": "",
+    "component": "",
+    "nvr": "",
+    "scratch": true
+  },
+  "pipeline": {
+    "id": "",
+    "name": ""
+  },
+  "test": {
+    "category": "",
+    "namespace": "",
+    "type": ""
+  },
+  "generated_at": "",
+  "version": ""
+}

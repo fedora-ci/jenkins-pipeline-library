@@ -2,18 +2,13 @@
   "contact": {
     "name": "",
     "team": "",
-    "url": "",
     "docs": "",
     "irc": "#fedora-ci",
     "email": "fedora-ci@fedoraproject.org"
   },
   "run": {
     "url": "",
-    "log": "",
-    "log_raw": "",
-    "log_stream": "",
-    "debug": "",
-    "rebuild": ""
+    "log": ""
   },
   "artifact": {
     "type": "",
@@ -21,35 +16,19 @@
     "issuer": "",
     "component": "",
     "nvr": "",
-    "scratch": true,
-    "dependencies": [],
-    "baseline": "",
-    "source": ""
+    "scratch": true
   },
   "pipeline": {
     "id": "",
-    "name": "",
-    "build": ""
+    "name": ""
   },
   "test": {
     "category": "",
-    "label": [],
     "namespace": "",
-    "note": "",
-    "result": "",
     "type": "",
-    "xunit": ""
+    "result": ""
   },
-  "system":
-     [{
-        "os": "",
-        "provider": "",
-        "architecture": "",
-        "label": ""
-     }],
-  "notification": {
-     "recipients": []
-  },
+  "system": [],
   "generated_at": "",
   "version": ""
 }
