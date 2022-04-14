@@ -23,7 +23,6 @@ def buildMessageQueued(
     // contact section
     msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
     msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
-    msgTemplate['contact']['url'] = pipelineMetadata['docs']
     msgTemplate['contact']['docs'] = pipelineMetadata['docs']
     msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
     msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
@@ -83,7 +82,6 @@ def buildMessageRunning(
     // contact section
     msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
     msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
-    msgTemplate['contact']['url'] = pipelineMetadata['docs']
     msgTemplate['contact']['docs'] = pipelineMetadata['docs']
     msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
     msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
@@ -146,7 +144,6 @@ def buildMessageComplete(
     // contact section
     msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
     msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
-    msgTemplate['contact']['url'] = pipelineMetadata['docs']
     msgTemplate['contact']['docs'] = pipelineMetadata['docs']
     msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
     msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
@@ -228,7 +225,6 @@ def buildMessageError(
     // contact section
     msgTemplate['contact']['name'] = pipelineMetadata['pipelineName']
     msgTemplate['contact']['team'] = pipelineMetadata['maintainer']
-    msgTemplate['contact']['url'] = pipelineMetadata['docs']
     msgTemplate['contact']['docs'] = pipelineMetadata['docs']
     msgTemplate['contact']['irc'] = pipelineMetadata['contact']['irc']
     msgTemplate['contact']['email'] = pipelineMetadata['contact']['email']
