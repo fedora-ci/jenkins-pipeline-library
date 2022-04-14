@@ -279,7 +279,6 @@ def buildMessageError(
     } else {
         msgTemplate['error']['reason'] = env.ERROR_MESSAGE ? "${env.ERROR_MESSAGE}" : 'Infrastructure Failure'
     }
-    msgTemplate['error']['url'] = "${env.BUILD_URL}console"
 
     // misc
     msgTemplate['generated_at'] = Utils.getTimestamp()
