@@ -174,9 +174,13 @@ def buildMessageComplete(
     msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
     msgTemplate['test']['namespace'] = "${pipelineMetadata['maintainer'].toLowerCase().replace(' ', '-')}.${artifactType}"
-    msgTemplate['test']['note'] = note
+    if (note) {
+        msgTemplate['test']['note'] = note
+    }
     msgTemplate['test']['result'] = result
-    msgTemplate['test']['xunit'] = xunit
+    if (xunit) {
+        msgTemplate['test']['xunit'] = xunit
+    }
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
         msgTemplate['test']['scenario'] = scenario
@@ -188,9 +192,6 @@ def buildMessageComplete(
 
     // run section
     msgTemplate['run']['url'] = "${env.BUILD_URL}"
-    if (msgTemplate['test']['xunit']) {
-        msgTemplate['run']['url'] = "${env.BUILD_URL}testReport/(root)/tests/"
-    }
 
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
     msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
