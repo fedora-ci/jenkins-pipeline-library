@@ -1,4 +1,11 @@
 {
+    "contact": {
+        "docs": "",
+        "email": "",
+        "irc": "",
+        "name": "",
+        "team": ""
+    },
     "artifact": {
         "context": "",
         "id": 0,
@@ -10,36 +17,20 @@
         "type": "",
         "version": ""
     },
-    "contact": {
-        "docs": "",
-        "email": "",
-        "irc": "",
-        "name": "",
-        "team": "",
-        "url": ""
-    },
-    "note": "",
     "pipeline": {
         "id": "",
         "name": ""
     },
-    "recipients": [],
     "run": {
         "url": "",
-        "log": "",
-        "log_raw": "",
-        "log_stream": "",
-        "debug": "",
-        "rebuild": ""
+        "log": ""
     },
     "system": [],
     "test": {
         "category": "",
-        "docs": "",
         "namespace": "",
-        "result": "",
         "type": "",
-        "xunit": ""
+        "result": ""
     },
     "generated_at": "",
     "version": ""
