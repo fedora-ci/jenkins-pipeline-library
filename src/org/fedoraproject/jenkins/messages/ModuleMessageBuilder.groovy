@@ -194,9 +194,6 @@ def buildMessageComplete(
     if (msgTemplate['test']['xunit']) {
         msgTemplate['run']['url'] = "${env.BUILD_URL}testReport/(root)/tests/"
     }
-    if (env.FEDORA_CI_DASHBOARD_URL) {
-        msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
-    }
 
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
     msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
@@ -265,9 +262,6 @@ def buildMessageError(
 
     // run section
     msgTemplate['run']['url'] = "${env.BUILD_URL}"
-    if (env.FEDORA_CI_DASHBOARD_URL) {
-        msgTemplate['run']['url'] = "${env.FEDORA_CI_DASHBOARD_URL}/#/artifact/${artifactType}/aid/${taskId}?focus=tc:${msgTemplate['test']['namespace']}.${msgTemplate['test']['type']}.${msgTemplate['test']['category']}"
-    }
 
     msgTemplate['run']['log'] = "${env.BUILD_URL}console"
     msgTemplate['run']['log_raw'] = "${env.BUILD_URL}consoleText"
