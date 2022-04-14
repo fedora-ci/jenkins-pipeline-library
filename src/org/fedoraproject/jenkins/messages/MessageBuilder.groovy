@@ -35,6 +35,7 @@ def buildMessageQueued(
     String taskId,
     Map pipelineMetadata,
     String runUrl,
+    String runLog,
     String scenario,
     String testType,
     String testProfile
@@ -75,6 +76,9 @@ def buildMessageQueued(
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
         }
+        if (runLog && msg.get('run', {})?.get('log')) {
+            msg['run']['log'] = runLog
+        }
     }
     return msg
 }
@@ -86,6 +90,7 @@ def buildMessageRunning(
     String taskId,
     Map pipelineMetadata,
     String runUrl,
+    String runLog,
     String scenario,
     String testType,
     String testProfile
@@ -126,6 +131,9 @@ def buildMessageRunning(
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
         }
+        if (runLog && msg.get('run', {})?.get('log')) {
+            msg['run']['log'] = runLog
+        }
     }
     return msg
 }
@@ -138,6 +146,7 @@ def buildMessageComplete(
     Map pipelineMetadata,
     String xunit,
     String runUrl,
+    String runLog,
     Boolean isSkipped,
     String note,
     String scenario,
@@ -181,6 +190,9 @@ def buildMessageComplete(
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
         }
+        if (runLog && msg.get('run', {})?.get('log')) {
+            msg['run']['log'] = runLog
+        }
         if (testResult && !isSkipped) {
             if (msg.get('test')) {
                 msg['test']['result'] = testResult
@@ -200,6 +212,7 @@ def buildMessageError(
     Map pipelineMetadata,
     String xunit,
     String runUrl,
+    String runLog,
     String scenario,
     String errorReason,
     String testType,
@@ -240,6 +253,9 @@ def buildMessageError(
         }
         if (runUrl && msg.get('run', {})?.get('url')) {
             msg['run']['url'] = runUrl
+        }
+        if (runLog && msg.get('run', {})?.get('log')) {
+            msg['run']['log'] = runLog
         }
     }
     return msg

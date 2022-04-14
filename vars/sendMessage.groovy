@@ -19,6 +19,7 @@ def call(Map params = [:]) {
     def messageProvider = params.get('messageProvider') ?: env.FEDORA_CI_MESSAGE_PROVIDER
     def xunit = params.get('xunit') ?: ''
     def runUrl = params.get('runUrl') ?: ''
+    def runLog = params.get('runLog') ?: ''
     def isSkipped = params.get('isSkipped', false)?.toBoolean()
     def isInfo = params.get('isInfo', false)?.toBoolean()
     def note = params.get('note') ?: ''
@@ -98,6 +99,7 @@ def call(Map params = [:]) {
                 taskId,
                 pipelineMetadata,
                 runUrl,
+                runLog,
                 scenario,
                 testType,
                 testProfile
@@ -111,6 +113,7 @@ def call(Map params = [:]) {
                 taskId,
                 pipelineMetadata,
                 runUrl,
+                runLog,
                 scenario,
                 testType,
                 testProfile
@@ -125,6 +128,7 @@ def call(Map params = [:]) {
                 pipelineMetadata,
                 xunit,
                 runUrl,
+                runLog,
                 isSkipped,
                 note,
                 scenario,
@@ -142,6 +146,7 @@ def call(Map params = [:]) {
                 pipelineMetadata,
                 xunit,
                 runUrl,
+                runLog,
                 scenario,
                 errorReason,
                 testType,
