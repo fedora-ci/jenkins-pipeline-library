@@ -8,6 +8,11 @@ def call(Map params = [:]) {
     def repoUrl = params.get('repoUrl')
     def ref = params.get('ref')
     def context = params.get('context')
+    def useCloneCredentials = params.get('useCloneCredentials', false)
+
+    if (useCloneCredentials && env.GIT_CLONE_AUTH_STRING) {
+        repoUrl = repoUrl.replace('://', "://${env.GIT_CLONE_AUTH_STRING}@")
+    }
 
     dir("temp-repoHasTests${env.BUILD_ID}") {
         try {

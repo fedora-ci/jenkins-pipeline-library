@@ -1,11 +1,15 @@
 # repoHasTests() step
 
-This step clones the given repository and checks if there are any supported (STI/TMT) tests inside.
+This step clones the given repository and checks if there are any supported (STI/tmt) tests inside.
+
+If the `useCloneCredentials` option is used, then the credentials stored in the `GIT_CLONE_AUTH_STRING`
+environment variable will be used to clone the repository.
 
 ## Parameters
 
 * **repoUrl**: string; repository URL
 * **ref**: string; git reference
+* **useCloneCredentials**: boolean; (optional) use clone credentials (default: false)
 
 ## Example Usage
 
