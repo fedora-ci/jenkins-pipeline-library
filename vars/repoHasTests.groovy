@@ -9,6 +9,7 @@ def call(Map params = [:]) {
     def ref = params.get('ref')
     def context = params.get('context')
     def useCloneCredentials = params.get('useCloneCredentials', false)
+    def fetchMergeRequests = params.get('fetchMergeRequests', false)
 
     if (useCloneCredentials && env.GIT_CLONE_AUTH_STRING) {
         repoUrl = repoUrl.replace('://', "://${env.GIT_CLONE_AUTH_STRING}@")
@@ -26,6 +27,10 @@ def call(Map params = [:]) {
                 }
                 retryCounter += 1
                 sh("git clone ${repoUrl} .")
+
+                if (fetchMergeRequests) {
+                    sh("git fetch origin +refs/merge-requests/*/head:refs/remotes/origin/merge-requests/*")
+                }
             }
             // check that the commit hash exists
             def refExists = sh(script: "git cat-file -e ${ref}", returnStatus: true)

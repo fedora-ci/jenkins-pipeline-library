@@ -10,6 +10,7 @@ environment variable will be used to clone the repository.
 * **repoUrl**: string; repository URL
 * **ref**: string; git reference
 * **useCloneCredentials**: boolean; (optional) use clone credentials (default: false)
+* **fetchMergeRequests**: boolean; (optional) fetch also merge requests (default: false)
 
 ## Example Usage
 
