@@ -10,12 +10,10 @@ def call(Map params = [:]) {
     def requestId = params.get('requestId')
     def hook = params.get('hook')
 
-    def tfArtifactsBaseUrl = env.FEDORA_CI_TESTING_FARM_ARTIFACTS_URL
     def apiUrl = env.FEDORA_CI_TESTING_FARM_API_URL
 
     echo "**********************************************************************************************************************"
     echo "Testing Farm API Request URL: ${apiUrl}/v0.1/requests/${requestId}"
-    echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
     echo "\n"
 
     echo "The status is now \"queued\""
@@ -27,6 +25,9 @@ def call(Map params = [:]) {
         echo "The status is now \"${statusResult.status}\""
         if (statusResult.status in ['complete', 'error']) {
             break
+        } else if (statusResult.status == 'running') {
+            def tfArtifactsUrl = statusResult.response.run.artifacts
+            echo "Testing Farm Artifacts URL: ${tfArtifactsUrl}"
         }
         echo "Waiting for Testing Farm..."
     }
