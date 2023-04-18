@@ -44,6 +44,7 @@ def call(Map params = [:]) {
             def mbs = new Mbs(env.FEDORA_CI_MBS_URL)
             def moduleInfo = mbs.getModuleBuildInfo(taskId)
             displayName = "[${artifactType}] ${mbs.getModuleName(moduleInfo)}"
+            packageName = "${mbs.getModuleName(moduleInfo)}"
         } else if (artifactType in ['fedora-dist-git', 'dist-git-pr']) {
             // handle pull-requests
             def pagure = new Pagure(env.FEDORA_CI_PAGURE_DIST_GIT_URL)
