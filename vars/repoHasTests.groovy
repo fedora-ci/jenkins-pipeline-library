@@ -32,8 +32,8 @@ def call(Map params = [:]) {
                     sh("git fetch origin +refs/merge-requests/*/head:refs/remotes/origin/merge-requests/*")
                 }
             }
-            // check that the commit hash exists
-            def refExists = sh(script: "git cat-file -e ${ref}", returnStatus: true)
+            // check that the git reference exists
+            def refExists = sh(script: "git checkout ${ref}", returnStatus: true)
             if (refExists != 0) {
                 echo """
 *******************************************************************************
