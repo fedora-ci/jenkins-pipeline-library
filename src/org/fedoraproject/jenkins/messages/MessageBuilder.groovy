@@ -145,6 +145,7 @@ def buildMessageComplete(
     String taskId,
     Map pipelineMetadata,
     String xunit,
+    List xunitUrls,
     String runUrl,
     String runLog,
     Boolean isSkipped,
@@ -158,7 +159,7 @@ def buildMessageComplete(
 
     if (artifactType in ['koji-build', 'brew-build']) {
         msg = new RpmBuildMessageBuilder().buildMessageComplete(
-            artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario, testType, testProfile
+            artifactType, taskId, pipelineMetadata, xunit, xunitUrls, isSkipped, note, scenario, testType, testProfile
         )
     } else if (artifactType == 'fedora-dist-git') {
         msg = new PullRequestMessageBuilder().buildMessageComplete(
@@ -170,7 +171,7 @@ def buildMessageComplete(
         )
     } else if (artifactType == 'redhat-module') {
         msg = new ModuleMessageBuilder().buildMessageComplete(
-            artifactType, taskId, pipelineMetadata, xunit, isSkipped, note, scenario, testType, testProfile
+            artifactType, taskId, pipelineMetadata, xunit, xunitUrls, isSkipped, note, scenario, testType, testProfile
         )
     } else if (artifactType == 'fedora-update') {
         msg = new FedoraUpdateMessageBuilder().buildMessageComplete(

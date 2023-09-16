@@ -130,6 +130,7 @@ def buildMessageComplete(
     String taskId,
     Map pipelineMetadata,
     String xunit,
+    List xunitUrls,
     Boolean isSkipped,
     String note,
     String scenario,
@@ -180,6 +181,9 @@ def buildMessageComplete(
     msgTemplate['test']['result'] = result
     if (xunit) {
         msgTemplate['test']['xunit'] = xunit
+    }
+    if (xunitUrls) {
+        msgTemplate['test']['xunit_urls'] = xunitUrls
     }
     msgTemplate['test']['docs'] = pipelineMetadata['docs']
     if (scenario) {
