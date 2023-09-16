@@ -28,6 +28,7 @@ def call(Map params = [:]) {
     def testType = params.get('testType') ?: ''
     def testResult = params.get('testResult') ?: ''
     def testProfile = params.get('testProfile') ?: ''
+    def xunitUrls = params.get('xunit_urls') ?: []
 
     // isInfo is an alias for isSkipped
     isSkipped = isSkipped || isInfo
@@ -127,6 +128,7 @@ def call(Map params = [:]) {
                 taskId,
                 pipelineMetadata,
                 xunit,
+                xunitUrls,
                 runUrl,
                 runLog,
                 isSkipped,

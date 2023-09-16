@@ -17,6 +17,7 @@ This step requires the [JMS Messaging plugin](https://wiki.jenkins.io/display/JE
 * **topic**: string; (optional) name of the topic where to send the message
 * **messageProvider**: string; (optional) name of the topic the message provider to use
 * **xunit**: string; (optional) xunit with results
+* **xunitUrls**: list; (optional) a list of URLs pointing to xunit files
 * **runUrl**: string; (optional) URL that will appear in the message instead of the URL of the Jenkins build
 * **runLog**: string; (optional) Log URL that will appear in the message instead of the URL of the Jenkins console
 * **isSkipped**: boolean; [**DEPRECATED**: please use "isInfo" instead] (optional) indicator whether this test was skipped or not; a "note" param can be used to provide an explanation on why the test was skipped
