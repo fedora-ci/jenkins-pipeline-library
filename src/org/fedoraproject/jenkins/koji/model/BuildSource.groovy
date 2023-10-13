@@ -25,7 +25,7 @@ class BuildSource implements Serializable {
     static BuildSource fromString(String sourceStr) {
         BuildSource source = new BuildSource()
         source.raw = sourceStr
-        if (sourceStr.contains('#')) {
+        if (sourceStr && sourceStr.contains('#')) {
             source.url = sourceStr.split('#')[0]
             source.commitId = sourceStr.split('#')[1]
         }
