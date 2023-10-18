@@ -99,7 +99,7 @@ def buildMessageRunning(
     msgTemplate['artifact']['component'] = taskInfo.name
     msgTemplate['artifact']['nvr'] = taskInfo.nvr
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
-    msgTemplate['artifact']['source'] = taskInfo.source.raw
+    msgTemplate['artifact']['source'] = taskInfo.source.raw ?: ''
     msgTemplate['artifact']['type'] = artifactType
 
     // test section
@@ -156,7 +156,7 @@ def buildMessageComplete(
     msgTemplate['artifact']['nvr'] = taskInfo.nvr
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
     msgTemplate['artifact']['baseline'] = taskInfo.nvr
-    msgTemplate['artifact']['source'] = taskInfo.source.raw
+    msgTemplate['artifact']['source'] = taskInfo.source.raw ?: ''
     msgTemplate['artifact']['type'] = artifactType
 
     // test section
@@ -240,7 +240,7 @@ def buildMessageError(
     msgTemplate['artifact']['component'] = taskInfo.name
     msgTemplate['artifact']['nvr'] = taskInfo.nvr
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
-    msgTemplate['artifact']['source'] = taskInfo.source.raw
+    msgTemplate['artifact']['source'] = taskInfo.source.raw ?: ''
     msgTemplate['artifact']['type'] = artifactType
 
     // test section
