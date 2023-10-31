@@ -125,7 +125,11 @@ class Koji implements Serializable {
         taskInfo.ownerId = result.get('owner')
 
         taskInfo.target = result.get('request')[1]
-        taskInfo.scratch = result.get('request')[2].get('scratch', false)
+        taskInfo.scratch = false
+        def options = result.get('request')[2]
+        if (options && options instanceof Map) {
+            taskInfo.scratch = options.get('scratch', false)
+        }
 
         if (build != null) {
             // TODO: find a better way how to do this "delegation" in Groovy (inheritance:))
