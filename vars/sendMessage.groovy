@@ -28,7 +28,7 @@ def call(Map params = [:]) {
     def testType = params.get('testType') ?: ''
     def testResult = params.get('testResult') ?: ''
     def testProfile = params.get('testProfile') ?: ''
-    def xunitUrls = params.get('xunit_urls') ?: []
+    def xunitUrls = params.get('xunitUrls') ?: []
 
     // isInfo is an alias for isSkipped
     isSkipped = isSkipped || isInfo
