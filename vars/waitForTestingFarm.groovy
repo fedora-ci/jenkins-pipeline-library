@@ -33,8 +33,9 @@ def call(Map params = [:]) {
     }
     testingFarmResult = statusResult.response
     xunit = testingFarmResult.get('result', [:])?.get('xunit', '') ?: ''
+    xunitUrl = testingFarmResult.get('result', [:])?.get('xunit_url', '') ?: ''
 
-    return [apiResponse: statusResult.response, requestStatus: statusResult.status, xunit: xunit]
+    return [apiResponse: statusResult.response, requestStatus: statusResult.status, xunit: xunit, xunitUrl: xunitUrl]
 }
 
 
