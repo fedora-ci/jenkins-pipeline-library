@@ -14,10 +14,7 @@ def call(Map params = [:]) {
                 // Sync to artifact storate happens in background, so Testing Farm can report the job to be done,
                 // but the data is still not in the artifact storage -- therefore the 404
                 response = httpRequest(url: url, validResponseCodes: '100:404', quiet: true)
-                if (response.status == 200) {
-                    return true
-                }
-                return false
+                return response.status == 200
             }
         }
     }
