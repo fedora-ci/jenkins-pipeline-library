@@ -34,6 +34,7 @@ This is a list of all steps implemented in the library. Click on a particular st
 * [isTimeoutAborted()](./docs/steps/isTimeoutAborted.md)
 * [loadConfig()](./docs/steps/loadConfig.md)
 * [repoHasTests()](./docs/steps/repoHasTests.md)
+* [readFileFromArtifactStorage()](./docs/steps/readFileFromArtifactStorage.md)
 * [sendMessage()](./docs/steps/sendMessage.md)
 * [setBuildNameFromArtifactId()](./docs/steps/setBuildNameFromArtifactId.md)
 * [setJobDescriptionFromMetadata()](./docs/steps/setJobDescriptionFromMetadata.md)
