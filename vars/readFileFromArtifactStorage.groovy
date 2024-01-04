@@ -5,7 +5,7 @@
  */
 def call(Map params = [:]) {
     def url = params.get('url')
-    def timeoutSeconds = params.get('timeoutSeconds', 120)?.toInteger()
+    def timeoutSeconds = params.get('timeoutSeconds', 900)?.toInteger()
 
     def response
     if (url) {

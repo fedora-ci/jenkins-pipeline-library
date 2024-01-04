@@ -5,7 +5,7 @@ This step tries to read the file from the given URL. The URL should point to the
 ## Parameters
 
 * **url**: string; File URL
-* **timeoutSeconds**: int (optional); Timeout in seconds (default: 120)
+* **timeoutSeconds**: int (optional); Timeout in seconds (default: 900)
 
 ## Example Usage
 
