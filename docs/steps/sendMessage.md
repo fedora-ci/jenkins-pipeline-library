@@ -28,6 +28,8 @@ This step requires the [JMS Messaging plugin](https://wiki.jenkins.io/display/JE
 * **testType**: string; (optional) test type (e.g.: "tier0")
 * **testResult**: string; (optional) test result (e.g.: "passed", "needs_inspection")
 * **testProfile**: string: (optional) name of the test profile
+* **nvr**: string: (optional) Report results for this NVR, instead of the artifact Id
+
 
 ## Example Usage
 

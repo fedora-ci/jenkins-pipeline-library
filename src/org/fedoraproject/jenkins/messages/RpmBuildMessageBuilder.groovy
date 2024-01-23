@@ -13,7 +13,8 @@ def buildMessageQueued(
     Map pipelineMetadata,
     String scenario,
     String testType,
-    String testProfile
+    String testProfile,
+    String nvr
 ) {
     def msgTemplate
 
@@ -43,6 +44,10 @@ def buildMessageQueued(
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
     msgTemplate['artifact']['type'] = artifactType
 
+    if (nvr) {
+        msgTemplate['artifact']['nvr'] = nvr
+    }
+
     // test section
     msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
@@ -71,7 +76,8 @@ def buildMessageRunning(
     Map pipelineMetadata,
     String scenario,
     String testType,
-    String testProfile
+    String testProfile,
+    String nvr
 ) {
     def msgTemplate
 
@@ -101,6 +107,10 @@ def buildMessageRunning(
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
     msgTemplate['artifact']['source'] = taskInfo.source.raw ?: ''
     msgTemplate['artifact']['type'] = artifactType
+
+    if (nvr) {
+        msgTemplate['artifact']['nvr'] = nvr
+    }
 
     // test section
     msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
@@ -134,7 +144,8 @@ def buildMessageComplete(
     String note,
     String scenario,
     String testType,
-    String testProfile
+    String testProfile,
+    String nvr
 ) {
     def msgTemplate
 
@@ -159,6 +170,10 @@ def buildMessageComplete(
     msgTemplate['artifact']['baseline'] = taskInfo.nvr
     msgTemplate['artifact']['source'] = taskInfo.source.raw ?: ''
     msgTemplate['artifact']['type'] = artifactType
+
+    if (nvr) {
+        msgTemplate['artifact']['nvr'] = nvr
+    }
 
     // test section
     def result = 'needs_inspection'
@@ -222,7 +237,8 @@ def buildMessageError(
     String scenario,
     String errorReason,
     String testType,
-    String testProfile
+    String testProfile,
+    String nvr
 ) {
     def msgTemplate
 
@@ -246,6 +262,10 @@ def buildMessageError(
     msgTemplate['artifact']['scratch'] = taskInfo.scratch
     msgTemplate['artifact']['source'] = taskInfo.source.raw ?: ''
     msgTemplate['artifact']['type'] = artifactType
+
+    if (nvr) {
+        msgTemplate['artifact']['nvr'] = nvr
+    }
 
     // test section
     msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
