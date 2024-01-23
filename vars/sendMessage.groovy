@@ -29,6 +29,7 @@ def call(Map params = [:]) {
     def testResult = params.get('testResult') ?: ''
     def testProfile = params.get('testProfile') ?: ''
     def xunitUrls = params.get('xunitUrls') ?: []
+    def nvr = params.get('nvr') ?: ''
 
     // isInfo is an alias for isSkipped
     isSkipped = isSkipped || isInfo
@@ -103,7 +104,8 @@ def call(Map params = [:]) {
                 runLog,
                 scenario,
                 testType,
-                testProfile
+                testProfile,
+                nvr
             )
         }
 
@@ -117,7 +119,8 @@ def call(Map params = [:]) {
                 runLog,
                 scenario,
                 testType,
-                testProfile
+                testProfile,
+                nvr
             )
         }
 
@@ -136,7 +139,8 @@ def call(Map params = [:]) {
                 scenario,
                 testType,
                 testProfile,
-                testResult
+                testResult,
+                nvr
             )
         }
 
@@ -152,7 +156,8 @@ def call(Map params = [:]) {
                 scenario,
                 errorReason,
                 testType,
-                testProfile
+                testProfile,
+                nvr
             )
         }
 

@@ -13,7 +13,8 @@ def buildMessageQueued(
     Map pipelineMetadata,
     String scenario,
     String testType,
-    String testProfile
+    String testProfile,
+    String nvr
 ) {
     def msgTemplate
 
@@ -46,6 +47,10 @@ def buildMessageQueued(
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
+    if (nvr) {
+        msgTemplate['artifact']['nvr'] = nvr
+    }
+
     // test section
     msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
@@ -72,7 +77,8 @@ def buildMessageRunning(
     Map pipelineMetadata,
     String scenario,
     String testType,
-    String testProfile
+    String testProfile,
+    String nvr
 ) {
     def msgTemplate
 
@@ -105,6 +111,10 @@ def buildMessageRunning(
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
 
+    if (nvr) {
+        msgTemplate['artifact']['nvr'] = nvr
+    }
+
     // test section
     msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
     msgTemplate['test']['category'] = pipelineMetadata['testCategory']
@@ -135,7 +145,8 @@ def buildMessageComplete(
     String note,
     String scenario,
     String testType,
-    String testProfile
+    String testProfile,
+    String nvr
 ) {
     def msgTemplate
 
@@ -161,6 +172,10 @@ def buildMessageComplete(
     msgTemplate['artifact']['nvr'] = mbs.getModuleNVR(moduleInfo)
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
+
+    if (nvr) {
+        msgTemplate['artifact']['nvr'] = nvr
+    }
 
     // test section
     def result = 'needs_inspection'
@@ -220,7 +235,8 @@ def buildMessageError(
     String scenario,
     String errorReason,
     String testType,
-    String testProfile
+    String testProfile,
+    String nvr
 ) {
     def msgTemplate
 
@@ -246,6 +262,10 @@ def buildMessageError(
     msgTemplate['artifact']['nvr'] = mbs.getModuleNVR(moduleInfo)
     msgTemplate['artifact']['stream'] = moduleInfo.get('stream')
     msgTemplate['artifact']['version'] = moduleInfo.get('version')
+
+    if (nvr) {
+        msgTemplate['artifact']['nvr'] = nvr
+    }
 
     // test section
     msgTemplate['test']['type'] = testType ?: pipelineMetadata['testType']
