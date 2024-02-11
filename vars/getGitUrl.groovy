@@ -19,11 +19,11 @@ def call(Map params = [:]) {
 
     def changeFork = params.get('changeFork') ?: env.CHANGE_FORK
     // pull request
-    if (env.CHANGE_ID) {
+    if (env.CHANGE_ID && changeFork) {
         def urlList = gitUrl.split('/')
 
         // for GitHub, the change id is just a username;
-        // bu for GitLab, the change id is "username/repository"...
+        // but for GitLab, the change id is "username/repository"...
         // meh...
         if (changeFork.contains('/')) {
             urlList = urlList[0..-3]
