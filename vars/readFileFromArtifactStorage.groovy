@@ -16,7 +16,9 @@ def call(Map params = [:]) {
                 response = httpRequest(url: url, validResponseCodes: '100:404', quiet: true)
                 return response.status == 200
             }
+            return response.content
         }
     }
-    return response.content
+
+    return ''
 }
