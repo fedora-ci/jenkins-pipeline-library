@@ -21,7 +21,7 @@ def call(Map params = [:]) {
 
     // FIXME: this is here for easier debugging in the early stages; let's remove it once
     // things are more stable
-    def tfArtifactsBaseUrl = env.FEDORA_CI_PAGURE_DIST_GIT_URL.startsWith('https://src.osci') ? "http://artifacts.osci.redhat.com/testing-farm" : "http://artifacts.dev.testing-farm.io"
+    def tfArtifactsBaseUrl = env.FEDORA_CI_PAGURE_DIST_GIT_URL.startsWith('https://src.osci') ? "https://artifacts.osci.redhat.com/testing-farm" : "http://artifacts.dev.testing-farm.io"
 
     echo "Testing Farm API Request URL: ${apiUrl}"
     echo "Testing Farm Artifacts URL: ${tfArtifactsBaseUrl}/${requestId}"
