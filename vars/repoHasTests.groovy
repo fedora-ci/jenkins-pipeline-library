@@ -77,7 +77,11 @@ python3 -c "import yaml, json; y=yaml.safe_load(open('ci.fmf')); json.dump(y, op
 
             // check FMF first
             def stdFmf = findFiles glob: '.fmf/version'
+
             echo "FMF tests in ${repoUrl} (${ref}): ${stdFmf}"
+            if (stdFmf) {
+                return [type: 'fmf', files: stdFmf.collect{ it.path }, ciConfig: ciConfig, plans: plans]
+            }
 
             // if FMF tests were not found, let's try STI      
             def stdStiFiles = findFiles glob: 'tests/tests*.yml'
@@ -86,10 +90,6 @@ python3 -c "import yaml, json; y=yaml.safe_load(open('ci.fmf')); json.dump(y, op
             echo "STI tests in ${repoUrl} (${ref}): ${stdStiFiles} ${nonStdStiFiles}"
             if (stdStiFiles || nonStdStiFiles) {
                 return [type: 'sti', files: (stdStiFiles + nonStdStiFiles).collect{ it.path }, ciConfig: ciConfig]
-            }
-            
-            if (stdFmf) {
-                return [type: 'fmf', files: stdFmf.collect{ it.path }, ciConfig: ciConfig, plans: plans]
             }
 
             return [:]
