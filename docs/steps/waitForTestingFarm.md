@@ -5,7 +5,7 @@ This steps causes the running pipeline to pause and wait for a webhook from Test
 ## Parameters
 
 * **requestId**: string; Testing Farm API request ID
-* **hook**: hook object previously created by `registerWebhook()` step
+* **hook**: (optional) hook object previously created by `registerWebhook()` step
 
 ## Example Usage
 

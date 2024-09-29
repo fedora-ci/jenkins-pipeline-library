@@ -20,7 +20,12 @@ def call(Map params = [:]) {
     echo "Waiting for Testing Farm..."
     def statusResult
     while (true) {
-        data = waitForWebhook(hook)
+        if (hook) {
+            waitForWebhook(hook)
+        } else if (statusResult) {
+            // we don't have the hook, so wait between status checks
+            sleep(time: 60, unit: "SECONDS")
+        }
         statusResult = checkTestingFarmRequestStatus(requestId)
         echo "The status is now \"${statusResult.status}\""
         if (statusResult.status in ['complete', 'error']) {
