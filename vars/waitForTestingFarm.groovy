@@ -9,6 +9,7 @@ import groovy.json.JsonSlurperClassic
 def call(Map params = [:]) {
     def requestId = params.get('requestId')
     def hook = params.get('hook')
+    def suppressSslErrors = params.get('suppressSslErrors', false)?.toBoolean()
 
     def apiUrl = env.FEDORA_CI_TESTING_FARM_API_URL
 
@@ -26,7 +27,7 @@ def call(Map params = [:]) {
             // we don't have the hook, so wait between status checks
             sleep(time: 60, unit: "SECONDS")
         }
-        statusResult = checkTestingFarmRequestStatus(requestId)
+        statusResult = checkTestingFarmRequestStatus(requestId, suppressSslErrors)
         echo "The status is now \"${statusResult.status}\""
         if (statusResult.status in ['complete', 'error']) {
             break
@@ -44,7 +45,7 @@ def call(Map params = [:]) {
 }
 
 
-def checkTestingFarmRequestStatus(requestId) {
+def checkTestingFarmRequestStatus(requestId, suppressSslErrors) {
 
     def apiUrl = env.FEDORA_CI_TESTING_FARM_API_URL
 
@@ -65,7 +66,8 @@ def checkTestingFarmRequestStatus(requestId) {
                 httpMode: 'GET',
                 url: "${apiUrl}",
                 validResponseCodes: '200',
-                quiet: true
+                quiet: true,
+                ignoreSslErrors: suppressSslErrors
             )
             contentJson = new JsonSlurperClassic().parseText(response.content)
             return [status: contentJson.get('state'), response: contentJson]

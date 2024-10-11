@@ -13,6 +13,7 @@ It is possible to filter the requirements by testcase name, scenario, and/or sce
 * **testcase**: string; (optional) test case name
 * **scenarioPrefix**: string; (optional) test scenario prefix
 * **scenario**: string; (optional) test scenario
+* **suppressSslErrors**: boolean; (optional) ignore ssl errors (default: false)
 
 ## Example Usage
 

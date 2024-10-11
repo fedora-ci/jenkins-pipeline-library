@@ -9,6 +9,7 @@ import groovy.json.JsonSlurperClassic
 def call(Map params = [:]) {
     def requestId = params.get('requestId')
     def timeout = params.get('timeout')
+    def suppressSslErrors = params.get('suppressSslErrors', false)?.toBoolean()
 
     // FIXME: use the real Testing Farm URL, once it is available
     def apiUrl = params.get('apiUrl') ?: env.FEDORA_CI_TESTING_FARM_API_URL
@@ -54,7 +55,8 @@ done
         httpMode: 'GET',
         url: "${apiUrl}",
         validResponseCodes: '200',
-        quiet: true
+        quiet: true,
+        ignoreSslErrors: suppressSslErrors
     )
     def contentJson = new JsonSlurperClassic().parseText(response.content)
     return contentJson
