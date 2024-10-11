@@ -6,6 +6,7 @@
 def call(Map params = [:]) {
     def url = params.get('url')
     def timeoutSeconds = params.get('timeoutSeconds', 900)?.toInteger()
+    def suppressSslErrors = params.get('suppressSslErrors', false)?.toBoolean()
 
     if (!url) {
         return ''
@@ -16,7 +17,7 @@ def call(Map params = [:]) {
         waitUntil(initialRecurrencePeriod: 15000, quiet: true) {
             // Sync to artifact storate happens in background, so Testing Farm can report the job to be done,
             // but the data is still not in the artifact storage -- therefore the 404
-            response = httpRequest(url: url, validResponseCodes: '100:404', quiet: true)
+            response = httpRequest(url: url, validResponseCodes: '100:404', quiet: true, ignoreSslErrors: suppressSslErrors)
             return response.status == 200
         }
     }

@@ -17,6 +17,7 @@ def call(Map params = [:]) {
     def testcasePrefix = params.get('testcasePrefix')
     def scenarioPrefix = params.get('scenarioPrefix')
     def scenario = params.get('scenario')
+    def suppressSslErrors = params.get('suppressSslErrors', false)?.toBoolean()
 
     def targetArtifactId
     if (Utils.isCompositeArtifact(artifactId)) {
@@ -57,6 +58,7 @@ def call(Map params = [:]) {
             contentType: 'APPLICATION_JSON',
             validResponseCodes: '200',
             consoleLogResponseBody: false,
+            ignoreSslErrors: suppressSslErrors,
             requestBody: """
                 {
                     "decision_context": "${decisionContext}",

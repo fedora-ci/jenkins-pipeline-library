@@ -30,6 +30,7 @@ def call(Map params = [:]) {
     def testProfile = params.get('testProfile') ?: ''
     def xunitUrls = params.get('xunitUrls') ?: []
     def nvr = params.get('nvr') ?: ''
+    def suppressSslErrors = params.get('suppressSslErrors', false)?.toBoolean()
 
     // isInfo is an alias for isSkipped
     isSkipped = isSkipped || isInfo
@@ -75,7 +76,8 @@ def call(Map params = [:]) {
                         response = httpRequest(
                             url: env.TOPICS_MAPPING_CONFIG_URL,
                             quiet: true,
-                            consoleLogResponseBody: false
+                            consoleLogResponseBody: false,
+                            ignoreSslErrors: suppressSslErrors
                         )
                     } catch(e) {
                         echo "Error: Failed to fetch topics mapping from ${env.TOPICS_MAPPING_CONFIG_URL}"

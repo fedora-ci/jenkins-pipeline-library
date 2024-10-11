@@ -8,6 +8,7 @@ This step polls Testing Farm API and checks the status of the given request. The
 ## Parameters
 
 * **requestId**: string; Testing Farm API request ID
+* **suppressSslErrors**: boolean; (optional) ignore ssl errors (default: false)
 
 ## Example Usage
 

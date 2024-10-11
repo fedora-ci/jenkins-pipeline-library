@@ -29,6 +29,7 @@ This step requires the [JMS Messaging plugin](https://wiki.jenkins.io/display/JE
 * **testResult**: string; (optional) test result (e.g.: "passed", "needs_inspection")
 * **testProfile**: string: (optional) name of the test profile
 * **nvr**: string: (optional) Report results for this NVR, instead of the artifact Id
+* **suppressSslErrors**: boolean; (optional) ignore ssl errors (default: false)
 
 
 ## Example Usage

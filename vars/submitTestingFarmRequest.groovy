@@ -9,8 +9,8 @@ import org.fedoraproject.jenkins.Utils
 def call(Map params = [:]) {
     // TODO: we could validate the payload against the Testing Farm schema
     def payload = params.get('payload')
-
     def payloadMap = params.get('payloadMap')
+    def suppressSslErrors = params.get('suppressSslErrors', false)?.toBoolean()
 
     if (!payload) {
         if (payloadMap) {
@@ -31,7 +31,7 @@ def call(Map params = [:]) {
 
     retry(30) {
         try {
-            return httpPost(apiUrl, payload)
+            return httpPost(apiUrl, payload, suppressSslErrors)
         } catch(e) {
             echo "ERROR: Oops, something went wrong. We were unable to call ${apiUrl} — let's wait 120 seconds and then try again: ${e.getMessage()}"
             sleep(time: 120, unit: "SECONDS")
@@ -42,14 +42,15 @@ def call(Map params = [:]) {
 }
 
 
-def httpPost(url, payload) {
+def httpPost(url, payload, suppressSslErrors) {
     def response = httpRequest(
         consoleLogResponseBody: false,
         contentType: 'APPLICATION_JSON',
         httpMode: 'POST',
         requestBody: "${payload}",
         url: "${url}",
-        validResponseCodes: '200'
+        validResponseCodes: '200',
+        ignoreSslErrors: suppressSslErrors
     )
     def contentJson = Utils.jsonStringToMap(response.content)
     return contentJson
