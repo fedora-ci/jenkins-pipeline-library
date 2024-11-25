@@ -123,12 +123,18 @@ class Koji implements Serializable {
         taskInfo.priority = result.get('priority')
         taskInfo.hostId = result.get('host_id')
         taskInfo.ownerId = result.get('owner')
-
-        taskInfo.target = result.get('request')[1]
+        taskInfo.target = null
         taskInfo.scratch = false
-        def options = result.get('request')[2]
-        if (options && options instanceof Map) {
-            taskInfo.scratch = options.get('scratch', false)
+
+        if (taskInfo.method == 'build') {
+            def request = result.get('request')
+            if (request != null) {
+                taskInfo.target = request[1]
+                def options = request[2]
+                if (options && options instanceof Map) {
+                    taskInfo.scratch = options.get('scratch', false)
+                }
+            }
         }
 
         if (build != null) {
