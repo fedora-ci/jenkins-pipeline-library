@@ -22,6 +22,7 @@ def call(taskId) {
         'version': taskInfo.version,
         'release': taskInfo.release,
         'nvr': taskInfo.nvr
+        'buildId': taskInfo.buildId
     ]
 
     return taskInfoMap
