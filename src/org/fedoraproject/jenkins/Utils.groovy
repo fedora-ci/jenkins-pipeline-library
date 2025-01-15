@@ -2,6 +2,7 @@ package org.fedoraproject.jenkins
 
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
+import groovy.xml.XmlSlurper
 import java.time.Instant
 import java.security.MessageDigest
 import java.util.zip.GZIPInputStream

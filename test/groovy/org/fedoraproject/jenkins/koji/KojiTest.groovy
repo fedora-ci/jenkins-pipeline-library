@@ -55,6 +55,25 @@ class KojiTest extends BasePipelineTest {
     }
 
     @Test
+    void getBuildInfoTest() {
+        Koji koji = new Koji()
+
+        // https://koji.fedoraproject.org/koji/buildinfo?buildID=2615024
+        def buildInfo = koji.getBuildInfo(2615024)
+
+        assertNotNull buildInfo
+        assertFalse buildInfo.scratch
+        assertEquals 'rpmlint-2.6.1-1.fc42', buildInfo.nvr
+        assertEquals 'rpmlint', buildInfo.name
+        assertEquals 'rpmlint', buildInfo.packageName
+        assertEquals '2.6.1', buildInfo.version
+        assertEquals '1.fc42', buildInfo.release
+        assertEquals 'churchyard', buildInfo.ownerName
+        assertEquals '127834990', buildInfo.taskId
+        assertThat(buildInfo.tags).contains('f42')
+    }
+
+    @Test
     void getNonExistentTaskInfoTest() {
         Koji koji = new Koji()
 

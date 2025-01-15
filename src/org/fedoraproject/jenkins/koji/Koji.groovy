@@ -181,6 +181,7 @@ class Koji implements Serializable {
             taskInfo.version = version
             taskInfo.release = release
             taskInfo.nvr = nvr
+            taskInfo.buildId = null
         }
 
         return taskInfo
