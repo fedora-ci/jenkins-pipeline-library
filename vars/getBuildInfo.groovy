@@ -13,7 +13,7 @@ def call(buildId) {
     // TODO: we can do this mapping directly in BuildInfo class
     def buildInfoMap = [
         'id': buildInfo.id,
-        'nvr': buildInfo.nvr
+        'nvr': buildInfo.nvr,
         'name': buildInfo.name,
         'packageName': buildInfo.packageName,
         'version': buildInfo.version,
