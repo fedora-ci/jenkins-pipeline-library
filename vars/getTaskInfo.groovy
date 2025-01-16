@@ -21,7 +21,7 @@ def call(taskId) {
         'packageName': taskInfo.packageName,
         'version': taskInfo.version,
         'release': taskInfo.release,
-        'nvr': taskInfo.nvr
+        'nvr': taskInfo.nvr,
         'buildId': taskInfo.buildId
     ]
 
