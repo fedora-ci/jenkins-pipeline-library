@@ -28,4 +28,5 @@ class TaskInfo implements Serializable {
 
     String target
     Boolean scratch
+    Boolean draft
 }
