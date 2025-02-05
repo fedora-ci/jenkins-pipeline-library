@@ -17,6 +17,7 @@ def call(taskId) {
         'ownerId': taskInfo.ownerId,
         'target': taskInfo.target,
         'scratch': taskInfo.scratch,
+        'draft': taskInfo.draft,
         'name': taskInfo.name,
         'packageName': taskInfo.packageName,
         'version': taskInfo.version,
