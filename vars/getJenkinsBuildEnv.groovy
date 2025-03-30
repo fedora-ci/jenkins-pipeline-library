@@ -1,5 +1,7 @@
 #!/usr/bin/groovy
 
+import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper
+
 
 /**
  * getJenkinsBuildEnv() step.
