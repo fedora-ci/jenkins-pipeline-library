@@ -15,6 +15,7 @@ def call(Map params = [:]) {
     if (!payload) {
         if (payloadMap) {
             payload = Utils.mapToJsonString(payloadMap, true)
+            echo("Testing Farm payload: ${payload}")
         } else {
             error("Missing Testing Farm payload")
         }
