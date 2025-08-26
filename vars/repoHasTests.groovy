@@ -12,7 +12,7 @@ def call(Map params = [:]) {
     def fetchMergeRequests = params.get('fetchMergeRequests', false)
 
     if (useCloneCredentials && env.GIT_CLONE_AUTH_STRING) {
-        repoUrl = repoUrl.replace('://', "://${env.GIT_CLONE_AUTH_STRING}@")
+        repoUrl = repoUrl.replace('://', "://\${GIT_CLONE_AUTH_STRING}@")
     }
 
     dir("temp-repoHasTests${env.BUILD_ID}") {
