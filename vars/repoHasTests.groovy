@@ -51,22 +51,36 @@ def call(Map params = [:]) {
             // And therefore, this "CI config" feature is not mentioned in documentation.
             def ciConfig = [:]
             def plans = []
-            def ciConfigPath = findFiles glob: 'ci.fmf'
-            echo "CI config in ${repoUrl} (${ref}): ${ciConfigPath}"
-            if (ciConfigPath) {
+            def gatingPath = findFiles glob: 'gating.yaml'
+            echo "CI config in ${repoUrl} (${ref}): ${gatingPath}"
+            if (gatingPath) {
                 // FIXME: Groovy 2.x in Jenkins doesn't have a built-in support for YAML,
                 // and I don't want to add an external dependency.
                 // See also the comment above -- this whole section shouldn't be here
                 // and it will be moved elsewhere soon-ish.
 
-                // Convert ci.fmf (YAML) to ci.fmf.json (JSON)
-                sh(
-"""
-python3 -c "import yaml, json; y=yaml.safe_load(open('ci.fmf')); json.dump(y, open('ci.fmf.json', 'w'))"
-""")
-                ciConfig = readJSON(file: 'ci.fmf.json')
+                // Check if a relevant entry (see regex expression) is in gating.yaml
+                def has_gating_request = sh(
+script: """
+python3 <<SCRIPT
+from pathlib import Path
+import re
+import yaml
 
-                if (ciConfig.get('resultsdb-testcase') == 'separate') {
+PLAN_REGEX = re.compile(r"^fedora-ci\\.koji-build\\.(?:/.+)\\.functional\$")
+
+with Path("gating.yaml").open("r") as f:
+    for gating in yaml.load_all(f, yaml.BaseLoader):
+        for rule in gating.get("rules", []):
+            if PLAN_REGEX.search(rule.get("test_case_name", "")):
+                # Found a specific plan that was requested
+                exit(0)
+
+# gating.yaml did not have an entry requesting a specific plan
+exit(1)
+SCRIPT
+""", returnStatus: true)
+                if (has_gating_request == 0) {
                     def contextStr = ''
                     context.each { key, value ->
                         contextStr += " --context ${key}=${value}"
