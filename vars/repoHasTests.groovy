@@ -67,7 +67,7 @@ from pathlib import Path
 import re
 import yaml
 
-PLAN_REGEX = re.compile(r"^fedora-ci\\.koji-build\\.(?:/.+)\\.functional\$")
+PLAN_REGEX = re.compile(r"^(fedora-ci\\.koji-build|osci\\.brew-build)\\.(?:/.+)\\.functional\$")
 
 with Path("gating.yaml").open("r") as f:
     for gating in yaml.load_all(f, yaml.BaseLoader):
