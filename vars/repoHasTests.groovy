@@ -9,6 +9,7 @@ def call(Map params = [:]) {
     def ref = params.get('ref')
     def context = params.get('context')
     def useCloneCredentials = params.get('useCloneCredentials', false)
+    def shallowClone = params.get('shallowClone', false)
     def fetchMergeRequests = params.get('fetchMergeRequests', false)
 
     if (useCloneCredentials && env.GIT_CLONE_AUTH_STRING) {
@@ -26,7 +27,12 @@ def call(Map params = [:]) {
                     sleep(time: 1, unit: 'MINUTES')
                 }
                 retryCounter += 1
-                sh("git clone ${repoUrl} .")
+
+                if (shallowClone) {
+                    sh("git clone --depth=10 --no-single-branch ${repoUrl} .")
+                } else {
+                    sh("git clone ${repoUrl} .")
+                }
 
                 if (fetchMergeRequests) {
                     sh("git fetch origin +refs/merge-requests/*/head:refs/remotes/origin/merge-requests/*")
