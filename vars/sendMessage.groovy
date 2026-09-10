@@ -189,14 +189,14 @@ def call(Map params = [:]) {
                 timeout(1) {
                     // Send message
                     sentResult = sendCIMessage(
-                        messageContent: msgContent,
-                        messageProperties: msgProps,
-                        messageType: "Custom",
-                        overrides: [
-                            topic: topic
-                        ],
-                        failOnError: true,
-                        providerName: messageProvider
+                        providerData: [
+                            $class: 'ActiveMQPublisherProviderData',
+                            name: messageProvider,
+                            overrides: [topic: topic],
+                            messageContent: msgContent,
+                            messageProperties: msgProps,
+                            failOnError: true
+                        ]
                     )
                 }
             } catch(e) {
