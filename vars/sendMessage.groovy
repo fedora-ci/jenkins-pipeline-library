@@ -16,6 +16,7 @@ def call(Map params = [:]) {
     def pipelineMetadata = params.get('pipelineMetadata')
     def dryRun = params.get('dryRun')
     def topic = params.get('topic')
+    def providerType = params.get('providerType') ?: env.MSG_PROVIDER_TYPE ?: 'ActiveMQ'
     def messageProvider = params.get('messageProvider') ?: 'Red Hat UMB Publisher'
     def xunit = params.get('xunit') ?: ''
     def runUrl = params.get('runUrl') ?: ''
@@ -182,6 +183,32 @@ def call(Map params = [:]) {
             return
         }
 
+        def providerData
+        switch (providerType) {
+            case 'ActiveMQ':
+                providerData = [
+                    $class: 'ActiveMQPublisherProviderData',
+                    name: messageProvider,
+                    overrides: [topic: topic],
+                    messageContent: msgContent,
+                    messageProperties: msgProps,
+                    failOnError: true
+                ]
+                break
+            case 'Kafka':
+                providerData = [
+                    $class: 'KafkaPublisherProviderData',
+                    name: messageProvider,
+                    overrides: [topic: topic],
+                    messageContent: msgContent,
+                    messageHeaders: msgProps,
+                    failOnError: true
+                ]
+                break
+            default:
+                error("Unknown providerType: ${providerType} — valid types are 'ActiveMQ' and 'Kafka'")
+        }
+
         def sentResult
         retry(10) {
             try {
@@ -189,14 +216,7 @@ def call(Map params = [:]) {
                 timeout(1) {
                     // Send message
                     sentResult = sendCIMessage(
-                        providerData: [
-                            $class: 'ActiveMQPublisherProviderData',
-                            name: messageProvider,
-                            overrides: [topic: topic],
-                            messageContent: msgContent,
-                            messageProperties: msgProps,
-                            failOnError: true
-                        ]
+                        providerData: providerData
                     )
                 }
             } catch(e) {
