@@ -15,7 +15,8 @@ This step requires the [JMS Messaging plugin](https://wiki.jenkins.io/display/JE
 * **pipelineMetadata**: map; metadata about the pipeline
 * **dryRun**: boolean; if true, do not actually send the message, just log it
 * **topic**: string; (optional) name of the topic where to send the message
-* **messageProvider**: string; (optional) name of the topic the message provider to use
+* **providerType**: string; (optional) type of the messaging provider to use, valid types are: "ActiveMQ" (default), "Kafka"; can also be set via the `MSG_PROVIDER_TYPE` environment variable — the parameter takes precedence over the environment variable
+* **messageProvider**: string; (optional) name of the messaging provider to use
 * **xunit**: string; (optional) xunit with results
 * **xunitUrls**: list; (optional) a list of URLs pointing to xunit files
 * **runUrl**: string; (optional) URL that will appear in the message instead of the URL of the Jenkins build
