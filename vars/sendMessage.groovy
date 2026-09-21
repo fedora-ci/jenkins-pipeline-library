@@ -97,6 +97,12 @@ def call(Map params = [:]) {
             topic = topics[artifactType]['test'][messageType]
         }
 
+        // Topics in topics-mapping.json use the UMB convention (VirtualTopic.eng.*).
+        // Kafka topics on the IT-managed broker omit this prefix.
+        if (providerType == 'Kafka' && topic?.startsWith('VirtualTopic.eng.')) {
+            topic = topic.substring('VirtualTopic.eng.'.length())
+        }
+
         if (messageType == 'queued') {
             msg = new MessageBuilder().buildMessageQueued(
                 artifactId,
